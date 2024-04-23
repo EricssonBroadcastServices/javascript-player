@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+#
+# SPDX-License-Identifier: MIT
+
+env:
+  browser: true
+  es6: true
+  jest/globals: true
+
+extends:
+  - eslint-config-prettier
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - eslint-config-preact
+
+plugins:
+  - prettier
+  - jest
+  - '@typescript-eslint'
+
+globals:
+  Promise: true
+
+rules:
+  prettier/prettier:
+    - error
+  arrow-body-style: off
+  no-console: off
+  no-redeclare: off # TS performs the same checks, but intentionally allows naming the type the same as a var
+  no-restricted-syntax:
+    - error
+    - selector: TSEnumDeclaration
+      message: TypeScript enums have several pitfalls. Please use union type or JS objects declared with `as const` instead. See https://youtu.be/jjMbPt_H3RQ for a good explanation.
+  no-undef: off # TypeScript already handles this better because it understands type definitions.
+  '@typescript-eslint/no-unused-vars': "error"
+  '@typescript-eslint/explicit-module-boundary-types': off
+  '@typescript-eslint/ban-ts-comment': "warn"
+
+parser: '@typescript-eslint/parser' 
+
+parserOptions:
+  sourceType: module

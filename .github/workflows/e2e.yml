@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+#
+# SPDX-License-Identifier: MIT
+
+name: Run e2e tests on dev site
+
+# Trigger only when the publish latest dev workflow succeeded
+on: [workflow_dispatch]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          registry-url: https://npm.pkg.github.com/
+      - name: Install and Build
+        run: |
+          npm ci
+          npm run build
+          npm run e2e
+        env:
+          GH_TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}

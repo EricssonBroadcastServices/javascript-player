@@ -1,0 +1,111 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(0.75em);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.metadata {
+  color: white;
+
+  width: 100%;
+  overflow: hidden;
+
+  background: rgba(0, 0, 0, 0.6);
+
+  animation: slideIn 100ms ease-in 1 normal forwards;
+
+  &.hidden {
+    display: none;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    max-width: 60em;
+
+    > * {
+      padding: 0.5em;
+    }
+  }
+
+  .imageWrapper {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    margin-right: 1em;
+
+    .aspectWrapper {
+      position: relative;
+      height: 0;
+      padding-bottom: 56.25%;
+
+      .image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+        min-width: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .contentHolder {
+    flex: 4;
+
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 12px;
+    }
+
+    h4 {
+      color: white;
+      padding: 0;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    span {
+      padding: 0.3em 0;
+      font-size: 0.8em;
+    }
+
+    .textWrapper {
+      position: relative;
+
+      p {
+        position: absolute;
+        padding: 0;
+        margin: 0.7em 0 0 0;
+        font-size: 0.9em;
+        line-height: 1.4em;
+        @media (max-width: 480px) {
+          display: none;
+        }
+      }
+    }
+  }
+}

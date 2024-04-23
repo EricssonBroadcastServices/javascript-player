@@ -1,0 +1,135 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(0.75em);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container {
+  position: relative;
+  overflow: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  min-width: 20%;
+  width: 45%;
+  max-height: 100%;
+  padding: 0.5em;
+
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+
+  font-size: 13px;
+
+  animation: slideIn 100ms ease-in 1 normal forwards;
+
+  &.hidden {
+    display: none;
+  }
+
+  &.window {
+    align-self: flex-end;
+  }
+
+  &.fullscreen {
+    width: calc(100% - 1em);
+    height: calc(100% - 1em);
+  }
+
+  .selected {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    width: 100%;
+
+    cursor: pointer;
+
+    svg {
+      width: 1.5em;
+      height: 1.5em;
+      fill: rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  .menuWrapper {
+    display: flex;
+    flex-direction: column;
+
+    > .selectMenu {
+      margin-right: 0.5em;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .selectMenu {
+    margin-top: 0.5em;
+    flex: 1;
+
+    .menuHeader {
+      border-bottom: 0.125em solid #ffffff;
+      padding-left: 0.4em;
+      svg {
+        width: 1.5em;
+        height: 1.5em;
+        fill: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    .noSubtitle {
+      svg {
+        width: 1.5em;
+        height: 1.5em;
+        stroke: rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    .item {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .itemTime {
+      width: 3em;
+    }
+
+    .itemText {
+      padding: 0 0.5em;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        cursor: pointer;
+        margin: 0.1em;
+        padding: 0.4em;
+        white-space: nowrap;
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
+  }
+}

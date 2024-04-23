@@ -1,0 +1,35 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  transition: all linear 50ms;
+
+  &:hover {
+    svg {
+      width: 5.5em;
+
+      height: 5.5em;
+    }
+  }
+
+  svg {
+    width: 5em;
+    height: 5em;
+    fill: rgba(255, 255, 255, 1);
+    filter: drop-shadow(2px 4px 6px black);
+  }
+}

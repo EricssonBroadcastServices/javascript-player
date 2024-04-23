@@ -1,0 +1,17 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.skinWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  user-select: none;
+  font-family: Helvetica, Arial;
+  font-size: 16px;
+}

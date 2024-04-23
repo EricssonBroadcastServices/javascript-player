@@ -1,0 +1,33 @@
+{
+  "name": "@ericssonbroadcastservices/js-player-cast-sender",
+  "version": "1.6.0",
+  "homepage": "https://github.com/EricssonBroadcastServices/javascript-player#readme",
+  "main": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EricssonBroadcastServices/javascript-player.git"
+  },
+  "scripts": {
+    "lint": "tsc --noEmit",
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "postbuild": "npm pkg set main=dist/index.js types=dist/index.d.ts",
+    "build:clean": "npm pkg delete types && npm pkg set main=src/index.ts"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "bugs": {
+    "url": "https://github.com/EricssonBroadcastServices/javascript-player/issues"
+  },
+  "dependencies": {
+    "@ericssonbroadcastservices/js-player-shared": "^1.6.0"
+  },
+  "devDependencies": {
+    "@types/chromecast-caf-sender": "^1.0.6"
+  },
+  "license": "MIT"
+}

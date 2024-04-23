@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "web-component-dev",
+  "version": "1.6.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack serve --hot"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@ericssonbroadcastservices/js-player-web-component": "^1.6.0"
+  }
+}

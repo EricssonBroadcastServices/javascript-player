@@ -1,0 +1,40 @@
+{
+  "name": "@ericssonbroadcastservices/javascript-player",
+  "version": "1.6.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "tsc --noEmit",
+    "prebuild": "rm -rf dist && rm -rf temp",
+    "build": "webpack --progress",
+    "postbuild": "tsc --emitDeclarationOnly && api-extractor run --local && npm pkg set main=dist/redbee-player.min.js types=dist/javascript-player.d.ts",
+    "build:clean": "npm pkg delete types && npm pkg set main=src/index.ts",
+    "publish-to-npm": "./scripts/publish.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com:ericssonbroadcastservices/javascript-player.git",
+    "directory": "packages/total"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "files": [
+    "dist",
+    "style.css"
+  ],
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "@ericssonbroadcastservices/js-player-analytics": "^1.6.0",
+    "@ericssonbroadcastservices/js-player-cast-sender": "^1.6.0",
+    "@ericssonbroadcastservices/js-player-core": "^1.6.0",
+    "@ericssonbroadcastservices/js-player-overlays": "^1.6.0",
+    "@ericssonbroadcastservices/js-player-shared": "^1.6.0",
+    "@ericssonbroadcastservices/js-player-skin": "^1.6.0",
+    "@ericssonbroadcastservices/rbm-ott-sdk": "0.7.1",
+    "@ericssonbroadcastservices/sprite-vtt-parser": "^1.6.0",
+    "@microsoft/api-extractor": "^7.34.8"
+  },
+  "license": "MIT"
+}

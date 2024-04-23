@@ -1,0 +1,27 @@
+{
+  "name": "@ericssonbroadcastservices/js-player-overlays",
+  "version": "1.6.0",
+  "description": "Overlay framework for the Red Bee JavaScript Player",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "tsc --noEmit",
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "postbuild": "npm pkg set main=dist/index.js types=dist/index.d.ts",
+    "build:clean": "npm pkg delete types && npm pkg set main=src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com:ericssonbroadcastservices/javascript-player.git",
+    "directory": "packages/overlays"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

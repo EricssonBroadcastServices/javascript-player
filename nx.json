@@ -1,0 +1,15 @@
+{
+  "defaultBase": "master",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"]
+    },
+    "build:dev": {
+      "dependsOn": ["^build:dev"]
+    }
+  },
+  "workspaceLayout": {
+    "appsDir": "apps",
+    "libsDir": "packages"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@ericssonbroadcastservices/js-player-web-component",
+  "version": "1.6.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "clean:dist": "rm -rf dist",
+    "build": "npm run clean:dist && webpack",
+    "publish-to-npm": "./scripts/publish.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com:ericssonbroadcastservices/javascript-player.git",
+    "directory": "packages/web-component"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "files": [
+    "dist",
+    "style.css"
+  ],
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "@ericssonbroadcastservices/javascript-player": "^1.6.0",
+    "@ericssonbroadcastservices/js-player-shared": "^1.6.0"
+  },
+  "license": "MIT"
+}

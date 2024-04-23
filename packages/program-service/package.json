@@ -1,0 +1,33 @@
+{
+  "name": "@ericssonbroadcastservices/js-player-program-service",
+  "version": "1.6.0",
+  "description": "",
+  "homepage": "https://github.com/EricssonBroadcastServices/javascript-player#readme",
+  "main": "src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EricssonBroadcastServices/javascript-player.git",
+    "directory": "packages/program-service"
+  },
+  "scripts": {
+    "lint": "tsc --noEmit",
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "postbuild": "npm pkg set main=dist/index.js types=dist/index.d.ts",
+    "build:clean": "npm pkg delete types && npm pkg set main=src/index.ts"
+  },
+  "bugs": {
+    "url": "https://github.com/EricssonBroadcastServices/javascript-player/issues"
+  },
+  "dependencies": {
+    "@ericssonbroadcastservices/js-player-shared": "^1.6.0",
+    "@ericssonbroadcastservices/rbm-ott-sdk": "0.7.1"
+  },
+  "license": "MIT"
+}

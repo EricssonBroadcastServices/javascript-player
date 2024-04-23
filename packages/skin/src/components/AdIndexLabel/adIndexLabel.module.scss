@@ -1,0 +1,37 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.container {
+  &.isMobile {
+    font-size: 0.6em;
+    height: 5em;
+    width: auto;
+  }
+  position: absolute;
+  top: 1.25em;
+  right: 1.25em;
+  z-index: 10;
+  width: auto;
+  min-width: 3em;
+  .adIndexLabel::before {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-left: -0.5ch;
+  }
+  .adIndexLabel {
+    font-size: 0.9em;
+    display: inline-block;
+    line-height: 0;
+    height: 2em;
+    width: auto;
+    letter-spacing: 0.075em;
+    padding: 0.5em 1em;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: rgba(255, 255, 255, 0.8);
+  }
+}

@@ -1,0 +1,74 @@
+# SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+#
+# SPDX-License-Identifier: MIT
+
+name: Publish
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  actions: write
+  contents: write
+
+jobs:
+  publish-github-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://npm.pkg.github.com/
+      - name: publish
+        run: |
+          npm ci 
+          npm run build
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m "chore: ignore me" --no-verify
+          npm run publish
+        env:
+          GH_TOKEN: ${{secrets.GH_PERSONAL_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.GH_PERSONAL_TOKEN}}
+
+  get_release_notes:
+    # bail here for internal/pre-releases
+    if: "${{ !contains(github.ref_name, '-') }}"
+    needs: publish-github-package
+    uses: EricssonBroadcastServices/Documentation/.github/workflows/shared-generate-release-notes.yml@master
+    with:
+      tag_prefix: "v"
+
+
+  draft_release:
+    needs: get_release_notes
+    runs-on: ubuntu-latest
+    steps:
+    - name: Make GitHub draft release
+      uses: softprops/action-gh-release@v1
+      with:
+        body: "${{ needs.get_release_notes.outputs.entry }}"
+        draft: true
+
+  document_release_notes:
+    runs-on: ubuntu-latest
+    needs: get_release_notes
+    steps:
+    - name: Repository Dispatch
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ secrets.GH_REPO_TOKEN_ALBIN }}
+        repository: EricssonBroadcastServices/Documentation
+        event-type: release_notes_update
+        client-payload: |-
+          {
+            "repo": "${{ github.repository }}",
+            "author": "${{ github.actor }}",
+            "date": "${{ github.event.repository.pushed_at }}",
+            "version": "v${{ needs.get_release_notes.outputs.unprefixed_version }}",
+            "entry_base64": "${{ needs.get_release_notes.outputs.entry_base64 }}"
+          }
+

@@ -1,0 +1,28 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "h",
+    "baseUrl": "./packages",
+    "paths": {
+      "@ericssonbroadcastservices/js-player-analytics": [
+        "analytics/src/main.ts"
+      ],
+      "@ericssonbroadcastservices/js-player-ad-monitor": [
+        "ad-monitor/src/main.ts"
+      ],
+      "@ericssonbroadcastservices/js-player": [
+        "player/src/main.ts"
+      ],
+      "@ericssonbroadcastservices/js-player-shared": [
+        "shared/src/index.ts"
+      ],
+      "@ericssonbroadcastservices/javascript-player": [
+        "sdk/src/index.ts"
+      ],
+      "@ericssonbroadcastservices/js-player-web-component": [
+        "web-component/src/main.ts"
+      ]
+    }
+  }
+}

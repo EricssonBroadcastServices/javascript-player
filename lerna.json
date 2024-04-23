@@ -1,0 +1,9 @@
+{
+  "packages": ["packages/*", "apps/*"],
+  "version": "1.6.0",
+  "command": {
+    "version": {
+      "message": "chore(release): publish"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+.container {
+  white-space: nowrap;
+  cursor: pointer;
+  background: #f20006;
+  color: #ffffff;
+  padding: 0.2em 0.5em;
+  border-radius: 0.25em;
+  &.dvr {
+    opacity: 0.5;
+  }
+}

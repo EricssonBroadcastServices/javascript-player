@@ -1,0 +1,41 @@
+{
+  "name": "@ericssonbroadcastservices/js-player-skin",
+  "version": "1.6.0",
+  "description": "",
+  "source": "./src/index.tsx",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com:ericssonbroadcastservices/javascript-player.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "scripts": {
+    "lint": "tsc --noEmit",
+    "pre_build": "rm -rf dist",
+    "_build": "microbundle --tsconfig tsconfig.json --format=cjs",
+    "build": "npm run _build -- --no-sourcemap",
+    "build:dev": "npm run _build -- --no-compress",
+    "watch": "npm run _build -- --watch --no-compress"
+  },
+  "dependencies": {
+    "@ericssonbroadcastservices/js-player-shared": "^1.6.0",
+    "classnames": "^2.2.6",
+    "hotkeys-js": "^3.10.1",
+    "humanize-duration": "^3.25.0",
+    "mdi-preact": "^7.5.0",
+    "preact": "^10.5.7"
+  },
+  "devDependencies": {
+    "@ericssonbroadcastservices/js-player-cast-sender": "^1.6.0",
+    "@ericssonbroadcastservices/js-player-core": "^1.6.0",
+    "@ericssonbroadcastservices/rbm-ott-sdk": "0.7.1",
+    "@types/humanize-duration": "^3.27.1"
+  },
+  "license": "MIT"
+}

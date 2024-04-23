@@ -1,0 +1,84 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.wrapper {
+  opacity: 0;
+  animation: fadeIn forwards;
+  animation-delay: 400ms;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  .bottomContainer {
+    transition: opacity 100ms ease-in-out;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    max-height: 65%;
+
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .topControls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5em;
+
+    .playPauseStop {
+      width: 2.5em;
+      height: 2.5em;
+    }
+  }
+
+  .controls {
+    padding: 0.5em;
+  }
+
+  .time {
+    color: #ffffff;
+  }
+
+  .buttons {
+    display: flex;
+  }
+
+  .buttons > * {
+    margin-right: 0.5em;
+  }
+
+  .buttons > *:last-child {
+    margin-right: 0;
+  }
+
+  .divider {
+    flex: 1;
+  }
+
+  google-cast-launcher {
+    width: 1.5em;
+    height: 1.5em;
+    padding: 0em;
+
+    cursor: pointer;
+  }
+}
