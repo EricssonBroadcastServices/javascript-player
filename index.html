@@ -1,0 +1,244 @@
+<!--
+SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+
+SPDX-License-Identifier: MIT
+-->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Player Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="static/favicon-16x16.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="static/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="static/favicon-96x96.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="static/apple-touch-icon.png"
+    />
+    <link rel="stylesheet" href="static/mvp.css" />
+    <link rel="stylesheet" href="static/style.css" />
+  <script defer src="index.bundle.js"></script></head>
+  <body>
+    <main>
+      <header>
+        <h1>▶️ Player Demo</h1>
+      </header>
+      <div class="share-bar" onclick="document.querySelector('#share-dialog').showModal()">Share 🔗</div>
+      <dialog id="share-dialog">
+        <div class="dialog-header">
+          Share
+          <div class="dialog-close" onclick="this.closest('dialog').close()">✖</div>
+        </div>
+        <p>Scan this QR code to easily test on mobile.</p>
+        <div class="qr-section">
+          <canvas id="qr"></canvas>
+        </div>
+        <small style="font-style: italic;">
+          If you are running on localhost you have to change the base URL to
+          the IP hosting the player.
+        </small>
+      </dialog>
+      <section class="form-section">
+        <form class="playback-form">
+          <fieldset>
+            <legend>Content</legend>
+            <section class="m2">
+              <select name="env" style="flex: 1 1 100px">
+                <option selected value="https://exposure.api.redbee.live">
+                  Production
+                </option>
+                <option value="https://exposure.api.redbee.dev">Pre-stage</option>
+              </select>
+              <input name="cu" type="text" placeholder="customer" list="customersList" style="flex: 3 1 100px" />
+              <datalist id="customersList"></datalist>
+              <input name="bu" type="text" placeholder="businessUnit" list="businessUnitsList" style="flex: 3 1 100px" />
+              <datalist id="businessUnitsList"></datalist>
+            </section>
+            <section class="m2">
+              <input
+                name="source"
+                list="sources"
+                type="text"
+                placeholder="Asset id or a URL for a manifest or media file"
+                required
+                style="flex: 6 1 100px; align-self: center;"
+              />
+              <details>
+                <summary id="showAssetTypeFilter">Suggestion filter</summary>
+                <select id="assetType" style="flex: 1 1 100px; margin: 0;">
+                  <option value="MOVIE">Movie</option>
+                  <option value="TV_SHOW">TV-show</option>
+                  <option value="EPISODE">Episode</option>
+                  <option value="CLIP">Clip</option>
+                  <option value="TV_CHANNEL">TV-channel</option>
+                  <option value="AD">Ad</option>
+                  <option value="LIVE_EVENT">Live event</option>
+                  <option value="COLLECTION">Collection</option>
+                  <option value="PODCAST">Podcast</option>
+                  <option value="PODCAST_EPISODE">Podcast episode</option>
+                  <option value="EVENT">Event</option>
+                  <option value="OTHER">Other</option>
+                </select>
+              </details>
+            </section>
+            <datalist id="sources"></datalist>
+          </fieldset>
+          <fieldset id="authentication">
+            <legend>Authentication</legend>
+            <section class="m2">
+              <input name="sessionToken" type="text" placeholder="sessionToken" style="flex: 6 1 100px; align-self: center;" />
+              <input id="login-button" title="Log in to generate token" type="button" value="🔒" />
+            </section>
+          </fieldset>
+          <fieldset id="options">
+            <legend>Load options</legend>
+            <section class="m2">
+              <input
+                name="castAppId"
+                id="castAppId"
+                list="castApps"
+                type="text"
+                placeholder="Cast Application"
+                style="flex: 1 1 200px"
+              />
+              <datalist id="castApps"></datalist>
+              <select id="format" name="format" style="flex: 1 1 200px">
+                <option value="">Default format</option>
+                <option value="HLS">HLS</option>
+                <option value="DASH">DASH</option>
+                <option value="SMOOTHSTREAMING">SMOOTHSTREAMING</option>
+              </select>
+              <select id="keySystem" name="keySystem" style="flex: 1 1 200px">
+                <option value="">Default keySystem</option>
+                <option value="com.widevine.alpha">Widevine</option>
+                <option value="com.microsoft.playready">PlayReady</option>
+                <option value="com.apple.fps">Fairplay</option>
+              </select>
+              <select id="engine" name="engine" style="flex: 1 1 200px">
+                <option value="">Default Engine</option>
+                <option value="hlsjs">hlsjs</option>
+                <option value="dashjs">dashjs</option>
+                <option value="shaka">shaka</option>
+                <option value="native">native</option>
+              </select>
+              <input
+                name="startTime"
+                type="number"
+                placeholder="Start time (client-side)"
+                style="flex: 1 1 100px"
+              />
+              <input
+                name="start"
+                type="number"
+                placeholder="Start (server-side)"
+                style="flex: 1 1 100px"
+              />
+              <input
+                name="end"
+                type="number"
+                placeholder="End (server-side)"
+                style="flex: 1 1 100px"
+              />
+            </section>
+            <section class="checkboxes" style="margin: 15px 5px 0">
+              <span>
+                <input
+                  id="autoplay"
+                  name="autoplay"
+                  type="checkbox"
+                  value="true"
+                />
+                <label for="autoplay">Autoplay</label>
+                <input
+                  id="analytics"
+                  name="analytics"
+                  type="checkbox"
+                  value="true"
+                />
+                <label for="analytics">Send analytics</label>
+                <!-- Note: Don't add a name to storeAuth, since we don't want this to carry between computers when you share URLs-->
+                <input
+                  id="storeAuth"
+                  type="checkbox"
+                />
+                <label for="storeAuth">Remember session token</label>
+              </span>
+              <div>
+                <p style="color: var(--color-text-secondary);">
+                  Analytics is loaded in debug mode by default. You can inspect the
+                  events in the JS console if you enable verbose logging. Enabling
+                  "Send analytics" will disable the logging and send the analytics
+                  to the back-end instead.
+                </p>
+              </div>
+            </section>
+          </fieldset>
+          <div id="video-buttons">
+            <button id="load-button" type="submit" class="pure-button" data-variant="default">
+              Load
+            </button>
+            <button type="submit" class="pure-button" data-variant="portal">
+              Load in customer portal
+            </button>
+            <button class="player-required" id="destroy-player" disabled>Destroy</button>
+          </div>
+        </form>
+        <dialog id="login-dialog">
+          <div class="dialog-header">
+            Log in to create session token
+            <div class="dialog-close" onclick="this.closest('dialog').close()">✖</div>
+          </div>
+          <form method="dialog" style="padding: 0; border: 0; box-shadow: initial;">
+            <fieldset>
+              <legend>Authentication</legend>
+              <section class="m2">
+                <input name="username" type="text" placeholder="username" autocomplete="username" />
+                <input name="password" type="password" placeholder="password" autocomplete="current-password" />
+                <button type="submit" data-variant="login">Log in</button>
+                <input type="button" value="Cancel" onclick='document.querySelector("#login-dialog").close();' />
+              </section>
+            </fieldset>
+          </form>
+        </dialog>
+      </section>
+      <article id="fullscreen-element">
+        <div id="video-wrapper"></div>
+        <label>Seek to UTC time</label>
+        <input id="utcTime" type="time" step="1" class="player-required" disabled />
+      </article>
+      <section>
+        <details>
+          <summary><b>Player Logs</b></summary>
+          <details style="margin: 0">
+            <summary>Event subscriptions</summary>
+            <select id="eventSubscriptions" style="flex: 1 1 100px; margin: 0; height: 200px;" multiple></select>
+          </details>
+          <pre><code id="player-logs"></code></pre>
+        </details>
+        <details>
+          <summary><b>Player State</b></summary>
+          <pre><code id="debug-information"></code></pre>
+        </details>
+      </section>
+    </main>
+  </body>
+</html>
