@@ -16,10 +16,10 @@ jobs:
   publish-github-package:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           registry-url: https://npm.pkg.github.com/
       - name: publish
         run: |
@@ -31,8 +31,8 @@ jobs:
           git commit -m "chore: ignore me" --no-verify
           npm run publish
         env:
-          GH_TOKEN: ${{secrets.GH_PERSONAL_TOKEN}}
-          NODE_AUTH_TOKEN: ${{secrets.GH_PERSONAL_TOKEN}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
   get_release_notes:
     # bail here for internal/pre-releases
@@ -58,9 +58,9 @@ jobs:
     needs: get_release_notes
     steps:
     - name: Repository Dispatch
-      uses: peter-evans/repository-dispatch@v2
+      uses: peter-evans/repository-dispatch@v3
       with:
-        token: ${{ secrets.GH_REPO_TOKEN_ALBIN }}
+        token: ${{ secrets.GH_PAT_DOCUMENTATION_UPDATE }}
         repository: EricssonBroadcastServices/Documentation
         event-type: release_notes_update
         client-payload: |-
