@@ -38,7 +38,7 @@ jobs:
     # bail here for internal/pre-releases
     if: "${{ !contains(github.ref_name, '-') }}"
     needs: publish-github-package
-    uses: EricssonBroadcastServices/Documentation/.github/workflows/shared-generate-release-notes.yml@master
+    uses: ./.github/workflows/generate-release-notes.yml
     with:
       tag_prefix: "v"
 
