@@ -1,0 +1,146 @@
+# SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+#
+# SPDX-License-Identifier: MIT
+
+name: Generate release notes
+
+on:
+  workflow_call:
+    inputs:
+      tag_prefix:
+        required: false
+        type: string
+    outputs:
+      entry:
+        description: "The generated changelog entry"
+        value: "${{ jobs.generate_changelog.outputs.entry }}"
+      entry_base64:
+        description: "Base 64 encoded variant of the generated changelog entry"
+        value: "${{ jobs.generate_changelog.outputs.entry_base64 }}"
+      unprefixed_version:
+        description: "The latest valid tag, with the prefix removed"
+        value: "${{ jobs.generate_changelog.outputs.unprefixed_version }}"
+
+# Embed files needed (when using workflow from external repo you can't refer to files in own repo)
+env:
+  GENERATE_RELEASE_NOTES_SH: |
+    #!/bin/bash
+    die() { echo "$*" >&2; exit 2; }  # complain to STDERR and exit with error
+    needs_arg() { if [ -z "$OPTARG" ]; then die "No arg for --$OPT option"; fi; }
+    while getopts lp:c-: OPT; do  # allow -a, -b with arg, -c, and -- "with arg"
+      # support long options: https://stackoverflow.com/a/28466267/519360
+      if [ "$OPT" = "-" ]; then   # long option: reformulate OPT and OPTARG
+        OPT="${OPTARG%%=*}"       # extract long option name
+        OPTARG="${OPTARG#$OPT}"   # extract long option argument (may be empty)
+        OPTARG="${OPTARG#=}"      # if long option argument, remove assigning `=`
+      fi
+      case "$OPT" in
+        l | latest )   latest=true ;;
+        p | prefix )   prefix="$OPTARG" ;;
+        ??* )          die "Illegal option --$OPT" ;;
+        ? )            exit 2 ;;
+      esac
+    done
+    shift $((OPTIND-1))
+
+    # Generate release notes from multiple branches (see https://github.com/orhun/git-cliff/issues/56)
+    VERSION_REGEX=^$prefix[0-9]{1,}.[0-9]{1,}.[0-9]{1,}$ # semver stable release tags
+    TEMPLATE=_cliff_release_template_.toml
+    echo "tag_pattern = '$prefix'" >> $TEMPLATE
+
+    # loop through tags from creation date newest to oldest, filtered w the regex
+    for VERSION in $(git --no-pager tag --sort=-creatordate | grep -Eo $VERSION_REGEX); do
+      # find closest ancestor, also filtered based on regex
+      PARENT=$(git --no-pager log --pretty="%D" $VERSION^ | cut -c 6- | grep -Eo $VERSION_REGEX | head -1)
+      if [ -z "$PARENT" ]; then
+        PARENT=$(git rev-list --max-parents=0 HEAD) # fallback on the first commit when there are no matching tags
+      fi
+      # generate (to stdout)
+      git-cliff "$PARENT..$VERSION" -c $TEMPLATE
+      # when passing `--latest` flag, only process the latest
+      if [[ "$latest" = "true" ]]; then
+        exit 0
+      fi
+    done
+  CLIFF_CONFIG: |
+    # https://git-cliff.org/docs/configuration
+    [changelog]
+    body = """
+    {%- for breaking, commits in commits | group_by(attribute="breaking") %}\
+      {%- if breaking == "true" %}\
+        ⚠️ BREAKING CHANGES
+        {% for commit in commits %}
+        * {{ commit.message | upper_first }}\n
+        {%- endfor %}\n
+      {% endif %}
+    {%- endfor %}
+    {%- for group, commits in commits | filter(attribute="breaking", value=false) | group_by(attribute="group") %}\
+      {{ group | striptags }}
+      {% for commit in commits | sort(attribute="group", reverse=true) %}
+        * {{ commit.message | upper_first }}
+      {%- endfor %}\n
+    {% endfor %}
+    """
+    [git]
+    # regex for preprocessing the commit messages
+    commit_preprocessors = [
+      { pattern = '\s*\(#\d+\)', replace = ''}, # strip git issue refs
+    ]
+    # regex for parsing and grouping commits, includes some invalid types we used historically like 612d85a, 8610233
+    # it's intentionally excluding exclamation marks ex: "feat!: thing i wrote" from the fix and feat groups
+    # the number tags in the group names are just for sorting. they are stripped with striptags
+    commit_parsers = [
+      { message = '\(.*internal.*\):', group = 'Internal', skip = true },
+      { message = '^(f|F)eat', group = '<1>Features'},
+      { message = '^(bug|hot)?(f|F)ix', group = '<2>Bug Fixes' },
+      { message = '', group = 'Other', skip = true },
+    ]
+    # protect breaking changes from being skipped due to matching a skipping commit_parser
+    protect_breaking_commits = true
+    # ignoring prereleases
+    ignore_tags = '-'
+
+jobs:
+  generate_changelog:
+    name: Generate changelog
+    runs-on: ubuntu-latest
+    outputs:
+      entry: "${{ steps.changelog.outputs.ENTRY }}"
+      entry_base64: "${{ steps.changelog.outputs.ENTRY_BASE64 }}"
+      unprefixed_version: "${{ steps.changelog.outputs.UNPREFIXED_VERSION }}"
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - id: changelog
+      shell: bash
+      run: |
+        PREFIX="${{ inputs.tag_prefix }}"
+        LATEST_TAG=$(git describe --tags)
+        UNPREFIXED_VERSION=${LATEST_TAG#"$PREFIX"}
+        if [[ -z "$UNPREFIXED_VERSION" ]]; then
+          echo "Unable to determine version"
+          exit 222
+        fi
+        if [[ $UNPREFIXED_VERSION =~ "-" ]]; then
+          # The version should return ex v3.3.0 if HEAD is a stable tag release
+          # if HEAD doesn't have a tag it will say something like v3.3.0-1-g6e91ae9 and unstable also contain dash (ex v3.3.0-alpha)
+          echo "Unsupported tag: $UNPREFIXED_VERSION (not a valid public release tag)"
+          exit 222
+        fi
+        npm install -g git-cliff
+
+        echo -e "$CLIFF_CONFIG" > _cliff_release_template_.toml
+        echo -e "$GENERATE_RELEASE_NOTES_SH" > _generate_release_notes_.sh
+        chmod +x _generate_release_notes_.sh
+        ./_generate_release_notes_.sh --latest --prefix="$PREFIX" > _RELEASE_ENTRY_.md
+        if [[ -z "$(cat _RELEASE_ENTRY_.md)" ]]; then
+          echo "Failed to generate release notes body"
+          exit 222
+        fi
+        echo -e "ENTRY<<EOF\n$(cat _RELEASE_ENTRY_.md)\nEOF" >> "$GITHUB_OUTPUT"
+        echo "ENTRY_BASE64=$(cat _RELEASE_ENTRY_.md | base64 -w 0)" >> "$GITHUB_OUTPUT"
+        echo "UNPREFIXED_VERSION=$UNPREFIXED_VERSION" >> "$GITHUB_OUTPUT"
+        echo "CHANGLOG ENTRY:"
+        cat _RELEASE_ENTRY_.md
