@@ -41,7 +41,7 @@ export default {
       template: "./src/template.html",
     }),
     new CopyPlugin({
-      patterns: [{ from: "src/static", to: "static" }],
+      patterns: [{ from: "src/static", to: "static", globOptions: { ignore: ['**/*.license'] } }],
     }),
     new webpack.DefinePlugin({
       "process.env.npm_package_version": JSON.stringify(
