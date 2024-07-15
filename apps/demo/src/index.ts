@@ -226,7 +226,7 @@ function getPlayerOptions(): IRedBeePlayerOptions {
 
 export function getLoadOptions(): ILoadOptions {
   const data = Object.fromEntries(getFilteredFormEntries());
-  const { source, startTime, start, end } = data;
+  const { source, startTime, start, end, domain, pageUrl, consent, ssaiCustomParams } = data;
 
   return {
     source,
@@ -237,6 +237,14 @@ export function getLoadOptions(): ILoadOptions {
         ...(end && { end }),
       },
     }),
+    ...((domain || pageUrl || consent || ssaiCustomParams) && {
+      ads: {
+        ...(domain && { domain }),
+        ...(pageUrl && { pageUrl }),
+        ...(consent && { consent }),
+        ...(ssaiCustomParams && Object.fromEntries((new URLSearchParams(ssaiCustomParams)).entries()))
+      }
+    })
   };
 }
 
