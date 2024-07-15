@@ -9,6 +9,7 @@ import type {
   ErrorEvent,
   Event,
 } from "chromecast-caf-receiver/cast.framework.events";
+import { LoadRequestData } from "chromecast-caf-receiver/cast.framework.messages";
 import platform from "platform";
 
 import {
@@ -24,6 +25,7 @@ interface ICastSession {
   playSessionId: string;
   requestId: string;
   assetId: string;
+  loadRequestData: LoadRequestData;
 }
 
 interface ICastConnectorOptions {
@@ -195,12 +197,15 @@ export class CastConnector extends BaseConnector {
           case EventType.ERROR: {
             const errorEvent = event as ErrorEvent;
             const error = errorEvent.error;
+            const stringifiedLoadRequestData = JSON.stringify(
+              this.session.loadRequestData
+            );
             this.rbmAnalytics.error({
               currentTime,
               code: error?.shakaErrorCode ?? errorEvent.detailedErrorCode,
               message: error?.shakaErrorData
                 ? error.shakaErrorData.join(",")
-                : errorEvent.reason,
+                : errorEvent.reason ?? stringifiedLoadRequestData,
               deviceStats: getDeviceStats(),
             });
             this.disconnect();
