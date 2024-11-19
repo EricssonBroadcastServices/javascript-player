@@ -1,8 +1,11 @@
-<!--
-SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+## [1.6.2](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.6.1...v1.6.2) (2024-11-19)
 
-SPDX-License-Identifier: CC-BY-SA-4.0
--->
+
+### Bug Fixes
+
+* **EMP-21927:** Forward Exposure API error code ([#4](https://github.com/ericssonbroadcastservices/javascript-player/issues/4)) ([d3d4ef5](https://github.com/ericssonbroadcastservices/javascript-player/commit/d3d4ef544aa134e0693acff2177b047f09ec1ba6))
+
+
 
 ## [1.6.1](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.6.1-internal.0...v1.6.1) (2024-08-28)
 

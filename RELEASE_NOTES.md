@@ -1,8 +1,8 @@
-<!--
-SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+**v1.6.2** (2024-11-19)
 
-SPDX-License-Identifier: CC-BY-SA-4.0
--->
+Bug Fixes
+
+* Forward Exposure API error code
 
 **v1.6.1** (2024-08-28)
 
