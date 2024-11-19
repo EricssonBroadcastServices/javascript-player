@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+
+SPDX-License-Identifier: CC-BY-SA-4.0
+-->
+
 **v1.6.1** (2024-08-28)
 
 **v1.6.1-internal.0** (2024-07-17)

@@ -25,7 +25,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@ericssonbroadcastservices/rbm-ott-sdk": "0.7.1",
+    "@ericssonbroadcastservices/rbm-ott-sdk": "0.9.1",
     "mitt": "3.0.0"
   }
 }

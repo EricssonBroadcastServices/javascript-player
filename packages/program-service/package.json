@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@ericssonbroadcastservices/js-player-shared": "^1.6.1",
-    "@ericssonbroadcastservices/rbm-ott-sdk": "0.7.1"
+    "@ericssonbroadcastservices/rbm-ott-sdk": "0.9.1"
   },
   "license": "MIT"
 }
