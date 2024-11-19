@@ -27,7 +27,7 @@
   "dependencies": {
     "@ericssonbroadcastservices/js-player-ad-monitor": "^1.6.1",
     "@ericssonbroadcastservices/js-player-shared": "^1.6.1",
-    "@ericssonbroadcastservices/rbm-ott-sdk": "0.7.1",
+    "@ericssonbroadcastservices/rbm-ott-sdk": "0.9.1",
     "@types/lodash.throttle": "^4.1.6",
     "lodash.throttle": "^4.1.1",
     "platform": "^1.3.6"

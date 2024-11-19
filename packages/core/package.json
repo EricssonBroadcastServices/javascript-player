@@ -28,7 +28,7 @@
     "@ericssonbroadcastservices/js-player-ad-monitor": "^1.6.1",
     "@ericssonbroadcastservices/js-player-program-service": "^1.6.1",
     "@ericssonbroadcastservices/js-player-shared": "^1.6.1",
-    "@ericssonbroadcastservices/rbm-ott-sdk": "0.7.1",
+    "@ericssonbroadcastservices/rbm-ott-sdk": "0.9.1",
     "@ericssonbroadcastservices/sprite-vtt-parser": "^1.6.1",
     "@eyevinn/media-event-filter": "^1.0.4",
     "can-autoplay": "^3.0.2",

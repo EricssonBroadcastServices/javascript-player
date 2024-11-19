@@ -71,9 +71,10 @@ export class ExposureService {
       customer,
       businessUnit,
       baseUrl,
-      errorFactory(response: Response) {
+      async errorFactory(response: Response) {
+        const responseBody = await response.json();
         const url = new URL(response.url);
-        const message = `HTTP Error: ${response.statusText} (${response.status})`;
+        const message = `HTTP Error: ${responseBody.message} (${response.status})`;
         let errType: ErrorTypes = ErrorTypes.OTHER;
         if (url.pathname.endsWith("/auth/anonymous")) {
           errType = ErrorTypes.API_AUTH_ANON;

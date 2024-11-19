@@ -34,7 +34,7 @@
   "devDependencies": {
     "@ericssonbroadcastservices/js-player-cast-sender": "^1.6.1",
     "@ericssonbroadcastservices/js-player-core": "^1.6.1",
-    "@ericssonbroadcastservices/rbm-ott-sdk": "0.7.1",
+    "@ericssonbroadcastservices/rbm-ott-sdk": "0.9.1",
     "@types/humanize-duration": "^3.27.1"
   },
   "license": "MIT"
