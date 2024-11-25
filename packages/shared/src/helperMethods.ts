@@ -30,10 +30,18 @@ export const stringToArray = (string: string) => {
   return array;
 };
 
-export const arrayToString = (array: any): string => {
-  const uint16array = new Uint16Array(array.buffer);
+export const arrayToString = (array: ArrayBuffer): string => {
+  const uint16array = new Uint16Array(array);
   return String.fromCharCode.apply(null, uint16array as any);
 };
+
+export const stringToUUID = (input: string): string => {
+  if (input.length == 32) {
+    return input.slice(0, 8) + '-' + input.slice(8, 12) + '-' + input.slice(12, 16) + '-' + input.slice(16, 20) + '-' + input.slice(20);
+  }
+  // Assuming we already have a UUID string
+  return input;
+}
 
 export const base64DecodeUint8Array = (input: any) => {
   const raw = window.atob(input);
