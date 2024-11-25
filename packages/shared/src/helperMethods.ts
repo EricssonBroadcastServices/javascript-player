@@ -37,11 +37,16 @@ export const arrayToString = (array: ArrayBuffer): string => {
 
 export const stringToUUID = (input: string): string => {
   if (input.length == 32) {
-    return input.slice(0, 8) + '-' + input.slice(8, 12) + '-' + input.slice(12, 16) + '-' + input.slice(16, 20) + '-' + input.slice(20);
+    const p1 = input.slice(0, 8);
+    const p2 = input.slice(8, 12);
+    const p3 = input.slice(12, 16);
+    const p4 = input.slice(16, 20);
+    const p5 = input.slice(20);
+    return `${p1}-${p2}-${p3}-${p4}-${p5}`;
   }
   // Assuming we already have a UUID string
   return input;
-}
+};
 
 export const base64DecodeUint8Array = (input: any) => {
   const raw = window.atob(input);

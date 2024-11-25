@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: MIT
 
 import { DrmUrls } from "@ericssonbroadcastservices/rbm-ott-sdk";
-import { parseURL } from "url-toolkit";
 
 import {
   ErrorTypes,
@@ -252,7 +251,9 @@ export class Native extends AbstractBaseEngine {
 
   private async getLicense(event: MediaKeyMessageEvent) {
     this.emit(EngineEvents.DRM_UPDATE, "FAIRPLAY_LICENSE_REQUEST");
-    const licenseUrl = this.drmInfo ? new URL(this.drmInfo.licenseServerUrl) : undefined;
+    const licenseUrl = this.drmInfo
+      ? new URL(this.drmInfo.licenseServerUrl)
+      : undefined;
 
     if (!licenseUrl) {
       return Promise.reject(
@@ -363,18 +364,30 @@ export class Native extends AbstractBaseEngine {
     }
     try {
       // initData contains [4 byte: Length][EXT-X-KEY URI]
-      const dv = new DataView(event.initData.buffer, event.initData.byteOffset, event.initData.byteLength);
-      const initDataLength = dv.getUint32(0, true)
+      const dv = new DataView(
+        event.initData.buffer,
+        event.initData.byteOffset,
+        event.initData.byteLength
+      );
+      const initDataLength = dv.getUint32(0, true);
       const xKeyUrl = arrayToString(dv.buffer.slice(4, 4 + initDataLength));
       const skdUrl = new URL(xKeyUrl);
 
       if (skdUrl.protocol !== "skd:") {
-        throw new Error("Invalid Fairplay key URL in HLS manifest (skd:// scheme expected): " + xKeyUrl);
+        throw new Error(
+          `Invalid Fairplay key URL in HLS manifest (skd:// scheme expected): ${xKeyUrl}`
+        );
       }
 
       const licenseServerUrl = new URL(this.drmInfo.licenseServerUrl);
-      this.contentId = skdUrl.searchParams.get("contentId") || licenseServerUrl.searchParams.get("contentId") || skdUrl.hostname;
-      const keyId = skdUrl.searchParams.get("KID") || skdUrl.searchParams.get("keyId") || stringToUUID(skdUrl.hostname);
+      this.contentId =
+        skdUrl.searchParams.get("contentId") ||
+        licenseServerUrl.searchParams.get("contentId") ||
+        skdUrl.hostname;
+      const keyId =
+        skdUrl.searchParams.get("KID") ||
+        skdUrl.searchParams.get("keyId") ||
+        stringToUUID(skdUrl.hostname);
 
       const contentId = this.contentId;
       if (!contentId || !this.certificate) {
@@ -407,11 +420,13 @@ export class Native extends AbstractBaseEngine {
         false
       );
     } catch (err) {
-      this.emit(EngineEvents.ERROR, 
+      this.emit(
+        EngineEvents.ERROR,
         new PlayerError("[Native] could not initiate drm", {
-        type: ErrorTypes.DRM,
-        rawError: err,
-      }));
+          type: ErrorTypes.DRM,
+          rawError: err,
+        })
+      );
     }
   }
 
