@@ -42,7 +42,7 @@ export const stringToUUID = (input: string): string => {
     const p3 = input.slice(12, 16);
     const p4 = input.slice(16, 20);
     const p5 = input.slice(20);
-    return `${p1}-${p2}-${p3}-${p4}-${p5}`;
+    return [p1, p2, p3, p4, p5].join("-");
   }
   // Assuming we already have a UUID string
   return input;
