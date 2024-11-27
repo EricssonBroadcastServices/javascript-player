@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: MIT
 
 import { DrmUrls } from "@ericssonbroadcastservices/rbm-ott-sdk";
-import { parseURL } from "url-toolkit";
 
 import {
   ErrorTypes,
@@ -13,6 +12,7 @@ import {
   arrayToString,
   getLabel,
   stringToArray,
+  stringToUUID,
 } from "@ericssonbroadcastservices/js-player-shared";
 
 import { InstanceSettingsInterface } from "../utils/interfaces";
@@ -41,6 +41,10 @@ function createTextTrack(track: IHTMLMediaAudioTrack | TextTrack): Track {
     kind: track.kind,
     label: track.label,
   };
+}
+
+interface WebKitMediaKeyNeededEvent extends Event {
+  readonly initData: Uint8Array;
 }
 
 export class Native extends AbstractBaseEngine {
@@ -247,7 +251,9 @@ export class Native extends AbstractBaseEngine {
 
   private async getLicense(event: MediaKeyMessageEvent) {
     this.emit(EngineEvents.DRM_UPDATE, "FAIRPLAY_LICENSE_REQUEST");
-    const licenseUrl = this.drmInfo?.licenseServerUrl;
+    const licenseUrl = this.drmInfo
+      ? new URL(this.drmInfo.licenseServerUrl)
+      : undefined;
 
     if (!licenseUrl) {
       return Promise.reject(
@@ -268,6 +274,10 @@ export class Native extends AbstractBaseEngine {
         );
       }
 
+      // session is of type WebKitMediaKeySession extended with contentId and keyId properties
+      if ("keyId" in session && typeof session.keyId === "string") {
+        licenseUrl.searchParams.set("keyId", session.keyId);
+      }
       const response = await fetch(licenseUrl, {
         method: "POST",
         headers: {
@@ -348,59 +358,76 @@ export class Native extends AbstractBaseEngine {
     return this.videoElement.webkitKeys.createSession("video/mp4", initData);
   }
 
-  private onNeedKey(event: MediaEncryptedEvent) {
+  private onNeedKey(event: WebKitMediaKeyNeededEvent) {
     if (!this.drmInfo?.licenseServerUrl) {
       return;
     }
-    const skd = arrayToString(event.initData);
-    if (skd.includes("KID=")) {
-      this.contentId = skd.substring(skd.indexOf("KID=") + 4);
-    }
-    // looking for dot as some kind of url detection
-    if (skd.includes("skd://") && skd.includes(".") && !skd.startsWith(".")) {
-      const dataArray = skd.split("skd://"); // since there could sometimes be strange encoded chars before skd we won't just do replace
-      // proper url check
-      if (parseURL(dataArray[1])) {
-        this.drmInfo.licenseServerUrl = `https://${dataArray[1]}`;
-        const dataUrl = new URL(this.drmInfo.licenseServerUrl);
-        const { contentId } = Object.fromEntries(
-          dataUrl.searchParams.entries()
-        );
+    try {
+      // initData contains [4 byte: Length][EXT-X-KEY URI]
+      const dv = new DataView(
+        event.initData.buffer,
+        event.initData.byteOffset,
+        event.initData.byteLength
+      );
+      const initDataLength = dv.getUint32(0, true);
+      const xKeyUrl = arrayToString(dv.buffer.slice(4, 4 + initDataLength));
+      const skdUrl = new URL(xKeyUrl);
 
-        // if we get relevant data, replace the data that we already have
-        this.contentId = contentId || this.contentId;
+      if (skdUrl.protocol !== "skd:") {
+        throw new Error(
+          `Invalid Fairplay key URL in HLS manifest (skd:// scheme expected): ${xKeyUrl}`
+        );
       }
-      // if not fetched by the if statement - move on as it might be a proper skd
+
+      const licenseServerUrl = new URL(this.drmInfo.licenseServerUrl);
+      this.contentId =
+        skdUrl.searchParams.get("contentId") ||
+        licenseServerUrl.searchParams.get("contentId") ||
+        skdUrl.hostname;
+      const keyId =
+        skdUrl.searchParams.get("KID") ||
+        skdUrl.searchParams.get("keyId") ||
+        stringToUUID(skdUrl.hostname);
+
+      const contentId = this.contentId;
+      if (!contentId || !this.certificate) {
+        throw "Could not create initData, contentId & certificate missing";
+      }
+      const initData = this.concatInitDataIdAndCertificate(
+        event.initData as Uint8Array, // TODO: the legacy EME being used uses different types for certain things.
+        contentId,
+        this.certificate
+      );
+      this.keySession = this.setupSession(KeySystem.FAIRPLAY, initData);
+      this.keySession.contentId = contentId;
+      this.keySession.keyId = keyId;
+      if (!this.keySession) {
+        throw "Could not create key session";
+      }
+      this.keySession.addEventListener(
+        "webkitkeyadded",
+        this.onKeyAdded,
+        this.keySession
+      );
+      this.keySession.addEventListener(
+        "webkitkeyerror",
+        this.onKeyError,
+        this.keySession
+      );
+      this.keySession.addEventListener(
+        "webkitkeymessage",
+        this.onKeyMessage,
+        false
+      );
+    } catch (err) {
+      this.emit(
+        EngineEvents.ERROR,
+        new PlayerError("[Native] could not initiate drm", {
+          type: ErrorTypes.DRM,
+          rawError: err,
+        })
+      );
     }
-    const contentId = this.contentId;
-    if (!contentId || !this.certificate) {
-      throw "Could not create initData, contentId & certificate missing";
-    }
-    const initData = this.concatInitDataIdAndCertificate(
-      event.initData as Uint8Array, // TODO: the legacy EME being used uses different types for certain things.
-      contentId,
-      this.certificate
-    );
-    this.keySession = this.setupSession(KeySystem.FAIRPLAY, initData);
-    this.keySession.contentId = contentId;
-    if (!this.keySession) {
-      throw "Could not create key session";
-    }
-    this.keySession.addEventListener(
-      "webkitkeyadded",
-      this.onKeyAdded,
-      this.keySession
-    );
-    this.keySession.addEventListener(
-      "webkitkeyerror",
-      this.onKeyError,
-      this.keySession
-    );
-    this.keySession.addEventListener(
-      "webkitkeymessage",
-      this.onKeyMessage,
-      false
-    );
   }
 
   private onKeyMessage(event: MediaKeyMessageEvent) {
