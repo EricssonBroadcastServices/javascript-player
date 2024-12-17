@@ -28,6 +28,7 @@ import {
   IHTMLMediaAudioTrack,
   MetadataEngineEvent,
   TLoadParameters,
+  TTextKind,
 } from "./interfaces";
 import { IHLSPlaylist, getPlaylists } from "./utils/hls";
 import { convertError, convertMediaKeyError } from "./utils/NativeErrors";
@@ -475,13 +476,22 @@ export class Native extends AbstractBaseEngine {
       ? Array.from(this.videoElement.textTracks)
       : [];
     if (!Array.isArray(tracks) || tracks.length === 0) return;
-    const activeTrack = tracks.find(
-      (track) =>
+    const activeTrack = tracks.find((track) => {
+      return (
         track.mode === "hidden" &&
         SUPPORTED_TEXT_TRACK_KINDS.includes(track.kind)
-    );
+      );
+    });
     if (activeTrack) {
       return createTextTrack(activeTrack);
+    }
+
+    const forcedTrack = tracks.find((track) => {
+      return (track.kind as TTextKind) === "forced";
+    });
+
+    if (forcedTrack) {
+      return createTextTrack(forcedTrack);
     }
   }
 

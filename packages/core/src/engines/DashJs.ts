@@ -680,6 +680,11 @@ export class DashJs extends AbstractBaseEngine {
     if (track && track.id) {
       const textTracks = this.mediaPlayer?.getTracksFor("text") || [];
       trackIndex = textTracks.findIndex((t) => t.id === track.id);
+    } else {
+      const textTracks = this.mediaPlayer?.getTracksFor("text") || [];
+      trackIndex = textTracks.findIndex((t) =>
+        t.roles?.includes("forced-subtitle")
+      );
     }
     const enableTrack = trackIndex !== -1;
     this.mediaPlayer.setTextTrack(trackIndex);
@@ -693,6 +698,10 @@ export class DashJs extends AbstractBaseEngine {
       return;
     }
     const track = this.getCurrentTrackFor("text");
+    if (track?.roles?.includes("forced-subtitle")) {
+      this.mediaPlayer.enableText(true);
+      return createTrack(track);
+    }
     if (this.mediaPlayer.isTextEnabled() && track) {
       return createTrack(track);
     }
