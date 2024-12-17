@@ -731,6 +731,10 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
         } else {
           t.mode = "disabled";
         }
+        if (!track && (t.kind as TTextKind) === "forced") {
+          t.mode = "hidden";
+          subtitleSet = true;
+        }
       });
   }
 

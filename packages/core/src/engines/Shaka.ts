@@ -614,12 +614,23 @@ export class Shaka extends AbstractBaseEngine {
         this.shakaPlayer.selectTextTrack(internalTrack);
       }
     } else {
-      // shaka can't disable text tracks, we set an internal variable to see if text tracks
-      // are enabled
-      this.setInternalSubtitle({
-        language: undefined,
-        kind: undefined,
-      });
+      const forcedSubtitle = this.shakaPlayer
+        .getTextTracks()
+        .find((track) => track.roles.includes("forced-subtitle"));
+
+      if (forcedSubtitle) {
+        this.setInternalSubtitle({
+          language: forcedSubtitle.language,
+          kind: forcedSubtitle.roles && getTextKind(forcedSubtitle.roles),
+        });
+      } else {
+        // shaka can't disable text tracks, we set an internal variable to see if text tracks
+        // are enabled
+        this.setInternalSubtitle({
+          language: undefined,
+          kind: undefined,
+        });
+      }
       this.onTextTracksChange();
     }
   }
@@ -640,6 +651,14 @@ export class Shaka extends AbstractBaseEngine {
     ) {
       return track;
     }
+    if (this.subtitle.kind === "forced") {
+      const shakaForcedTrack = this.shakaPlayer
+        .getTextTracks()
+        .find((track) => track.roles.includes("forced-subtitle"));
+
+      const forcedTrack = !!shakaForcedTrack && createTrack(shakaForcedTrack);
+      return forcedTrack || undefined;
+    }
     return undefined;
   }
 
@@ -658,6 +677,21 @@ export class Shaka extends AbstractBaseEngine {
             ) === index
         )
     );
+  }
+
+  getSubtitleTracksWithForced() {
+    return this.shakaPlayer
+      .getTextTracks()
+      .map((track) => createTrack(track))
+      .filter(
+        (track, index, array) =>
+          array.findIndex(
+            (compTrack) =>
+              track.language === compTrack.language &&
+              track.label === compTrack.label &&
+              track.kind === compTrack.kind
+          ) === index
+      );
   }
 
   setAudioTrack(track: Track) {
@@ -702,6 +736,10 @@ export class Shaka extends AbstractBaseEngine {
   }
 
   onTracksChange() {
+    const forcedSubtitle = this.getSubtitleTracksWithForced().find(
+      (subtitle) => subtitle.kind === "forced"
+    );
+
     let track: Track | undefined;
     if (this.subtitle.language) {
       // multi-period dash won't set the correct subtitle language
@@ -711,9 +749,15 @@ export class Shaka extends AbstractBaseEngine {
           track.language === this.subtitle.language &&
           (!this.subtitle.kind || this.subtitle.kind === track.kind)
       );
+      if (!track && !!forcedSubtitle) {
+        this.setSubtitleTrack(forcedSubtitle);
+      }
       if (track) {
         this.setSubtitleTrack(track);
       }
+    }
+    if (!this.subtitle.language && !!forcedSubtitle) {
+      this.setSubtitleTrack(forcedSubtitle);
     }
     super.onTracksChange();
   }

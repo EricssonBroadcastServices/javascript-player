@@ -34,6 +34,14 @@ function SelectMenu({
   selected,
   isSubtitles,
 }: ISelectMenu) {
+  const isSubtitlesDisabled =
+    isSubtitles &&
+    (!selected ||
+      !items.find(
+        (el) =>
+          el.language === selected?.language && el.label === selected?.label
+      ));
+
   if (items.length === 0) return null;
   return (
     <div class={style.selectMenu}>
@@ -42,7 +50,7 @@ function SelectMenu({
         {isSubtitles && (
           <li
             class={classNames(style.noSubtitle, {
-              [style.selected]: !selected,
+              [style.selected]: isSubtitlesDisabled,
             })}
             // sending in NULL as the track is a special case supported by subtitles
             // TODO: this should be handled nicer
