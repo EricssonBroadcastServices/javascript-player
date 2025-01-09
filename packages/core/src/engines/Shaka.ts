@@ -607,10 +607,7 @@ export class Shaka extends AbstractBaseEngine {
         kind: internalTrack.roles && getTextKind(internalTrack.roles),
       });
 
-      if (internalTrack.active) {
-        // if the track is already active just trigger the event.
-        this.onTextTracksChange();
-      } else {
+      if (!internalTrack.active) {
         this.shakaPlayer.selectTextTrack(internalTrack);
       }
     } else {
@@ -624,10 +621,7 @@ export class Shaka extends AbstractBaseEngine {
           kind: forcedSubtitle.roles && getTextKind(forcedSubtitle.roles),
         });
 
-        if (forcedSubtitle.active) {
-          // if the track is already active just trigger the event.
-          this.onTextTracksChange();
-        } else {
+        if (!forcedSubtitle.active) {
           this.shakaPlayer.selectTextTrack(forcedSubtitle);
         }
       } else {

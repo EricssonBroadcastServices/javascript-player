@@ -135,6 +135,8 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
   protected instanceSettings: InstanceSettingsInterface;
   protected videoElement: HTMLVideoElement;
 
+  private isSubtitlesCueAlreadyUpdate = false;
+  private shouldManuallyUpdateSubtitlesCue = false;
   public isSeekDisabled = false;
   protected supposedCurrentTime: number;
   protected mediaEventFilter: TMediaEventFilter;
@@ -466,6 +468,9 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
   }
 
   protected onSeeking() {
+    if (this.shouldManuallyUpdateSubtitlesCue) {
+      this.isSubtitlesCueAlreadyUpdate = false;
+    }
     const seekCheck = this.guardian.isValidPosition(this.getCurrentTime());
     if (seekCheck.valid) {
       this.setPlaybackState(PlaybackState.SEEKING);
@@ -482,6 +487,23 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
         this.videoElement.paused ? PlaybackState.PAUSED : PlaybackState.PLAYING
       );
       this.emit(EngineEvents.SEEKED, undefined);
+    }
+
+    if (!this.isSubtitlesCueAlreadyUpdate) {
+      const track = this.getSubtitleTrack();
+      for (let i = 0, len = this.videoElement.textTracks.length; i < len; i++) {
+        const textTrack = this.videoElement.textTracks[i];
+        if (
+          track &&
+          textTrack.mode === "hidden" &&
+          SUPPORTED_TEXT_TRACK_KINDS.includes(textTrack.kind)
+        ) {
+          const activeCues = (
+            textTrack.activeCues ? Array.from(textTrack.activeCues) : []
+          ) as VTTCue[];
+          this.emit(EngineEvents.SUBTITLE_CUE_CHANGED, activeCues);
+        }
+      }
     }
   }
 
@@ -512,6 +534,7 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
   }
 
   protected onTextTracksChange() {
+    this.shouldManuallyUpdateSubtitlesCue = true;
     const track = this.getSubtitleTrack();
     this.emit(EngineEvents.SUBTITLE_CHANGED, {
       track,
@@ -526,17 +549,15 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
         textTrack.mode === "hidden" &&
         SUPPORTED_TEXT_TRACK_KINDS.includes(textTrack.kind)
       ) {
-        const activeCues = (
-          textTrack.activeCues ? Array.from(textTrack.activeCues) : []
-        ) as VTTCue[];
-        this.emit(EngineEvents.SUBTITLE_CUE_CHANGED, activeCues);
-        textTrack.oncuechange = () => {
-          const activeCues = (
-            textTrack.activeCues ? Array.from(textTrack.activeCues) : []
-          ) as VTTCue[];
-
-          this.emit(EngineEvents.SUBTITLE_CUE_CHANGED, activeCues);
-        };
+        if (!textTrack.oncuechange) {
+          textTrack.oncuechange = () => {
+            this.isSubtitlesCueAlreadyUpdate = true;
+            const activeCues = (
+              textTrack.activeCues ? Array.from(textTrack.activeCues) : []
+            ) as VTTCue[];
+            this.emit(EngineEvents.SUBTITLE_CUE_CHANGED, activeCues);
+          };
+        }
       } else {
         textTrack.oncuechange = null;
       }
