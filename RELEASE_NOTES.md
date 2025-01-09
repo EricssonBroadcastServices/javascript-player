@@ -1,3 +1,9 @@
+**v1.7.1-internal.0** (2025-01-09)
+
+Bug Fixes
+
+* Turning off subtitle
+
 **v1.7.0** (2024-12-18)
 
 **v1.7.0-internal.0** (2024-12-17)

@@ -1,3 +1,12 @@
+## [1.7.1-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.0...v1.7.1-internal.0) (2025-01-09)
+
+
+### Bug Fixes
+
+* turning off subtitle ([#7](https://github.com/ericssonbroadcastservices/javascript-player/issues/7)) ([e896083](https://github.com/ericssonbroadcastservices/javascript-player/commit/e89608387f3a089ee0b36171c33dc8576657abfb))
+
+
+
 # [1.7.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.0-internal.0...v1.7.0) (2024-12-18)
 
 
