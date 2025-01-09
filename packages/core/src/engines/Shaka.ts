@@ -623,6 +623,13 @@ export class Shaka extends AbstractBaseEngine {
           language: forcedSubtitle.language,
           kind: forcedSubtitle.roles && getTextKind(forcedSubtitle.roles),
         });
+
+        if (forcedSubtitle.active) {
+          // if the track is already active just trigger the event.
+          this.onTextTracksChange();
+        } else {
+          this.shakaPlayer.selectTextTrack(forcedSubtitle);
+        }
       } else {
         // shaka can't disable text tracks, we set an internal variable to see if text tracks
         // are enabled
@@ -630,8 +637,8 @@ export class Shaka extends AbstractBaseEngine {
           language: undefined,
           kind: undefined,
         });
+        this.onTextTracksChange();
       }
-      this.onTextTracksChange();
     }
   }
 
