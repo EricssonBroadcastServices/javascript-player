@@ -1,3 +1,12 @@
+## [1.7.1-internal.1](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.1-internal.0...v1.7.1-internal.1) (2025-01-10)
+
+
+### Bug Fixes
+
+* update subtitles after seeking ([#8](https://github.com/ericssonbroadcastservices/javascript-player/issues/8)) ([07c93bd](https://github.com/ericssonbroadcastservices/javascript-player/commit/07c93bd2214cfc3335371739177a21d0b9f5e06d))
+
+
+
 ## [1.7.1-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.0...v1.7.1-internal.0) (2025-01-09)
 
 

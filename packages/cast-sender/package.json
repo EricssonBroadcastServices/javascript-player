@@ -1,6 +1,6 @@
 {
   "name": "@ericssonbroadcastservices/js-player-cast-sender",
-  "version": "1.7.1-internal.0",
+  "version": "1.7.1-internal.1",
   "homepage": "https://github.com/EricssonBroadcastServices/javascript-player#readme",
   "main": "src/index.ts",
   "files": [
@@ -24,7 +24,7 @@
     "url": "https://github.com/EricssonBroadcastServices/javascript-player/issues"
   },
   "dependencies": {
-    "@ericssonbroadcastservices/js-player-shared": "^1.7.1-internal.0"
+    "@ericssonbroadcastservices/js-player-shared": "^1.7.1-internal.1"
   },
   "devDependencies": {
     "@types/chromecast-caf-sender": "^1.0.6"

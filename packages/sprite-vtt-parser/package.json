@@ -1,6 +1,6 @@
 {
   "name": "@ericssonbroadcastservices/sprite-vtt-parser",
-  "version": "1.7.1-internal.0",
+  "version": "1.7.1-internal.1",
   "description": "Simple util for parsing sprites from vtt",
   "author": "simonwallin <simon.wallin@eyevinn.se>",
   "homepage": "https://github.com/EricssonBroadcastServices/javascript-player#readme",

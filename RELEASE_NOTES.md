@@ -1,3 +1,9 @@
+**v1.7.1-internal.1** (2025-01-10)
+
+Bug Fixes
+
+* Update subtitles after seeking
+
 **v1.7.1-internal.0** (2025-01-09)
 
 Bug Fixes
