@@ -1,3 +1,7 @@
+## [1.7.2](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.2-internal.0...v1.7.2) (2025-01-27)
+
+
+
 ## [1.7.2-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.1...v1.7.2-internal.0) (2025-01-27)
 
 
