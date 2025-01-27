@@ -372,7 +372,7 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
     if (this.videoElement.textTracks) {
       this.videoElement.textTracks.addEventListener(
         "change",
-        (this.onTextTracksChangeReference = this.onTextTracksChange.bind(this))
+        (this.onTextTracksChangeReference = this.onTextTracksChange.bind)
       );
     }
   }
@@ -533,11 +533,12 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
     this.setPlaybackState(PlaybackState.ERROR);
   }
 
-  protected onTextTracksChange() {
+  protected onTextTracksChange(shouldUpdatePreferences = true) {
     this.shouldManuallyUpdateSubtitlesCue = true;
     const track = this.getSubtitleTrack();
     this.emit(EngineEvents.SUBTITLE_CHANGED, {
       track,
+      shouldUpdatePreferences,
     });
 
     this.emit(EngineEvents.SUBTITLE_CUE_CHANGED, []);
@@ -549,6 +550,11 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
         textTrack.mode === "hidden" &&
         SUPPORTED_TEXT_TRACK_KINDS.includes(textTrack.kind)
       ) {
+        const activeCues = (
+          textTrack.activeCues ? Array.from(textTrack.activeCues) : []
+        ) as VTTCue[];
+        this.emit(EngineEvents.SUBTITLE_CUE_CHANGED, activeCues);
+
         if (!textTrack.oncuechange) {
           textTrack.oncuechange = () => {
             this.isSubtitlesCueAlreadyUpdate = true;

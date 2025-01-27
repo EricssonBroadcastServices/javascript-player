@@ -103,6 +103,7 @@ export class Shaka extends AbstractBaseEngine {
 
   private subtitle: { language?: string; kind?: TTextKind };
   private audio: { language?: string; kind?: TAudioKind };
+  private shouldUpdatePreferences: boolean | undefined;
 
   constructor(
     videoElement: HTMLVideoElement,
@@ -339,10 +340,9 @@ export class Shaka extends AbstractBaseEngine {
   }
 
   addSubtitleEvents() {
-    this.shakaPlayer.addEventListener(
-      "textchanged",
-      this.onTextTracksChange.bind(this)
-    );
+    this.shakaPlayer.addEventListener("textchanged", () => {
+      return this.onTextTracksChange(this.shouldUpdatePreferences);
+    });
   }
 
   addAudioTrackEvents() {
@@ -589,7 +589,7 @@ export class Shaka extends AbstractBaseEngine {
     this.shakaPlayer.setTextTrackVisibility(false);
   }
 
-  setSubtitleTrack(track?: Track) {
+  setSubtitleTrack(track?: Track, shouldUpdatePreferences?: boolean) {
     const internalTrack = this.shakaPlayer
       .getTextTracks()
       .find((t) => track && createTrack(t)?.id === track.id);
@@ -608,7 +608,10 @@ export class Shaka extends AbstractBaseEngine {
       });
 
       if (!internalTrack.active) {
+        this.shouldUpdatePreferences = shouldUpdatePreferences;
         this.shakaPlayer.selectTextTrack(internalTrack);
+      } else {
+        this.onTextTracksChange(this.shouldUpdatePreferences);
       }
     } else {
       const forcedSubtitle = this.shakaPlayer
@@ -751,14 +754,15 @@ export class Shaka extends AbstractBaseEngine {
           (!this.subtitle.kind || this.subtitle.kind === track.kind)
       );
       if (!track && !!forcedSubtitle) {
-        this.setSubtitleTrack(forcedSubtitle);
+        this.setSubtitleTrack(forcedSubtitle, false);
       }
       if (track) {
-        this.setSubtitleTrack(track);
+        this.setSubtitleTrack(track, false);
       }
     }
     if (!this.subtitle.language && !!forcedSubtitle) {
-      this.setSubtitleTrack(forcedSubtitle);
+      this.shouldUpdatePreferences = false;
+      this.setSubtitleTrack(forcedSubtitle, false);
     }
     super.onTracksChange();
   }
