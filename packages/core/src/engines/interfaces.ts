@@ -50,7 +50,10 @@ export type EngineEvents = (typeof EngineEvents)[keyof typeof EngineEvents];
 export type DefaultEngineEvent = undefined;
 export type VolumeChangeEngineEvent = { volume: number; muted: boolean };
 export type ErrorEngineEvent = PlayerError;
-export type TrackChangedEngineEvent = { track?: Track };
+export type TrackChangedEngineEvent = {
+  track?: Track;
+  shouldUpdatePreferences?: boolean;
+};
 export type SubtitleCueChangeEngineEvent = VTTCue[];
 export type TracksChangedEngineEvent = {
   subtitleTrack?: Track;

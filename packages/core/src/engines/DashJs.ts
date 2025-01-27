@@ -208,7 +208,7 @@ export class DashJs extends AbstractBaseEngine {
           this.onAudioTrackChange();
           break;
         case "text":
-          this.onTextTracksChange();
+          this.setSubtitleTrack(this.getSubtitleTrack(), false);
           break;
       }
     });
@@ -251,7 +251,7 @@ export class DashJs extends AbstractBaseEngine {
       }
       // force a textTrack change when period changes. Dash.js will force set
       // the used textTrack to "showing" we need it "hidden"
-      this.onTextTracksChange();
+      this.setSubtitleTrack(this.getSubtitleTrack(), false);
       // trigger onTracksChange to make sure the state is up-to-date with all the relevant tracks.
       this.onTracksChange();
     });
@@ -583,7 +583,7 @@ export class DashJs extends AbstractBaseEngine {
     };
   }
 
-  protected onTextTracksChange() {
+  protected onTextTracksChange(shouldUpdatePreferences = true) {
     if (
       // if the mediaPlayer no longer have tracks but the videoElement does
       // it means that there was a period switch that temporarily removes tracks
@@ -597,6 +597,7 @@ export class DashJs extends AbstractBaseEngine {
     const track = this.getSubtitleTrack();
     this.emit(EngineEvents.SUBTITLE_CHANGED, {
       track,
+      shouldUpdatePreferences,
     });
     this.emit(EngineEvents.SUBTITLE_CUE_CHANGED, []);
 
@@ -671,7 +672,7 @@ export class DashJs extends AbstractBaseEngine {
     return super.getUTCSeekable();
   }
 
-  setSubtitleTrack(track?: Track) {
+  setSubtitleTrack(track?: Track, shouldUpdatePreferences?: boolean) {
     if (!this.mediaPlayer.isReady()) {
       return;
     }
@@ -690,7 +691,7 @@ export class DashJs extends AbstractBaseEngine {
     this.mediaPlayer.setTextTrack(trackIndex);
     this.mediaPlayer.enableText(enableTrack);
     this.mediaPlayer.enableForcedTextStreaming(enableTrack);
-    this.onTextTracksChange();
+    this.onTextTracksChange(shouldUpdatePreferences);
   }
 
   getSubtitleTrack() {

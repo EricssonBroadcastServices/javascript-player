@@ -641,8 +641,9 @@ export class BasePlayer extends AbstractPlayer {
     });
     // This check is needed so that we don't save a 'metadata' track as preferred subtitle/kind
     if (
-      !data.track?.kind ||
-      SUPPORTED_TEXT_TRACK_KINDS.includes(data.track.kind)
+      data.shouldUpdatePreferences &&
+      (!data.track?.kind ||
+        SUPPORTED_TEXT_TRACK_KINDS.includes(data.track.kind))
     ) {
       setPreferences({
         subtitle: {
