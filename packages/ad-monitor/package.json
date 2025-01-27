@@ -1,6 +1,6 @@
 {
   "name": "@ericssonbroadcastservices/js-player-ad-monitor",
-  "version": "1.7.1",
+  "version": "1.7.2-internal.0",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -25,7 +25,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@ericssonbroadcastservices/js-player-shared": "^1.7.1",
+    "@ericssonbroadcastservices/js-player-shared": "^1.7.2-internal.0",
     "@ericssonbroadcastservices/rbm-ott-sdk": "0.9.1",
     "fast-xml-parser": "4.3.4"
   }

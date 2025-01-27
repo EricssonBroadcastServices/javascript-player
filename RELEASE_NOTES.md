@@ -1,3 +1,9 @@
+**v1.7.2-internal.0** (2025-01-27)
+
+Bug Fixes
+
+* Do not set preferred subtitles when fallback to forced subtitles happens
+
 **v1.7.1** (2025-01-13)
 
 **v1.7.1-internal.1** (2025-01-10)
