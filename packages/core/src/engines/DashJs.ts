@@ -30,6 +30,7 @@ import {
 import { getBrowserVersion, isLGTV } from "../device/common";
 import { getSupportedDrm } from "../utils/helpers";
 import { InstanceSettingsInterface } from "../utils/interfaces";
+import { getPreferences } from "../utils/preferences";
 import {
   AbstractBaseEngine,
   getAudioKind,
@@ -699,10 +700,17 @@ export class DashJs extends AbstractBaseEngine {
       return;
     }
     const track = this.getCurrentTrackFor("text");
+    const preferedSubtitles = getPreferences().subtitle;
+    const createdTrack = track && createTrack(track);
+    const isPreferedSubtitlesTrackExist =
+      createdTrack &&
+      createdTrack.language === preferedSubtitles?.language &&
+      createdTrack.kind === preferedSubtitles?.kind;
+
     if (track?.roles?.includes("forced-subtitle")) {
       return createTrack(track);
     }
-    if (track) {
+    if (isPreferedSubtitlesTrackExist) {
       return createTrack(track);
     }
   }
