@@ -24,22 +24,22 @@ Make sure you read [Working with git](https://github.com/EricssonBroadcastServic
 
 You need to configure npm to have access to github packages, see [here](https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-with-a-personal-access-token)
 
-Before anything else run `npm install`
+Before anything else run `npm install`, if you are using Windows, use Git Bash instead e.g. PowerShell.
 
 Development scripts
 
-* `npm run dev` - bundle packages and start player demo at port 1234
-* `npm run dev:web-component` - bundle packages and start web-component player demo at port 1234
+- `npm run dev` - bundle packages and start player demo at port 1234
+- `npm run dev:web-component` - bundle packages and start web-component player demo at port 1234
 
 ### Using local builds in other projects
 
-1. `npm run build` - this will build all packages and update all package.json files so that the they point to the build output instead of the source ( DON'T COMMIT THESE CHANGES ) 
+1. `npm run build` - this will build all packages and update all package.json files so that the they point to the build output instead of the source ( DON'T COMMIT THESE CHANGES )
 2. Go to the project in question, this project should already depend on the `@ericssonbroadcastservices/*` package you want to use
 3. `npm link ../path/to/sdk/packages/package-you-want-to-use`
 
-Note that ANY `npm install` action MAY break the linking, in which case simply redo step 3. 
+Note that ANY `npm install` action MAY break the linking, in which case simply redo step 3.
 
-To cleanup the changes made to all the `package.json` files run `npm run build:clean`. 
+To cleanup the changes made to all the `package.json` files run `npm run build:clean`.
 
 ## Monorepo
 
@@ -63,7 +63,7 @@ npm run lerna:internal-version
 
 This will bump all package versions with the new version, create a new commit, tag the commit with the version name, and then push the commit. This in turn will trigger a GitHub Actions workflow making the release.
 
-The version will be following the semver standards (derived from our commit messages), and adding a suffix `-internal.{N}`. This suffix will avoid squatting a version number until we want to publish it on npm. *If you want to make a public (npm) release instead, see below.*
+The version will be following the semver standards (derived from our commit messages), and adding a suffix `-internal.{N}`. This suffix will avoid squatting a version number until we want to publish it on npm. _If you want to make a public (npm) release instead, see below._
 
 ### Release packages to NPM
 

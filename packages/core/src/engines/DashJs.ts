@@ -700,10 +700,9 @@ export class DashJs extends AbstractBaseEngine {
     }
     const track = this.getCurrentTrackFor("text");
     if (track?.roles?.includes("forced-subtitle")) {
-      this.mediaPlayer.enableText(true);
       return createTrack(track);
     }
-    if (this.mediaPlayer.isTextEnabled() && track) {
+    if (track) {
       return createTrack(track);
     }
   }
