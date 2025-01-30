@@ -139,6 +139,8 @@ export class DashJs extends AbstractBaseEngine {
   private src?: string;
   private keySystem?: DRMType;
 
+  private initialSubtitles = true;
+
   constructor(
     videoElement: HTMLVideoElement,
     instanceSettings: InstanceSettingsInterface
@@ -710,7 +712,11 @@ export class DashJs extends AbstractBaseEngine {
     if (track?.roles?.includes("forced-subtitle")) {
       return createTrack(track);
     }
-    if (isPreferedSubtitlesTrackExist) {
+    if (this.initialSubtitles && isPreferedSubtitlesTrackExist) {
+      this.initialSubtitles = false;
+      return createTrack(track);
+    }
+    if (this.mediaPlayer.isTextEnabled() && track) {
       return createTrack(track);
     }
   }
