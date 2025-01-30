@@ -139,8 +139,6 @@ export class DashJs extends AbstractBaseEngine {
   private src?: string;
   private keySystem?: DRMType;
 
-  private initialSubtitles = true;
-
   constructor(
     videoElement: HTMLVideoElement,
     instanceSettings: InstanceSettingsInterface
@@ -211,7 +209,7 @@ export class DashJs extends AbstractBaseEngine {
           this.onAudioTrackChange();
           break;
         case "text":
-          this.setSubtitleTrack(this.getSubtitleTrack(), false);
+          this.setSubtitleTrack(this.getInitialSubtitleTrack(), false);
           break;
       }
     });
@@ -254,7 +252,7 @@ export class DashJs extends AbstractBaseEngine {
       }
       // force a textTrack change when period changes. Dash.js will force set
       // the used textTrack to "showing" we need it "hidden"
-      this.setSubtitleTrack(this.getSubtitleTrack(), false);
+      this.setSubtitleTrack(this.getInitialSubtitleTrack(), false);
       // trigger onTracksChange to make sure the state is up-to-date with all the relevant tracks.
       this.onTracksChange();
     });
@@ -697,23 +695,27 @@ export class DashJs extends AbstractBaseEngine {
     this.onTextTracksChange(shouldUpdatePreferences);
   }
 
+  getInitialSubtitleTrack() {
+    const textTracks = this.mediaPlayer?.getTracksFor("text");
+    const preferedSubtitles = getPreferences().subtitle;
+    const initialTrack = textTracks.find((track) => {
+      const kind = track.roles && getTextKind(track.roles);
+      return (
+        track.lang === preferedSubtitles?.language &&
+        kind === preferedSubtitles.kind
+      );
+    });
+
+    return initialTrack && createTrack(initialTrack);
+  }
+
   getSubtitleTrack() {
     if (!this.mediaPlayer?.isReady()) {
       return;
     }
     const track = this.getCurrentTrackFor("text");
-    const preferedSubtitles = getPreferences().subtitle;
-    const createdTrack = track && createTrack(track);
-    const isPreferedSubtitlesTrackExist =
-      createdTrack &&
-      createdTrack.language === preferedSubtitles?.language &&
-      createdTrack.kind === preferedSubtitles?.kind;
-
     if (track?.roles?.includes("forced-subtitle")) {
-      return createTrack(track);
-    }
-    if (this.initialSubtitles && isPreferedSubtitlesTrackExist) {
-      this.initialSubtitles = false;
+      this.mediaPlayer.enableText(true);
       return createTrack(track);
     }
     if (this.mediaPlayer.isTextEnabled() && track) {

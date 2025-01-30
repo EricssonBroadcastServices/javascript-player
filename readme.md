@@ -24,7 +24,7 @@ Make sure you read [Working with git](https://github.com/EricssonBroadcastServic
 
 You need to configure npm to have access to github packages, see [here](https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-with-a-personal-access-token)
 
-Before anything else run `npm install`, if you are using Windows, use Git Bash instead e.g. PowerShell.
+Before anything else run `npm install`, if you are using Windows, use Git Bash.
 
 Development scripts
 
