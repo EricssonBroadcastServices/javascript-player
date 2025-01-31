@@ -1,3 +1,16 @@
+## [1.7.2](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.2-internal.0...v1.7.2) (2025-01-27)
+
+
+
+## [1.7.2-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.1...v1.7.2-internal.0) (2025-01-27)
+
+
+### Bug Fixes
+
+* do not set preferred subtitles when fallback to forced subtitles happens ([#9](https://github.com/ericssonbroadcastservices/javascript-player/issues/9)) ([833070b](https://github.com/ericssonbroadcastservices/javascript-player/commit/833070b0ab7f9ee1031e06d000826ed49b3641ba))
+
+
+
 ## [1.7.1](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.1-internal.1...v1.7.1) (2025-01-13)
 
 
