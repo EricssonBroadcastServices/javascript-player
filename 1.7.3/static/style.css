@@ -1,0 +1,232 @@
+/*
+ * SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+:root {
+  --color-text-secondary: #666;
+  --color-bg: #f8f8f8;
+  --color-bg-secondary: #fff;
+  --color-btn-secondary: #eee;
+  --color-border: #ddd;
+  --color-border-active: #aaa;
+  --color-disabled: #e9e9e9;
+  --color-text-disabled: #999;
+  --width-card-wide: 100%;
+  --color-modal-header: #e8e3d9;
+}
+
+::backdrop {
+  background-color: #111111bb;
+}
+
+fieldset {
+  margin-top: 1rem;
+  padding: 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+legend {
+  padding: auto .5rem;
+}
+
+section {
+  justify-content: flex-start;
+}
+
+section.m2 > * {
+  margin: 2px;
+}
+
+details {
+  padding: 10px;
+}
+
+input, select, textarea {
+  color: var(--text-color);
+  background-color: var(--color-bg);
+  border-color: var(--color-border);
+}
+
+input[type="text"], input[type="password"], textarea {
+  /* mvp does this for textarea and input text, but not password */
+  width: calc(100% - 1.6rem);
+}
+
+button:disabled, input:disabled {
+  background: var(--color-disabled);
+  color: var(--color-text-disabled);
+}
+
+/* mvp kind of assumes all buttons are supposted to be styled one way, so use this as secondary button type */
+input[type="button"] {
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+input[type="button"]:hover {
+  background-color: var(--color-btn-secondary);
+  border-color: var(--color-border);
+}
+
+a b, a strong, button, input[type="submit"] {
+  color: white;
+}
+
+#destroy-player {
+  --color-link: #ed5443;
+}
+
+#showAssetTypeFilter {
+  font-weight: normal;
+  color: var(--color-text-secondary);
+  font-size: smaller;
+}
+
+div#video-wrapper {
+  margin: 20px 0;
+  overflow: hidden;
+  background-color: grey;
+  position: relative;
+  aspect-ratio: 16/9;
+}
+
+video {
+  margin:  0;
+  display: block;
+}
+
+.form-section {
+  display: flex;
+}
+
+.share-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-bottom-left-radius: 5px;
+  padding: .6em 1em;
+  font-weight: bold;
+  cursor: pointer;
+}
+.share-bar:hover {
+  border: 1px solid var(--color-border-active);
+}
+
+dialog {
+  margin-top: 0;
+  overflow-x: hidden;
+}
+dialog .dialog-header {
+  text-align: center;
+  font-weight: bold;
+  margin: -20px -20px 0;
+  padding: 10px;
+  background-color: var(--color-modal-header);
+  border: 1px solid #4e4e4e;
+}
+dialog .dialog-close {
+  float:right;
+  cursor: pointer;
+}
+#share-dialog {
+  text-align: center;
+}
+.qr-section {
+  padding: 20px;
+  justify-content: center;
+  display: flex;
+}
+.qr-section canvas {
+  max-width: 100%;
+  height: fit-content !important;
+}
+
+hr {
+  border: none;
+  width: 100%;
+  margin: 2%;
+  background: repeating-linear-gradient(90deg, rgb(81, 156, 255), rgb(81, 156, 255) 6px, transparent 6px, transparent 12px);
+}
+
+#video-buttons {
+  margin-top: 20px;
+}
+
+.playback-form {
+  flex: 4;
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-border);
+  box-shadow: 0 0 10px 0 var(--color-shadow);
+  border-radius: 5px;
+  padding: 0 20px 15px;
+}
+
+#info {
+  color: white;
+}
+
+#warn {
+  color: yellow;
+}
+
+#error {
+  color: red;
+}
+
+#player-logs {
+  background-color: rgb(64, 137, 231);
+}
+
+#fullscreen-element.fill {
+  position: fixed;
+  top:  0;
+  left:  0;
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+  :root {
+    --color-text-secondary: #999;
+    --color-text: #ccc;
+    --color-link: #146;
+    --color-bg: #333;
+    --color-bg-secondary: #222;
+    --color-shadow: #222;
+    --color-border: #444;
+    --color-btn-secondary: #555;
+    --color-modal-header: #484343;
+    --color-border-active: #555;
+  }
+
+  dialog {
+    color: var(--color-text);
+    background-color: #111;
+  }
+
+  div#video-wrapper {
+    background-color: rgb(14, 17, 22);
+  }
+
+  #debug-information {
+    color: #fff;
+    background-color: rgba(0, 128, 255, 0.42);
+  }
+
+  #player-logs {
+    color: #fff;
+    background-color: rgba(0, 128, 255, 0.42);
+  }
+
+  hr {
+    border: none;
+    width: 100%;
+    margin: 2%;
+    background: repeating-linear-gradient(90deg, rgba(0, 105, 211, 0.42), rgba(0, 105, 211, 0.42) 6px, transparent 6px, transparent 12px);
+  }
+}
