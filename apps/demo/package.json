@@ -1,17 +1,17 @@
 {
   "private": true,
   "name": "demo",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "license": "MIT",
   "scripts": {
     "dev": "webpack serve --hot"
   },
   "dependencies": {
-    "@ericssonbroadcastservices/javascript-player": "^1.7.2",
-    "@ericssonbroadcastservices/js-player-core": "^1.7.2",
+    "@ericssonbroadcastservices/javascript-player": "^1.7.3",
+    "@ericssonbroadcastservices/js-player-core": "^1.7.3",
     "@ericssonbroadcastservices/js-player-overlays": "^1.7.2",
     "@ericssonbroadcastservices/js-player-shared": "^1.7.2",
-    "@ericssonbroadcastservices/js-player-skin": "^1.7.2",
+    "@ericssonbroadcastservices/js-player-skin": "^1.7.3",
     "qrcode": "1.5.3"
   },
   "devDependencies": {

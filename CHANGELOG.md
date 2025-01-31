@@ -1,3 +1,12 @@
+## [1.7.3](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.2...v1.7.3) (2025-01-31)
+
+
+### Bug Fixes
+
+* **EMP-21931:** set initial subtitles ([#10](https://github.com/ericssonbroadcastservices/javascript-player/issues/10)) ([2630f29](https://github.com/ericssonbroadcastservices/javascript-player/commit/2630f29095ad3ddcf2e2c6642139a0cd4e761f5c))
+
+
+
 ## [1.7.2](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.2-internal.0...v1.7.2) (2025-01-27)
 
 

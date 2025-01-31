@@ -1,3 +1,9 @@
+**v1.7.3** (2025-01-31)
+
+Bug Fixes
+
+* Set initial subtitles
+
 **v1.7.2** (2025-01-27)
 
 **v1.7.2-internal.0** (2025-01-27)

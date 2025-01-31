@@ -1,6 +1,6 @@
 {
   "name": "@ericssonbroadcastservices/js-player-analytics",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "Analytics Javascript Module",
   "main": "src/index.ts",
   "scripts": {
@@ -33,7 +33,7 @@
     "platform": "^1.3.6"
   },
   "devDependencies": {
-    "@ericssonbroadcastservices/js-player-core": "^1.7.2",
+    "@ericssonbroadcastservices/js-player-core": "^1.7.3",
     "@types/chrome": "0.0.235",
     "@types/chromecast-caf-receiver": "^6.0.9",
     "@types/platform": "^1.3.6"

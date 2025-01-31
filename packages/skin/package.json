@@ -1,6 +1,6 @@
 {
   "name": "@ericssonbroadcastservices/js-player-skin",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "",
   "source": "./src/index.tsx",
   "main": "dist/index.js",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@ericssonbroadcastservices/js-player-cast-sender": "^1.7.2",
-    "@ericssonbroadcastservices/js-player-core": "^1.7.2",
+    "@ericssonbroadcastservices/js-player-core": "^1.7.3",
     "@ericssonbroadcastservices/rbm-ott-sdk": "0.9.1",
     "@types/humanize-duration": "^3.27.1"
   },
