@@ -30,6 +30,7 @@ import {
 import { getBrowserVersion, isLGTV } from "../device/common";
 import { getSupportedDrm } from "../utils/helpers";
 import { InstanceSettingsInterface } from "../utils/interfaces";
+import { getPreferences } from "../utils/preferences";
 import {
   AbstractBaseEngine,
   getAudioKind,
@@ -208,7 +209,7 @@ export class DashJs extends AbstractBaseEngine {
           this.onAudioTrackChange();
           break;
         case "text":
-          this.setSubtitleTrack(this.getSubtitleTrack(), false);
+          this.setSubtitleTrack(this.getInitialSubtitleTrack(), false);
           break;
       }
     });
@@ -251,7 +252,7 @@ export class DashJs extends AbstractBaseEngine {
       }
       // force a textTrack change when period changes. Dash.js will force set
       // the used textTrack to "showing" we need it "hidden"
-      this.setSubtitleTrack(this.getSubtitleTrack(), false);
+      this.setSubtitleTrack(this.getInitialSubtitleTrack(), false);
       // trigger onTracksChange to make sure the state is up-to-date with all the relevant tracks.
       this.onTracksChange();
     });
@@ -706,6 +707,20 @@ export class DashJs extends AbstractBaseEngine {
     if (this.mediaPlayer.isTextEnabled() && track) {
       return createTrack(track);
     }
+  }
+
+  getInitialSubtitleTrack() {
+    const textTracks = this.mediaPlayer?.getTracksFor("text");
+    const preferedSubtitles = getPreferences().subtitle;
+    const initialTrack = textTracks.find((track) => {
+      const kind = track.roles && getTextKind(track.roles);
+      return (
+        track.lang === preferedSubtitles?.language &&
+        kind === preferedSubtitles.kind
+      );
+    });
+
+    return initialTrack && createTrack(initialTrack);
   }
 
   getSubtitleTracks() {
