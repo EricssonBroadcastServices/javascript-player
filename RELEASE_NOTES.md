@@ -1,3 +1,9 @@
+**v1.7.4** (2025-02-25)
+
+Bug Fixes
+
+* Don't assume skd URI is a UUID
+
 **v1.7.3** (2025-01-31)
 
 Bug Fixes

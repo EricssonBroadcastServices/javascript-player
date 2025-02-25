@@ -1,3 +1,12 @@
+## [1.7.4](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.3...v1.7.4) (2025-02-25)
+
+
+### Bug Fixes
+
+* don't assume skd URI is a UUID ([#11](https://github.com/ericssonbroadcastservices/javascript-player/issues/11)) ([14be2f2](https://github.com/ericssonbroadcastservices/javascript-player/commit/14be2f226ce45c2806017d5cd66e4230e7d9d257))
+
+
+
 ## [1.7.3](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.2...v1.7.3) (2025-01-31)
 
 
