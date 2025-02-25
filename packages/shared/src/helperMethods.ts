@@ -35,8 +35,9 @@ export const arrayToString = (array: ArrayBuffer): string => {
   return String.fromCharCode.apply(null, uint16array as any);
 };
 
-export const stringToUUID = (input: string): string => {
-  if (input.length == 32) {
+export const stringToUUID = (input: string): string | null => {
+  // if the input is 32 char and contain only hex characters, we assume it's a UUID
+  if (/^[0-9a-fA-F]{32}$/.test(input)) {
     const p1 = input.slice(0, 8);
     const p2 = input.slice(8, 12);
     const p3 = input.slice(12, 16);
@@ -45,7 +46,7 @@ export const stringToUUID = (input: string): string => {
     return [p1, p2, p3, p4, p5].join("-");
   }
   // Assuming we already have a UUID string
-  return input;
+  return null;
 };
 
 export const base64DecodeUint8Array = (input: any) => {
