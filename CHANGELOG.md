@@ -1,3 +1,12 @@
+## [1.7.5-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.4...v1.7.5-internal.0) (2025-04-02)
+
+
+### Bug Fixes
+
+* subtitles in safari ([#12](https://github.com/ericssonbroadcastservices/javascript-player/issues/12)) ([b12a80d](https://github.com/ericssonbroadcastservices/javascript-player/commit/b12a80d1ac9e0bb37264c10a7067851cd17f66d6))
+
+
+
 ## [1.7.4](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.3...v1.7.4) (2025-02-25)
 
 

@@ -1,3 +1,9 @@
+**v1.7.5-internal.0** (2025-04-02)
+
+Bug Fixes
+
+* Subtitles in safari
+
 **v1.7.4** (2025-02-25)
 
 Bug Fixes
