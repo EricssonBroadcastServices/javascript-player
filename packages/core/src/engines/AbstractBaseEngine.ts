@@ -135,6 +135,7 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
   protected instanceSettings: InstanceSettingsInterface;
   protected videoElement: HTMLVideoElement;
 
+  private isSubtitlesSetManually = false;
   private isSubtitlesCueAlreadyUpdate = false;
   private shouldManuallyUpdateSubtitlesCue = false;
   public isSeekDisabled = false;
@@ -367,12 +368,16 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
       this.onPlaybackRateChanged.bind(this)
     );
   }
+  private textTracksChangeHandler() {
+    return this.onTextTracksChange.bind(this)(this.isSubtitlesSetManually);
+  }
 
   addSubtitleEvents() {
     if (this.videoElement.textTracks) {
       this.videoElement.textTracks.addEventListener(
         "change",
-        (this.onTextTracksChangeReference = this.onTextTracksChange.bind)
+        (this.onTextTracksChangeReference =
+          this.textTracksChangeHandler.bind(this))
       );
     }
   }
@@ -740,7 +745,8 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
       );
   }
 
-  setSubtitleTrack(track?: Track) {
+  setSubtitleTrack(track?: Track, setManually?: boolean) {
+    this.isSubtitlesSetManually = !!setManually;
     const tracks = this.videoElement.textTracks || [];
     // if multiple tracks for one language exist, only set one
     // to be able to set captions/subtitles with the same language we need to check the kind as well

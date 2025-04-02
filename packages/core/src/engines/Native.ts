@@ -17,6 +17,7 @@ import {
 
 import { InstanceSettingsInterface } from "../utils/interfaces";
 import { debug } from "../utils/logger";
+import { getPreferences } from "../utils/preferences";
 /* global WebKitMediaKeys */
 import {
   AbstractBaseEngine,
@@ -28,7 +29,6 @@ import {
   IHTMLMediaAudioTrack,
   MetadataEngineEvent,
   TLoadParameters,
-  TTextKind,
 } from "./interfaces";
 import { IHLSPlaylist, getPlaylists } from "./utils/hls";
 import { convertError, convertMediaKeyError } from "./utils/NativeErrors";
@@ -97,6 +97,7 @@ export class Native extends AbstractBaseEngine {
     const _super = {
       load: super.load.bind(this),
     };
+    const preferences = getPreferences();
     this.src = src;
     this.startTime = startTime;
     let drmEvaluationAndInitiationPromise: Promise<void>;
@@ -153,7 +154,7 @@ export class Native extends AbstractBaseEngine {
           license,
           startTime,
           audio,
-          subtitle,
+          subtitle: preferences.subtitle || subtitle,
         });
       },
       (error) => {
@@ -511,14 +512,6 @@ export class Native extends AbstractBaseEngine {
     });
     if (activeTrack) {
       return createTextTrack(activeTrack);
-    }
-
-    const forcedTrack = tracks.find((track) => {
-      return (track.kind as TTextKind) === "forced";
-    });
-
-    if (forcedTrack) {
-      return createTextTrack(forcedTrack);
     }
   }
 

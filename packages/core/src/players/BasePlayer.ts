@@ -423,7 +423,7 @@ export class BasePlayer extends AbstractPlayer {
 
   setSubtitleTrack(track?: Track) {
     if (this.playerEngine) {
-      this.playerEngine.setSubtitleTrack(track);
+      this.playerEngine.setSubtitleTrack(track, true);
     }
   }
 
