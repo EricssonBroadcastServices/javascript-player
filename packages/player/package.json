@@ -1,6 +1,6 @@
 {
   "name": "@ericssonbroadcastservices/javascript-player",
-  "version": "1.7.5-internal.0",
+  "version": "1.7.5",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -26,14 +26,14 @@
   "keywords": [],
   "author": "",
   "devDependencies": {
-    "@ericssonbroadcastservices/js-player-analytics": "^1.7.5-internal.0",
-    "@ericssonbroadcastservices/js-player-cast-sender": "^1.7.5-internal.0",
-    "@ericssonbroadcastservices/js-player-core": "^1.7.5-internal.0",
-    "@ericssonbroadcastservices/js-player-overlays": "^1.7.5-internal.0",
-    "@ericssonbroadcastservices/js-player-shared": "^1.7.5-internal.0",
-    "@ericssonbroadcastservices/js-player-skin": "^1.7.5-internal.0",
+    "@ericssonbroadcastservices/js-player-analytics": "^1.7.5",
+    "@ericssonbroadcastservices/js-player-cast-sender": "^1.7.5",
+    "@ericssonbroadcastservices/js-player-core": "^1.7.5",
+    "@ericssonbroadcastservices/js-player-overlays": "^1.7.5",
+    "@ericssonbroadcastservices/js-player-shared": "^1.7.5",
+    "@ericssonbroadcastservices/js-player-skin": "^1.7.5",
     "@ericssonbroadcastservices/rbm-ott-sdk": "0.9.1",
-    "@ericssonbroadcastservices/sprite-vtt-parser": "^1.7.5-internal.0",
+    "@ericssonbroadcastservices/sprite-vtt-parser": "^1.7.5",
     "@microsoft/api-extractor": "^7.34.8"
   },
   "license": "MIT"

@@ -1,6 +1,6 @@
 {
   "packages": ["packages/*", "apps/*"],
-  "version": "1.7.5-internal.0",
+  "version": "1.7.5",
   "command": {
     "version": {
       "message": "chore(release): publish"

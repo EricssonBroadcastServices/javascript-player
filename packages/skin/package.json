@@ -1,6 +1,6 @@
 {
   "name": "@ericssonbroadcastservices/js-player-skin",
-  "version": "1.7.5-internal.0",
+  "version": "1.7.5",
   "description": "",
   "source": "./src/index.tsx",
   "main": "dist/index.js",
@@ -24,7 +24,7 @@
     "watch": "npm run _build -- --watch --no-compress"
   },
   "dependencies": {
-    "@ericssonbroadcastservices/js-player-shared": "^1.7.5-internal.0",
+    "@ericssonbroadcastservices/js-player-shared": "^1.7.5",
     "classnames": "^2.2.6",
     "hotkeys-js": "^3.10.1",
     "humanize-duration": "^3.25.0",
@@ -32,8 +32,8 @@
     "preact": "^10.5.7"
   },
   "devDependencies": {
-    "@ericssonbroadcastservices/js-player-cast-sender": "^1.7.5-internal.0",
-    "@ericssonbroadcastservices/js-player-core": "^1.7.5-internal.0",
+    "@ericssonbroadcastservices/js-player-cast-sender": "^1.7.5",
+    "@ericssonbroadcastservices/js-player-core": "^1.7.5",
     "@ericssonbroadcastservices/rbm-ott-sdk": "0.9.1",
     "@types/humanize-duration": "^3.27.1"
   },
