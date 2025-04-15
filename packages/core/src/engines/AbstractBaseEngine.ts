@@ -555,10 +555,13 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
         textTrack.mode === "hidden" &&
         SUPPORTED_TEXT_TRACK_KINDS.includes(textTrack.kind)
       ) {
-        const activeCues = (
-          textTrack.activeCues ? Array.from(textTrack.activeCues) : []
-        ) as VTTCue[];
-        this.emit(EngineEvents.SUBTITLE_CUE_CHANGED, activeCues);
+        //setTimeout to prevent cues from previously selected language from being taken as activeCues
+        setTimeout(() => {
+          const activeCues = (
+            textTrack.activeCues ? Array.from(textTrack.activeCues) : []
+          ) as VTTCue[];
+          this.emit(EngineEvents.SUBTITLE_CUE_CHANGED, activeCues);
+        }, 0);
 
         if (!textTrack.oncuechange) {
           textTrack.oncuechange = () => {
