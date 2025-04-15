@@ -1,3 +1,9 @@
+**v1.7.6-internal.0** (2025-04-15)
+
+Bug Fixes
+
+* Unable to disable subtitles in shaka player
+
 **v1.7.5** (2025-04-09)
 
 **v1.7.5-internal.0** (2025-04-02)

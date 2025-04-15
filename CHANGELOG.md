@@ -1,3 +1,12 @@
+## [1.7.6-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.5...v1.7.6-internal.0) (2025-04-15)
+
+
+### Bug Fixes
+
+* unable to disable subtitles in shaka player([#13](https://github.com/ericssonbroadcastservices/javascript-player/issues/13)) ([d09b436](https://github.com/ericssonbroadcastservices/javascript-player/commit/d09b436c22e79159452916da9ab904ebf1dfd6af))
+
+
+
 ## [1.7.5](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.5-internal.0...v1.7.5) (2025-04-09)
 
 
