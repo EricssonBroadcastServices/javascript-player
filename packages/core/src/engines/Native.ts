@@ -149,6 +149,9 @@ export class Native extends AbstractBaseEngine {
           }
         );
 
+        console.log("native load preferences.subtitle", preferences.subtitle);
+        console.log("native load subtitle", subtitle);
+
         _super.load({
           src,
           license,
