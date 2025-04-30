@@ -157,7 +157,7 @@ export class Native extends AbstractBaseEngine {
           license,
           startTime,
           audio,
-          subtitle: preferences.subtitle || subtitle,
+          subtitle,
         });
       },
       (error) => {
