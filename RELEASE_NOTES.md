@@ -1,3 +1,9 @@
+**v1.7.6-internal.2** (2025-04-30)
+
+Bug Fixes
+
+* Forced subtitles showing instead of selected track in safari
+
 **v1.7.6-internal.1** (2025-04-23)
 
 Bug Fixes

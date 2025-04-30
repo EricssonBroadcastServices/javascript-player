@@ -1,3 +1,12 @@
+## [1.7.6-internal.2](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.6-internal.1...v1.7.6-internal.2) (2025-04-30)
+
+
+### Bug Fixes
+
+* forced subtitles showing instead of selected track in safari ([#15](https://github.com/ericssonbroadcastservices/javascript-player/issues/15)) ([d4a95a7](https://github.com/ericssonbroadcastservices/javascript-player/commit/d4a95a767b74e9ab79c57e220a0afb0108d78cce))
+
+
+
 ## [1.7.6-internal.1](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.6-internal.0...v1.7.6-internal.1) (2025-04-23)
 
 
