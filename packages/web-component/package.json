@@ -1,6 +1,6 @@
 {
   "name": "@ericssonbroadcastservices/js-player-web-component",
-  "version": "1.7.6-internal.2",
+  "version": "1.7.6-internal.3",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
@@ -23,8 +23,8 @@
   "keywords": [],
   "author": "",
   "devDependencies": {
-    "@ericssonbroadcastservices/javascript-player": "^1.7.6-internal.2",
-    "@ericssonbroadcastservices/js-player-shared": "^1.7.6-internal.2"
+    "@ericssonbroadcastservices/javascript-player": "^1.7.6-internal.3",
+    "@ericssonbroadcastservices/js-player-shared": "^1.7.6-internal.3"
   },
   "license": "MIT"
 }

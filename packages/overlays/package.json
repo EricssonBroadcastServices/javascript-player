@@ -1,6 +1,6 @@
 {
   "name": "@ericssonbroadcastservices/js-player-overlays",
-  "version": "1.7.6-internal.2",
+  "version": "1.7.6-internal.3",
   "description": "Overlay framework for the Red Bee JavaScript Player",
   "main": "src/index.ts",
   "scripts": {

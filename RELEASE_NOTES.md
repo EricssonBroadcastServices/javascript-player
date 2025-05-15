@@ -1,3 +1,9 @@
+**v1.7.6-internal.3** (2025-05-15)
+
+Bug Fixes
+
+* Prevent safari from setting subtitles by default
+
 **v1.7.6-internal.2** (2025-04-30)
 
 Bug Fixes

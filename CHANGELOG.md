@@ -1,3 +1,12 @@
+## [1.7.6-internal.3](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.6-internal.2...v1.7.6-internal.3) (2025-05-15)
+
+
+### Bug Fixes
+
+* prevent safari from setting subtitles by default ([#16](https://github.com/ericssonbroadcastservices/javascript-player/issues/16)) ([6182aa7](https://github.com/ericssonbroadcastservices/javascript-player/commit/6182aa72085117658e9ef2b55cf00546264a9fca))
+
+
+
 ## [1.7.6-internal.2](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.6-internal.1...v1.7.6-internal.2) (2025-04-30)
 
 
