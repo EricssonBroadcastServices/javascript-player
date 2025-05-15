@@ -19,6 +19,7 @@ import {
   getLabel,
 } from "@ericssonbroadcastservices/js-player-shared";
 
+import { isAppleSafari } from "../device/common";
 import {
   ContractRestrictionsGuardian,
   IClientRestrictions,
@@ -190,6 +191,7 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
     this.addNativeVideoEvents();
     this.addSubtitleEvents();
     this.addAudioTrackEvents();
+    this.suppressAutoSubtitles();
 
     this.on(EngineEvents.ERROR, this.onEngineEventError.bind(this));
   }
@@ -397,6 +399,21 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
         (this.onAudioTrackChangeReference = this.onAudioTrackChange.bind(this))
       );
     }
+  }
+
+  suppressAutoSubtitles() {
+    if (!isAppleSafari()) return;
+    this.videoElement.addEventListener("play", () => {
+      const textTracks: TextTrack[] = this.videoElement.textTracks
+        ? Array.from(this.videoElement.textTracks)
+        : [];
+
+      for (const track of textTracks) {
+        if (track.mode === "showing") {
+          track.mode = "disabled";
+        }
+      }
+    });
   }
 
   isPlaying() {
