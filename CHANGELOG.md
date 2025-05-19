@@ -1,3 +1,12 @@
+## [1.7.6](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.6-internal.3...v1.7.6) (2025-05-19)
+
+
+### Bug Fixes
+
+* remove logs ([#17](https://github.com/ericssonbroadcastservices/javascript-player/issues/17)) ([ff2c887](https://github.com/ericssonbroadcastservices/javascript-player/commit/ff2c8875666cf22b7734dd99b391020b597def61))
+
+
+
 ## [1.7.6-internal.3](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.6-internal.2...v1.7.6-internal.3) (2025-05-15)
 
 

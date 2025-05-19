@@ -1,3 +1,9 @@
+**v1.7.6** (2025-05-19)
+
+Bug Fixes
+
+* Remove logs
+
 **v1.7.6-internal.3** (2025-05-15)
 
 Bug Fixes

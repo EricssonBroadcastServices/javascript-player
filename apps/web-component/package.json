@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "web-component-dev",
-  "version": "1.7.6-internal.3",
+  "version": "1.7.6",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@ericssonbroadcastservices/js-player-web-component": "^1.7.6-internal.3"
+    "@ericssonbroadcastservices/js-player-web-component": "^1.7.6"
   }
 }
