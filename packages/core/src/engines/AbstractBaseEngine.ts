@@ -371,11 +371,6 @@ export abstract class AbstractBaseEngine extends EmitterBaseClass<EngineEventsMa
     );
   }
   private textTracksChangeHandler() {
-    console.log(
-      "textTracksChangeHandler textTracks",
-      this.videoElement.textTracks
-    );
-
     return this.onTextTracksChange.bind(this)(this.isSubtitlesSetManually);
   }
 

@@ -17,7 +17,6 @@ import {
 
 import { InstanceSettingsInterface } from "../utils/interfaces";
 import { debug } from "../utils/logger";
-import { getPreferences } from "../utils/preferences";
 /* global WebKitMediaKeys */
 import {
   AbstractBaseEngine,
@@ -97,7 +96,6 @@ export class Native extends AbstractBaseEngine {
     const _super = {
       load: super.load.bind(this),
     };
-    const preferences = getPreferences();
     this.src = src;
     this.startTime = startTime;
     let drmEvaluationAndInitiationPromise: Promise<void>;
@@ -148,9 +146,6 @@ export class Native extends AbstractBaseEngine {
             }
           }
         );
-
-        console.log("native load preferences.subtitle", preferences.subtitle);
-        console.log("native load subtitle", subtitle);
 
         _super.load({
           src,
