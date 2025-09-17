@@ -84,3 +84,7 @@ export class HlsJsPlayerError extends PlayerError {
 export class ShakaPlayerError extends PlayerError {
   readonly category = "SHAKAPLAYER";
 }
+
+export class BitmovinPlayerError extends PlayerError {
+  readonly category = "BITMOVIN";
+}

@@ -6,6 +6,6 @@ interface Window {
   __RED_BEE_MEDIA__?: {
     supportedFormats?: ("DASH" | "HLS")[];
     preferredFormats?: ("dash" | "hls")[];
-    engine?: "dashjs" | "shaka" | "hlsjs" | "native";
+    engine?: "dashjs" | "shaka" | "hlsjs" | "native" | "bitmovin";
   };
 }

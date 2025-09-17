@@ -120,23 +120,11 @@ export class PlayerCore
   constructor(options: IPlayerCoreOptions) {
     super();
     setLogLevel(options.logLevel ?? LogLevel.NONE);
-    this.instanceSettings = {
-      playerSDKVersion:
-        typeof process.env.npm_package_version !== "undefined"
-          ? process.env.npm_package_version
-          : "dev-build",
-      initOptions: {
-        ...PLAYER_OPTIONS,
-        ...options,
-      },
-      isAsset: false,
-    };
 
     this.deviceAdapter = options.deviceAdapter;
 
     // Setup DOM
-    const { wrapperElement, fullscreenElement } =
-      this.instanceSettings.initOptions;
+    const { wrapperElement, fullscreenElement } = options;
 
     const container = document.createElement("div");
     container.className = ClassNames.CONTAINER;
@@ -155,6 +143,18 @@ export class PlayerCore
 
     this.mediaContainer = mediaContainer;
     this.container = container;
+    this.instanceSettings = {
+      playerSDKVersion:
+        typeof process.env.npm_package_version !== "undefined"
+          ? process.env.npm_package_version
+          : "dev-build",
+      initOptions: {
+        ...PLAYER_OPTIONS,
+        ...options,
+        mediaContainer,
+      },
+      isAsset: false,
+    };
 
     if (wrapperElement) {
       wrapperElement.insertBefore(this.container, wrapperElement.firstChild);

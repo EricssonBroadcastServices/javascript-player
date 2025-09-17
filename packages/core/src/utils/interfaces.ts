@@ -47,6 +47,7 @@ export interface IPlayerCoreOptions {
   locale?: string;
   metadataURIs?: string[];
   deviceAdapter?: TDeviceAdapter;
+  mediaContainer?: HTMLDivElement;
 }
 
 export interface InstanceSettingsInterface {

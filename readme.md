@@ -24,7 +24,8 @@ Make sure you read [Working with git](https://github.com/EricssonBroadcastServic
 
 You need to configure npm to have access to github packages, see [here](https://docs.github.com/en/packages/guides/configuring-npm-for-use-with-github-packages#authenticating-with-a-personal-access-token)
 
-Before anything else run `npm install`, if you are using Windows, use Git Bash.
+Before anything else run `npm install`, if you are using Windows, use Git Bash.  
+Run `cp .env.example .env` to create the env config file and enter the Bitmovin license key there.
 
 Development scripts
 

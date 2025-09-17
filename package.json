@@ -80,5 +80,8 @@
   "overrides": {
     "postcss": "8.4.35"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "bitmovin-player": "^8.225.0"
+  }
 }

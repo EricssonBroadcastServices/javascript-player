@@ -6,6 +6,9 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import webpack from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import TerserPlugin from "terser-webpack-plugin";
+import dotenv from 'dotenv';
+
+dotenv.config({ path: new URL('../../.env', import.meta.url).pathname });
 
 export default {
   mode: "production",
@@ -28,9 +31,10 @@ export default {
       openAnalyzer: false,
     }),
     new webpack.DefinePlugin({
-      "process.env.npm_package_version": JSON.stringify(
-        process.env.npm_package_version
-      ),
+      "process.env": {
+        npm_package_version: JSON.stringify(process.env.npm_package_version),
+        BITMOVIN_KEY: JSON.stringify(process.env.BITMOVIN_KEY)
+      }
     }),
   ],
   optimization: {
