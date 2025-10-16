@@ -4,6 +4,9 @@
 
 import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import dotenv from 'dotenv';
+
+dotenv.config({ path: new URL('../../.env', import.meta.url).pathname });
 
 export default {
   mode: "development",
@@ -33,9 +36,10 @@ export default {
       template: "./src/template.html",
     }),
     new webpack.DefinePlugin({
-      "process.env.npm_package_version": JSON.stringify(
-        process.env.npm_package_version
-      ),
+      "process.env": {
+        npm_package_version: JSON.stringify(process.env.npm_package_version),
+        BITMOVIN_KEY: JSON.stringify(process.env.BITMOVIN_KEY)
+      }
     }),
   ],
   resolve: {

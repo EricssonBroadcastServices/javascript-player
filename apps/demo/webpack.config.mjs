@@ -5,7 +5,9 @@
 import CopyPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import webpack from "webpack";
+import dotenv from 'dotenv';
 
+dotenv.config({ path: new URL('../../.env', import.meta.url).pathname });
 const WEBPACK_SERVE = process.env.WEBPACK_SERVE === "true";
 
 export default {
@@ -44,9 +46,10 @@ export default {
       patterns: [{ from: "src/static", to: "static", globOptions: { ignore: ['**/*.license'] } }],
     }),
     new webpack.DefinePlugin({
-      "process.env.npm_package_version": JSON.stringify(
-        process.env.npm_package_version
-      ),
+      "process.env": {
+        npm_package_version: JSON.stringify(process.env.npm_package_version),
+        BITMOVIN_KEY: JSON.stringify(process.env.BITMOVIN_KEY)
+      }
     }),
   ],
   resolve: {

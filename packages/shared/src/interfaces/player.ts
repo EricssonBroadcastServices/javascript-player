@@ -161,7 +161,8 @@ export type PlayerEngineName =
   | "Shaka Player"
   | "Hls.js"
   | "Native HTML Video"
-  | "Dashjs";
+  | "Dashjs"
+  | "Bitmovin";
 
 export type Seekable = {
   start: number;

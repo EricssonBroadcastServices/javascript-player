@@ -24,6 +24,7 @@ import {
   AbstractBaseEngine,
   SUPPORTED_TEXT_TRACK_KINDS,
 } from "../engines/AbstractBaseEngine";
+import { Bitmovin } from "../engines/Bitmovin";
 import { DashJs } from "../engines/DashJs";
 import { HlsJs } from "../engines/HlsJs";
 import {
@@ -196,6 +197,8 @@ export class BasePlayer extends AbstractPlayer {
             return new HlsJs(this.videoElement, this.instanceSettings);
           case "native":
             return new Native(this.videoElement, this.instanceSettings);
+          case "bitmovin":
+            return new Bitmovin(this.videoElement, this.instanceSettings);
         }
       }
     }
@@ -657,7 +660,7 @@ export class BasePlayer extends AbstractPlayer {
   onSubtitleCueChanged(cues: SubtitleCueChangeEngineEvent) {
     this.subtitleContainer.innerHTML = "";
     cues.forEach((cue) => {
-      const node = cue.getCueAsHTML();
+      const node = document.createTextNode(cue.text);
       // cueContainer is for positioning
       const cueContainer = document.createElement("div");
       cueContainer.className = "redbee-player-subtitle-cue-container";
