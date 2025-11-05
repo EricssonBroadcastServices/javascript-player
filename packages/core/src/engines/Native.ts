@@ -96,8 +96,22 @@ export class Native extends AbstractBaseEngine {
     const _super = {
       load: super.load.bind(this),
     };
-    this.src = src;
+    const isNovaCustomer =
+      this.instanceSettings.initOptions.customer === "Nova";
+
     this.startTime = startTime;
+    this.src = src;
+
+    if (isNovaCustomer) {
+      const urlObj = new URL(src);
+      const encodedT = urlObj.searchParams.get("t");
+      const t = encodedT ? decodeURIComponent(encodedT) : undefined;
+      this.startTime = t ? new Date(t).getTime() / 1000 : undefined;
+
+      urlObj.searchParams.delete("t");
+      this.src = urlObj.toString();
+    }
+
     let drmEvaluationAndInitiationPromise: Promise<void>;
     if (license?.["com.apple.fps"]) {
       this.drmInfo = license["com.apple.fps"];
@@ -150,7 +164,7 @@ export class Native extends AbstractBaseEngine {
         _super.load({
           src,
           license,
-          startTime,
+          startTime: this.startTime,
           audio,
           subtitle,
         });

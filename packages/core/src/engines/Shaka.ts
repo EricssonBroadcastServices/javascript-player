@@ -251,6 +251,22 @@ export class Shaka extends AbstractBaseEngine {
     audio,
     subtitle,
   }: TLoadParameters) {
+    const isNovaCustomer =
+      this.instanceSettings.initOptions.customer === "Nova";
+
+    let sourceStartTime = startTime;
+    this.src = src;
+
+    if (isNovaCustomer) {
+      const urlObj = new URL(src);
+      const encodedT = urlObj.searchParams.get("t");
+      const t = encodedT ? decodeURIComponent(encodedT) : undefined;
+      sourceStartTime = t ? new Date(t).getTime() / 1000 : undefined;
+
+      urlObj.searchParams.delete("t");
+      this.src = urlObj.toString();
+    }
+
     this.startTime = startTime;
     const customConfiguration =
       this.instanceSettings.initOptions.customShakaConfiguration || {};
@@ -259,7 +275,6 @@ export class Shaka extends AbstractBaseEngine {
       merge(configuration, ShakaLive);
     }
 
-    this.src = src;
     this.setLicense(this.instanceSettings.supportedKeySystem, license);
     this.shakaPlayer.configure(configuration);
     this.shakaPlayer.configure(
@@ -310,9 +325,25 @@ export class Shaka extends AbstractBaseEngine {
     }
 
     this.shakaPlayer
-      .load(src, startTime)
+      .load(this.src)
       .then(() => {
-        super.load({ src, license, startTime });
+        if (isNovaCustomer) {
+          if (sourceStartTime) {
+            const { start } = this.shakaPlayer.seekRange();
+
+            if (sourceStartTime < start) {
+              this.seekTo(start);
+            } else {
+              this.seekTo(sourceStartTime);
+            }
+          }
+        }
+
+        super.load({
+          src: this.src || "",
+          license,
+          startTime: sourceStartTime,
+        });
       })
       .catch((err) => {
         this.handleError(err);

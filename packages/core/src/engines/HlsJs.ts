@@ -144,8 +144,24 @@ export class HlsJs extends AbstractBaseEngine {
 
   load({ src, license, startTime, audio, subtitle }: TLoadParameters) {
     // TODO: fix typing issue when overriding this method
+    const isNovaCustomer =
+      this.instanceSettings.initOptions.customer === "Nova";
+
+    let sourceStartTime = startTime;
     this.src = src;
-    this.hls.loadSource(src);
+
+    if (isNovaCustomer) {
+      const urlObj = new URL(src);
+      const encodedT = urlObj.searchParams.get("t");
+      const t = encodedT ? decodeURIComponent(encodedT) : undefined;
+      sourceStartTime = t ? new Date(t).getTime() / 1000 : undefined;
+
+      urlObj.searchParams.delete("t");
+      this.src = urlObj.toString();
+    }
+
+    this.src = src;
+    this.hls.loadSource(this.src);
     this.hls.attachMedia(this.videoElement);
     this.hls.once(Hls.Events.MANIFEST_PARSED, async () => {
       this.setResolutionAndBitrateRestrictions(
@@ -154,12 +170,14 @@ export class HlsJs extends AbstractBaseEngine {
         )
       );
       this.setContentSpecificConfiguration();
-      this.hls.startLoad(startTime === undefined ? -1 : Math.floor(startTime));
+      this.hls.startLoad(
+        sourceStartTime === undefined ? -1 : Math.floor(sourceStartTime)
+      );
     });
     super.load({
-      src,
+      src: this.src,
       license,
-      startTime,
+      startTime: sourceStartTime,
       audio,
       subtitle,
     });

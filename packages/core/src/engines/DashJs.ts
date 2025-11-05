@@ -336,7 +336,22 @@ export class DashJs extends AbstractBaseEngine {
     subtitle,
     audio,
   }: TLoadParameters) {
+    const isNovaCustomer =
+      this.instanceSettings.initOptions.customer === "Nova";
+
+    let sourceStartTime = startTime;
     this.src = src;
+
+    if (isNovaCustomer) {
+      const urlObj = new URL(src);
+      const encodedT = urlObj.searchParams.get("t");
+      const t = encodedT ? decodeURIComponent(encodedT) : undefined;
+      sourceStartTime = t ? new Date(t).getTime() / 1000 : undefined;
+
+      urlObj.searchParams.delete("t");
+      this.src = urlObj.toString();
+    }
+
     const customConfiguration =
       this.instanceSettings.initOptions.customDashJSConfiguration || {};
     const configuration = merge({}, DashJsDefaults, customConfiguration, {
@@ -381,12 +396,14 @@ export class DashJs extends AbstractBaseEngine {
     this.setContentSpecificConfiguration();
     this.setLicense(this.instanceSettings.supportedKeySystem, license);
 
-    if (startTime === undefined || startTime === 0) {
+    if (sourceStartTime === undefined || sourceStartTime === 0) {
       this.setupStartGapDetection();
     }
 
     this.mediaPlayer.attachSource(
-      startTime === undefined ? src : `${src}#t=${startTime}`
+      sourceStartTime === undefined
+        ? this.src
+        : `${this.src}#t=${sourceStartTime}`
     );
 
     this.once(EngineEvents.LOADED, () => {
@@ -396,9 +413,9 @@ export class DashJs extends AbstractBaseEngine {
     });
 
     super.load({
-      src,
+      src: this.src,
       license,
-      startTime,
+      startTime: sourceStartTime,
       audio,
       subtitle,
     });

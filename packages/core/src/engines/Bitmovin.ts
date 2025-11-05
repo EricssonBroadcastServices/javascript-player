@@ -253,6 +253,21 @@ export class Bitmovin extends AbstractBaseEngine {
     audio,
   }: TLoadParameters) {
     if (!this.bitmovinPlayer) return;
+    const isNovaCustomer =
+      this.instanceSettings.initOptions.customer === "Nova";
+
+    let sourceStartTime = startTime;
+    let source = src;
+
+    if (isNovaCustomer) {
+      const urlObj = new URL(src);
+      const encodedT = urlObj.searchParams.get("t");
+      const t = encodedT ? decodeURIComponent(encodedT) : undefined;
+      sourceStartTime = t ? new Date(t).getTime() / 1000 : undefined;
+
+      urlObj.searchParams.delete("t");
+      source = urlObj.toString();
+    }
 
     const type = getSourceType(src);
 
@@ -262,7 +277,7 @@ export class Bitmovin extends AbstractBaseEngine {
     }
 
     const config = {
-      [type]: startTime ? `${src}#t=${startTime}` : src,
+      [type]: sourceStartTime ? `${src}#t=${sourceStartTime}` : source,
       drm: {
         widevine: {
           LA_URL: license?.["com.widevine.alpha"]?.licenseServerUrl,
@@ -277,15 +292,27 @@ export class Bitmovin extends AbstractBaseEngine {
       },
     };
 
-    this.bitmovinPlayer.load(config).then(() =>
+    this.bitmovinPlayer.load(config).then(() => {
+      if (isNovaCustomer && this.bitmovinPlayer) {
+        if (sourceStartTime) {
+          const { start } = this.bitmovinPlayer.getSeekableRange();
+
+          if (sourceStartTime < start) {
+            this.seekTo(start);
+          } else {
+            this.seekTo(sourceStartTime);
+          }
+        }
+      }
+
       super.load({
-        src,
+        src: source,
         license,
         startTime,
         audio,
         subtitle,
-      })
-    );
+      });
+    });
   }
 
   seekTo(pos: number) {
