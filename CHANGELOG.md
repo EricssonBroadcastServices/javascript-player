@@ -1,3 +1,12 @@
+# [1.8.0-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.6...v1.8.0-internal.0) (2026-01-29)
+
+
+### Features
+
+* implement bitmovin player ([#18](https://github.com/ericssonbroadcastservices/javascript-player/issues/18)) ([0287158](https://github.com/ericssonbroadcastservices/javascript-player/commit/028715834921689f300d9fa2488c2be1516795a1))
+
+
+
 ## [1.7.6](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.7.6-internal.3...v1.7.6) (2025-05-19)
 
 

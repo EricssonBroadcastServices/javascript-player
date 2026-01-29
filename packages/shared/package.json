@@ -1,6 +1,6 @@
 {
   "name": "@ericssonbroadcastservices/js-player-shared",
-  "version": "1.7.6",
+  "version": "1.8.0-internal.0",
   "description": "",
   "main": "src/index.ts",
   "scripts": {

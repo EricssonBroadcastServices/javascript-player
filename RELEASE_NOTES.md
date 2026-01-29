@@ -1,3 +1,9 @@
+**v1.8.0-internal.0** (2026-01-29)
+
+Features
+
+* Implement bitmovin player
+
 **v1.7.6** (2025-05-19)
 
 Bug Fixes
