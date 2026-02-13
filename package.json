@@ -2,6 +2,10 @@
   "name": "root",
   "private": true,
   "version": "1.8.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EricssonBroadcastServices/javascript-player.git"
+  },
   "scripts": {
     "build": "nx run-many --target=build",
     "build:clean": "nx run-many --target=build:clean",
