@@ -1,10 +1,10 @@
 {
   "name": "root",
   "private": true,
-  "version": "1.8.0",
+  "version": "1.8.1",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EricssonBroadcastServices/javascript-player.git"
+    "url": "git://github.com:ericssonbroadcastservices/javascript-player.git"
   },
   "scripts": {
     "build": "nx run-many --target=build",
@@ -33,10 +33,6 @@
     "packages/*",
     "apps/*"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com:ericssonbroadcastservices/javascript-player.git"
-  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },

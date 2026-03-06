@@ -1,3 +1,12 @@
+## [1.8.1](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.8.0...v1.8.1) (2026-03-06)
+
+
+### Bug Fixes
+
+* move dependencies ([#21](https://github.com/ericssonbroadcastservices/javascript-player/issues/21)) ([73e32a6](https://github.com/ericssonbroadcastservices/javascript-player/commit/73e32a61fee4afcf5632d1eaa254f34fa5e51e07))
+
+
+
 # [1.8.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.8.0-internal.0...v1.8.0) (2026-02-12)
 
 
