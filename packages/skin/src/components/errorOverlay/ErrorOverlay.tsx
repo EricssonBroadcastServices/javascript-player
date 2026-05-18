@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: MIT
 
-import ErrorIcon from "mdi-preact/FaceSadIcon";
 import { h } from "preact";
 
 import style from "./errorOverlay.module.scss";
@@ -10,7 +9,8 @@ import style from "./errorOverlay.module.scss";
 export default function ErrorOverlay() {
   return (
     <div class={style.container}>
-      <ErrorIcon />
+      Unfortunately, the title cannot be played at the moment for technical
+      reasons.
     </div>
   );
 }
