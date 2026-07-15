@@ -279,66 +279,73 @@ export class Bitmovin extends AbstractBaseEngine {
       },
     };
 
-    if (config.drm &&
-        config.drm.fairplay &&
-        license?.["com.apple.fps"]?.licenseServerUrl &&
-        license?.["com.apple.fps"]?.licenseServerUrl.includes("drmtoday") &&
-        this.instanceSettings.playResponse?.playToken)
-    {
+    if (
+      config.drm &&
+      config.drm.fairplay &&
+      license?.["com.apple.fps"]?.licenseServerUrl &&
+      license?.["com.apple.fps"]?.licenseServerUrl.includes("drmtoday") &&
+      this.instanceSettings.playResponse?.playToken
+    ) {
       config.drm.fairplay.headers = {
-        'x-dt-auth-token': this.instanceSettings.playResponse?.playToken
+        "x-dt-auth-token": this.instanceSettings.playResponse?.playToken,
       };
 
       config.drm.fairplay.prepareContentId = (contentId: string): string => {
         // initData contains [4 byte: Length][EXT-X-KEY URI] but since Bitmovin converts it to string and
         // each char is 2 bytes, we need to skip the first 2 chars of contentId
-        let skdUrl = new URL(contentId.substring(2));
+        const skdUrl = new URL(contentId.substring(2));
         return skdUrl.hostname;
       };
-      
+
       config.drm.fairplay.prepareMessage = (event: any, session: any): any => {
-        return new URLSearchParams({ spc: event.messageBase64Encoded, contentId: session.contentId });
+        return new URLSearchParams({
+          spc: event.messageBase64Encoded,
+          contentId: session.contentId,
+        });
       };
 
       config.drm.fairplay.prepareLicense = (license: any): any => {
-          return new Uint8Array(license);
+        return new Uint8Array(license);
       };
 
       config.drm.fairplay.licenseResponseType = HttpResponseType.ARRAYBUFFER;
     }
 
-    if (config.drm &&
-        config.drm.widevine &&
-        license?.["com.widevine.alpha"]?.licenseServerUrl &&
-        license?.["com.widevine.alpha"]?.licenseServerUrl.includes("drmtoday") &&
-        this.instanceSettings.playResponse?.playToken)
-    {
+    if (
+      config.drm &&
+      config.drm.widevine &&
+      license?.["com.widevine.alpha"]?.licenseServerUrl &&
+      license?.["com.widevine.alpha"]?.licenseServerUrl.includes("drmtoday") &&
+      this.instanceSettings.playResponse?.playToken
+    ) {
       config.drm.widevine.headers = {
-        'x-dt-auth-token': this.instanceSettings.playResponse?.playToken
+        "x-dt-auth-token": this.instanceSettings.playResponse?.playToken,
       };
       config.drm.widevine.prepareLicense = (licenseResponse: any): any => {
         const license = { license: licenseResponse.license };
         try {
-            const drmTodayObj = JSON.parse(String.fromCharCode.apply(null, licenseResponse.license));
-            if (drmTodayObj && drmTodayObj.status && drmTodayObj.license) {
-                if (drmTodayObj.status === 'OK') {
-                    const str = window.atob(drmTodayObj.license);
-                    const bufView = new Uint8Array(new ArrayBuffer(str.length));
-                    for (let i = 0; i < str.length; i++) {
-                        bufView[i] = str.charCodeAt(i);
-                    }
-                    license.license = bufView;
-                } else {
-                    // license not okay
-                }
+          const drmTodayObj = JSON.parse(
+            String.fromCharCode.apply(null, licenseResponse.license)
+          );
+          if (drmTodayObj && drmTodayObj.status && drmTodayObj.license) {
+            if (drmTodayObj.status === "OK") {
+              const str = window.atob(drmTodayObj.license);
+              const bufView = new Uint8Array(new ArrayBuffer(str.length));
+              for (let i = 0; i < str.length; i++) {
+                bufView[i] = str.charCodeAt(i);
+              }
+              license.license = bufView;
             } else {
-                // no valid DRMtoday license
+              // license not okay
             }
-        } catch (e) {
+          } else {
             // no valid DRMtoday license
+          }
+        } catch (e) {
+          // no valid DRMtoday license
         }
         return license;
-      }
+      };
     }
 
     this.bitmovinPlayer.load(config).then(() =>
