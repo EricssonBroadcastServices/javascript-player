@@ -147187,7 +147187,7 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
                         }
                     }
                 });
-                var _a, _b, _c, _d;
+                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
                 return __awaiter(this, void 0, void 0, function() {
                     var _this, type, _obj, config;
                     return _ts_generator(this, function(_state) {
@@ -147212,6 +147212,57 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
                                 LA_URL: (_d = license === null || license === void 0 ? void 0 : license["com.microsoft.playready"]) === null || _d === void 0 ? void 0 : _d.licenseServerUrl
                             }
                         }), _obj);
+                        if (config.drm && config.drm.fairplay && ((_e = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _e === void 0 ? void 0 : _e.licenseServerUrl) && ((_f = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _f === void 0 ? void 0 : _f.licenseServerUrl.includes("drmtoday")) && ((_g = this.instanceSettings.playResponse) === null || _g === void 0 ? void 0 : _g.playToken)) {
+                            config.drm.fairplay.headers = {
+                                "x-dt-auth-token": (_h = this.instanceSettings.playResponse) === null || _h === void 0 ? void 0 : _h.playToken
+                            };
+                            config.drm.fairplay.prepareContentId = function(contentId) {
+                                // initData contains [4 byte: Length][EXT-X-KEY URI] but since Bitmovin converts it to string and
+                                // each char is 2 bytes, we need to skip the first 2 chars of contentId
+                                var skdUrl = new URL(contentId.substring(2));
+                                return skdUrl.hostname;
+                            };
+                            config.drm.fairplay.prepareMessage = function(event, session) {
+                                return new URLSearchParams({
+                                    spc: event.messageBase64Encoded,
+                                    contentId: session.contentId
+                                });
+                            };
+                            config.drm.fairplay.prepareLicense = function(license) {
+                                return new Uint8Array(license);
+                            };
+                            config.drm.fairplay.licenseResponseType = bitmovin_player_1.HttpResponseType.ARRAYBUFFER;
+                        }
+                        if (config.drm && config.drm.widevine && ((_j = license === null || license === void 0 ? void 0 : license["com.widevine.alpha"]) === null || _j === void 0 ? void 0 : _j.licenseServerUrl) && ((_k = license === null || license === void 0 ? void 0 : license["com.widevine.alpha"]) === null || _k === void 0 ? void 0 : _k.licenseServerUrl.includes("drmtoday")) && ((_l = this.instanceSettings.playResponse) === null || _l === void 0 ? void 0 : _l.playToken)) {
+                            config.drm.widevine.headers = {
+                                "x-dt-auth-token": (_m = this.instanceSettings.playResponse) === null || _m === void 0 ? void 0 : _m.playToken
+                            };
+                            config.drm.widevine.prepareLicense = function(licenseResponse) {
+                                var license = {
+                                    license: licenseResponse.license
+                                };
+                                try {
+                                    var drmTodayObj = JSON.parse(String.fromCharCode.apply(null, licenseResponse.license));
+                                    if (drmTodayObj && drmTodayObj.status && drmTodayObj.license) {
+                                        if (drmTodayObj.status === "OK") {
+                                            var str = window.atob(drmTodayObj.license);
+                                            var bufView = new Uint8Array(new ArrayBuffer(str.length));
+                                            for(var i = 0; i < str.length; i++){
+                                                bufView[i] = str.charCodeAt(i);
+                                            }
+                                            license.license = bufView;
+                                        } else {
+                                        // license not okay
+                                        }
+                                    } else {
+                                    // no valid DRMtoday license
+                                    }
+                                } catch (e) {
+                                // no valid DRMtoday license
+                                }
+                                return license;
+                            };
+                        }
                         this.bitmovinPlayer.load(config).then(function() {
                             return _super.load.call(_this, {
                                 src: src,
@@ -282873,15 +282924,15 @@ function _type_of(obj) {
                         {
                             key: "_load",
                             value: function value(e1) {
-                                var _$t, _$n, i, _$r, u = this, c = e1.src, l = e1.license, _$f = e1.startTime, _ = e1.subtitle, p = e1.audio, g = Object.create(null, {
+                                var _$t, _$n, i, _$r, u, c, l, _$f, p, g, v, b, y = this, S = e1.src, E = e1.license, T = e1.startTime, A = e1.subtitle, I = e1.audio, $ = Object.create(null, {
                                     load: {
                                         get: function get() {
-                                            return o(s1(m.prototype), "load", u);
+                                            return o(s1(m.prototype), "load", y);
                                         }
                                     }
                                 });
                                 return h(this, void 0, void 0, function() {
-                                    var _$e, o, s1, u;
+                                    var _$e, o, s1, h;
                                     return d(this, function(d) {
                                         if (_$e = this, !this.bitmovinPlayer) return [
                                             2
@@ -282889,25 +282940,50 @@ function _type_of(obj) {
                                         if (o = function(e1) {
                                             var _$t = e1.toLowerCase();
                                             return _$t.includes(".mpd") || _$t.includes(".dash") ? "dash" : _$t.includes(".m3u8") ? "hls" : _$t.includes(".ism/manifest") || _$t.includes(".xml") ? "smooth" : _$t.endsWith(".mp4") ? "progressive" : null;
-                                        }(c), !o) throw console.error("[BitmovinEngine] Unknown source type for URL: ".concat(c)), new Error("Unsupported source type");
-                                        return a1(s1 = {}, o, _$f ? "".concat(c, "#t=").concat(_$f) : c), a1(s1, "drm", {
+                                        }(S), !o) throw console.error("[BitmovinEngine] Unknown source type for URL: ".concat(S)), new Error("Unsupported source type");
+                                        return a1(s1 = {}, o, T ? "".concat(S, "#t=").concat(T) : S), a1(s1, "drm", {
                                             widevine: {
-                                                LA_URL: null === (_$t = null == l ? void 0 : l["com.widevine.alpha"]) || void 0 === _$t ? void 0 : _$t.licenseServerUrl
+                                                LA_URL: null === (_$t = null == E ? void 0 : E["com.widevine.alpha"]) || void 0 === _$t ? void 0 : _$t.licenseServerUrl
                                             },
                                             fairplay: {
-                                                LA_URL: null === (_$n = null == l ? void 0 : l["com.apple.fps"]) || void 0 === _$n ? void 0 : _$n.licenseServerUrl,
-                                                certificateURL: null === (i = null == l ? void 0 : l["com.apple.fps"]) || void 0 === i ? void 0 : i.certificateUrl
+                                                LA_URL: null === (_$n = null == E ? void 0 : E["com.apple.fps"]) || void 0 === _$n ? void 0 : _$n.licenseServerUrl,
+                                                certificateURL: null === (i = null == E ? void 0 : E["com.apple.fps"]) || void 0 === i ? void 0 : i.certificateUrl
                                             },
                                             playready: {
-                                                LA_URL: null === (_$r = null == l ? void 0 : l["com.microsoft.playready"]) || void 0 === _$r ? void 0 : _$r.licenseServerUrl
+                                                LA_URL: null === (_$r = null == E ? void 0 : E["com.microsoft.playready"]) || void 0 === _$r ? void 0 : _$r.licenseServerUrl
                                             }
-                                        }), u = s1, this.bitmovinPlayer.load(u).then(function() {
-                                            return g.load.call(_$e, {
-                                                src: c,
-                                                license: l,
-                                                startTime: _$f,
-                                                audio: p,
-                                                subtitle: _
+                                        }), (h = s1).drm && h.drm.fairplay && (null === (u = null == E ? void 0 : E["com.apple.fps"]) || void 0 === u ? void 0 : u.licenseServerUrl) && (null === (c = null == E ? void 0 : E["com.apple.fps"]) || void 0 === c ? void 0 : c.licenseServerUrl.includes("drmtoday")) && (null === (l = this.instanceSettings.playResponse) || void 0 === l ? void 0 : l.playToken) && (h.drm.fairplay.headers = {
+                                            "x-dt-auth-token": null === (_$f = this.instanceSettings.playResponse) || void 0 === _$f ? void 0 : _$f.playToken
+                                        }, h.drm.fairplay.prepareContentId = function(e1) {
+                                            return new URL(e1.substring(2)).hostname;
+                                        }, h.drm.fairplay.prepareMessage = function(e1, t1) {
+                                            return new URLSearchParams({
+                                                spc: e1.messageBase64Encoded,
+                                                contentId: t1.contentId
+                                            });
+                                        }, h.drm.fairplay.prepareLicense = function(e1) {
+                                            return new Uint8Array(e1);
+                                        }, h.drm.fairplay.licenseResponseType = _.HttpResponseType.ARRAYBUFFER), h.drm && h.drm.widevine && (null === (p = null == E ? void 0 : E["com.widevine.alpha"]) || void 0 === p ? void 0 : p.licenseServerUrl) && (null === (g = null == E ? void 0 : E["com.widevine.alpha"]) || void 0 === g ? void 0 : g.licenseServerUrl.includes("drmtoday")) && (null === (v = this.instanceSettings.playResponse) || void 0 === v ? void 0 : v.playToken) && (h.drm.widevine.headers = {
+                                            "x-dt-auth-token": null === (b = this.instanceSettings.playResponse) || void 0 === b ? void 0 : b.playToken
+                                        }, h.drm.widevine.prepareLicense = function(e1) {
+                                            var _$t = {
+                                                license: e1.license
+                                            };
+                                            try {
+                                                var _$n = JSON.parse(String.fromCharCode.apply(null, e1.license));
+                                                if (_$n && _$n.status && _$n.license && "OK" === _$n.status) {
+                                                    for(var i = window.atob(_$n.license), _$r = new Uint8Array(new ArrayBuffer(i.length)), _$a = 0; _$a < i.length; _$a++)_$r[_$a] = i.charCodeAt(_$a);
+                                                    _$t.license = _$r;
+                                                }
+                                            } catch (e1) {}
+                                            return _$t;
+                                        }), this.bitmovinPlayer.load(h).then(function() {
+                                            return $.load.call(_$e, {
+                                                src: S,
+                                                license: E,
+                                                startTime: T,
+                                                audio: I,
+                                                subtitle: A
                                             });
                                         }), [
                                             2
@@ -312286,7 +312362,7 @@ function _type_of(obj) {
                 }, p = u.HL, g = u.xn, v = u.$W;
             }
         }, __webpack_module_cache__ = {};
-        function __nested_webpack_require_12736785__(e1) {
+        function __nested_webpack_require_12739721__(e1) {
             var t1 = __webpack_module_cache__[e1];
             if (void 0 !== t1) return t1.exports;
             var n = __webpack_module_cache__[e1] = {
@@ -312294,35 +312370,35 @@ function _type_of(obj) {
                 loaded: !1,
                 exports: {}
             };
-            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12736785__), n.loaded = !0, n.exports;
+            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12739721__), n.loaded = !0, n.exports;
         }
-        __nested_webpack_require_12736785__.d = function(e1, t1) {
-            for(var n in t1)__nested_webpack_require_12736785__.o(t1, n) && !__nested_webpack_require_12736785__.o(e1, n) && Object.defineProperty(e1, n, {
+        __nested_webpack_require_12739721__.d = function(e1, t1) {
+            for(var n in t1)__nested_webpack_require_12739721__.o(t1, n) && !__nested_webpack_require_12739721__.o(e1, n) && Object.defineProperty(e1, n, {
                 enumerable: !0,
                 get: t1[n]
             });
-        }, __nested_webpack_require_12736785__.g = function() {
+        }, __nested_webpack_require_12739721__.g = function() {
             if ("object" == typeof globalThis) return globalThis;
             try {
                 return this || new Function("return this")();
             } catch (e1) {
                 if ("object" == typeof window) return window;
             }
-        }(), __nested_webpack_require_12736785__.o = function(e1, t1) {
+        }(), __nested_webpack_require_12739721__.o = function(e1, t1) {
             return Object.prototype.hasOwnProperty.call(e1, t1);
-        }, __nested_webpack_require_12736785__.r = function(e1) {
+        }, __nested_webpack_require_12739721__.r = function(e1) {
             "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e1, Symbol.toStringTag, {
                 value: "Module"
             }), Object.defineProperty(e1, "__esModule", {
                 value: !0
             });
-        }, __nested_webpack_require_12736785__.nmd = function(e1) {
+        }, __nested_webpack_require_12739721__.nmd = function(e1) {
             return e1.paths = [], e1.children || (e1.children = []), e1;
         };
         var __nested_webpack_exports__ = {};
         return function() {
             "use strict";
-            __nested_webpack_require_12736785__.r(__nested_webpack_exports__), __nested_webpack_require_12736785__.d(__nested_webpack_exports__, {
+            __nested_webpack_require_12739721__.r(__nested_webpack_exports__), __nested_webpack_require_12739721__.d(__nested_webpack_exports__, {
                 ContentType: function ContentType() {
                     return t1.ContentType;
                 },
@@ -312342,7 +312418,7 @@ function _type_of(obj) {
                     return S;
                 }
             });
-            var e1 = __nested_webpack_require_12736785__(1382), t1 = __nested_webpack_require_12736785__(9768), n = __nested_webpack_require_12736785__(9899), i = __nested_webpack_require_12736785__(3718), r = __nested_webpack_require_12736785__(5072);
+            var e1 = __nested_webpack_require_12739721__(1382), t1 = __nested_webpack_require_12739721__(9768), n = __nested_webpack_require_12739721__(9899), i = __nested_webpack_require_12739721__(3718), r = __nested_webpack_require_12739721__(5072);
             function a1(e1, t1) {
                 (null == t1 || t1 > e1.length) && (t1 = e1.length);
                 for(var n = 0, i = new Array(t1); n < t1; n++)i[n] = e1[n];
