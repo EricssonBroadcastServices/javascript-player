@@ -1,3 +1,7 @@
+## [1.8.3-internal.3](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.8.2...v1.8.3-internal.3) (2026-08-25)
+
+
+
 ## [1.8.2](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.8.1...v1.8.2) (2026-05-18)
 
 
