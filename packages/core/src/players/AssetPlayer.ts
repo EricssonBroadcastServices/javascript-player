@@ -116,6 +116,11 @@ export class AssetPlayer extends BasePlayer {
       }
     }
 
+    const bitmovinEngine = this.createBitmovinEngine();
+    if (bitmovinEngine) {
+      return bitmovinEngine;
+    }
+
     switch (format) {
       case "HLS":
         if (

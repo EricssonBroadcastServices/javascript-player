@@ -48,6 +48,8 @@ export interface IPlayerCoreOptions {
   metadataURIs?: string[];
   deviceAdapter?: TDeviceAdapter;
   mediaContainer?: HTMLDivElement;
+  /** Runtime Bitmovin license key (WL config field `bitmovinPlayerKey`). */
+  bitmovinPlayerKey?: string;
 }
 
 export interface InstanceSettingsInterface {

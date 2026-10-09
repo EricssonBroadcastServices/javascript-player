@@ -9,6 +9,7 @@ import { getUUID } from "@ericssonbroadcastservices/js-player-shared";
 
 import {
   fetchAssetPageDetails,
+  fetchBitmovinPlayerKey,
   observableAttributes,
   parseOptions,
   stringToBoolean,
@@ -55,6 +56,17 @@ class RedBeePlayerComponent extends HTMLElement {
         const { assetId, ...options } = await fetchAssetPageDetails(assetPage);
         source = assetId;
         Object.assign(player, options);
+      } else if (
+        !player.bitmovinPlayerKey &&
+        player.customer &&
+        player.businessUnit &&
+        player.exposureBaseUrl
+      ) {
+        player.bitmovinPlayerKey = await fetchBitmovinPlayerKey(
+          player.exposureBaseUrl,
+          player.customer,
+          player.businessUnit
+        );
       }
 
       if (

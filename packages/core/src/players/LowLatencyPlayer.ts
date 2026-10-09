@@ -22,6 +22,10 @@ export class LowLatencyPlayer extends AssetPlayer {
       preferredFormats?.includes("DASH") ||
       preferredFormats?.includes("dash")
     ) {
+      const bitmovinEngine = this.createBitmovinEngine();
+      if (bitmovinEngine) {
+        return bitmovinEngine;
+      }
       return new DashJs(this.videoElement, this.instanceSettings);
     }
     const errMsg = `Low Latency Support for ${preferredFormats} not yet implemented`;

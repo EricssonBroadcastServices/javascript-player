@@ -83,6 +83,12 @@ export class AdInsertionPlayer extends AssetPlayer {
         return devEngine;
       }
     }
+
+    const bitmovinEngine = this.createBitmovinEngine();
+    if (bitmovinEngine) {
+      return bitmovinEngine;
+    }
+
     switch (format.format) {
       case "HLS":
         if (isNativeHlsSupported()) {
