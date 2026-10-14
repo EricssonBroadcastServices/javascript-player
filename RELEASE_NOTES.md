@@ -1,3 +1,9 @@
+**v1.9.0-internal.0** (2026-10-14)
+
+Features
+
+* Use Bitmovin when bitmovinPlayerKey is provided
+
 **v1.8.3-internal.3** (2026-08-25)
 
 **v1.8.2** (2026-05-18)

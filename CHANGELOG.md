@@ -1,3 +1,12 @@
+# [1.9.0-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.8.3-internal.3...v1.9.0-internal.0) (2026-10-14)
+
+
+### Features
+
+* **EMP-23322:** use Bitmovin when bitmovinPlayerKey is provided ([#24](https://github.com/ericssonbroadcastservices/javascript-player/issues/24)) ([4ff5a94](https://github.com/ericssonbroadcastservices/javascript-player/commit/4ff5a9419f3336412c0fdf0f5e89be27517bf86e))
+
+
+
 ## [1.8.3-internal.3](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.8.2...v1.8.3-internal.3) (2026-08-25)
 
 
