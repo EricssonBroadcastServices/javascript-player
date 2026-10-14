@@ -16,6 +16,7 @@ const playerOptionsAttributes = [
   ["player",    "businessUnit",     "string"                ],
   ["player",    "exposureBaseUrl",  "string"                ],
   ["player",    "sessionToken",     "string"                ],
+  ["player",    "bitmovinPlayerKey","string"                ],
   ["player",    "autoplay",         "boolean"               ],
   ["player",    "disableCast",      "boolean"               ],
   ["player",    "muted",            "boolean"               ],
@@ -41,22 +42,54 @@ export const observableAttributes = [
   ),
 ];
 
+export async function fetchBitmovinPlayerKey(
+  exposureBaseUrl: string,
+  customer: string,
+  businessUnit: string
+): Promise<string | undefined> {
+  try {
+    const configURL = `${exposureBaseUrl}/v2/whitelabel/customer/${customer}/businessunit/${businessUnit}/config/sandwich`;
+    const response = await fetch(configURL);
+    if (!response.ok) {
+      return undefined;
+    }
+    const { bitmovinPlayerKey } = await response.json();
+    return typeof bitmovinPlayerKey === "string" && bitmovinPlayerKey.trim()
+      ? bitmovinPlayerKey
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export async function fetchAssetPageDetails(assetPage: string): Promise<{
   assetId: string;
   customer: string;
   businessUnit: string;
   exposureBaseUrl: string;
+  bitmovinPlayerKey?: string;
 }> {
   const url = new URL(assetPage);
   const isLocalhost = url.origin.includes("localhost");
   const baseUrl = isLocalhost ? defaultBaseURL : url.origin;
   const configURL = `${baseUrl}/v2/whitelabel/origin/${url.hostname}/config/sandwich`;
   const response = await fetch(configURL);
-  const { customer, businessUnit, systemConfig } = await response.json();
+  const { customer, businessUnit, systemConfig, bitmovinPlayerKey } =
+    await response.json();
   const exposureBaseUrl = systemConfig.playerUrl || defaultBaseURL;
   const path = url.pathname.split("/");
   const assetId = path[path.length - 1];
-  return { assetId, customer, businessUnit, exposureBaseUrl };
+  const bitmovinKey =
+    typeof bitmovinPlayerKey === "string" && bitmovinPlayerKey.trim()
+      ? bitmovinPlayerKey
+      : undefined;
+  return {
+    assetId,
+    customer,
+    businessUnit,
+    exposureBaseUrl,
+    bitmovinPlayerKey: bitmovinKey,
+  };
 }
 
 export function parseOptions(attributes: NamedNodeMap) {

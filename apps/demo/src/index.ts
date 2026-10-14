@@ -48,6 +48,7 @@ const $utcTimeInput = qs("#utcTime") as HTMLInputElement;
 const $qrCodeCanvas = qs("#qr") as HTMLCanvasElement;
 const $logsContainer = qs("#player-logs") as HTMLElement; // HTMLCodeElement doesn't exist
 const $wrapper = document.querySelector("div#video-wrapper") as HTMLDivElement;
+const $engineInfo = qs("#engine-info") as HTMLParagraphElement;
 const $eventSubscriptions = qs("#eventSubscriptions") as HTMLSelectElement;
 const $loginButton = qs("#login-button") as HTMLInputElement;
 const $loginDialog = qs("#login-dialog") as HTMLDialogElement;
@@ -201,6 +202,18 @@ function getFilteredFormEntries(): string[][] {
     .map(([name, val]) => [name, val as string]);
 }
 
+function resolveBitmovinPlayerKey(formValue?: string) {
+  const fromForm = formValue?.trim();
+  if (fromForm) {
+    return fromForm;
+  }
+  const fromEnv = process.env.BITMOVIN_KEY?.trim();
+  if (!fromEnv || fromEnv === "bitmovin_key") {
+    return undefined;
+  }
+  return fromEnv;
+}
+
 function getPlayerOptions(): IRedBeePlayerOptions {
   const data = Object.fromEntries(getFilteredFormEntries());
 
@@ -221,6 +234,7 @@ function getPlayerOptions(): IRedBeePlayerOptions {
     wrapperElement: $wrapper,
     logLevel: LogLevel.DEBUG,
     keysystem: data.keySystem,
+    bitmovinPlayerKey: resolveBitmovinPlayerKey(data.bitmovinPlayerKey),
   };
 }
 
@@ -248,8 +262,22 @@ export function getLoadOptions(): ILoadOptions {
   };
 }
 
+function updateEngineInfo(playerInstance: PlayerCore | RedBeePlayer) {
+  const engine = playerInstance.getSession()?.playerEngine;
+  if (engine?.name) {
+    $engineInfo.hidden = false;
+    $engineInfo.textContent = `Engine: ${engine.name}${
+      engine.version ? ` (${engine.version})` : ""
+    }`;
+  } else {
+    $engineInfo.hidden = true;
+    $engineInfo.textContent = "";
+  }
+}
+
 function loadHandler(playerInstance: PlayerCore | RedBeePlayer) {
   player = playerInstance;
+  updateEngineInfo(playerInstance);
 
   // Update play history
   const { castAppId, customer, businessUnit, exposureBaseUrl, sessionToken } =
@@ -421,6 +449,8 @@ export async function init() {
     evt.preventDefault();
     cleanup?.();
     $logsContainer.innerHTML = "";
+    $engineInfo.hidden = true;
+    $engineInfo.textContent = "";
     document.querySelectorAll(".player-required").forEach((element) => {
       (element as HTMLInputElement).disabled = true;
     });

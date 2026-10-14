@@ -181,6 +181,18 @@ export class BasePlayer extends AbstractPlayer {
   }
 
   /**
+   * Bitmovin is the default engine when a license key was provided at init.
+   * Without a key, callers keep the stream-type engine selection.
+   */
+  protected createBitmovinEngine(): Bitmovin | undefined {
+    const key = this.instanceSettings.initOptions.bitmovinPlayerKey?.trim();
+    if (!key) {
+      return undefined;
+    }
+    return new Bitmovin(this.videoElement, this.instanceSettings);
+  }
+
+  /**
    * ONLY AVAILABLE DURING DEVELOPMENT
    * `getPlayerEngine()` calls this method if the property is set, allows
    * developers to select which engine they want to use for a particular session.
@@ -214,19 +226,30 @@ export class BasePlayer extends AbstractPlayer {
     }
     if (this.mediaLocator?.includes(".m3u8")) {
       this.playbackFormat = "HLS";
-      if (isNativeHlsSupported()) {
-        return new Native(this.videoElement, this.instanceSettings);
-      }
-      return new HlsJs(this.videoElement, this.instanceSettings);
     } else if (this.mediaLocator?.includes(".mpd")) {
       this.playbackFormat = "DASH";
-      return new Shaka(this.videoElement, this.instanceSettings);
-    }
-    if (
+    } else if (
       this.mediaLocator?.includes("ism") ||
       this.mediaLocator?.includes("Manifest")
     ) {
       this.playbackFormat = "SMOOTHSTREAMING";
+    }
+
+    const bitmovinEngine = this.createBitmovinEngine();
+    if (bitmovinEngine) {
+      return bitmovinEngine;
+    }
+
+    if (this.playbackFormat === "HLS") {
+      if (isNativeHlsSupported()) {
+        return new Native(this.videoElement, this.instanceSettings);
+      }
+      return new HlsJs(this.videoElement, this.instanceSettings);
+    }
+    if (this.playbackFormat === "DASH") {
+      return new Shaka(this.videoElement, this.instanceSettings);
+    }
+    if (this.playbackFormat === "SMOOTHSTREAMING") {
       return new DashJs(this.videoElement, this.instanceSettings);
     }
     return new Native(this.videoElement, this.instanceSettings);

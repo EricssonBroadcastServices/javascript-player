@@ -91,7 +91,10 @@ export class Bitmovin extends AbstractBaseEngine {
     this.bitmovinPlayer =
       instanceSettings.initOptions.mediaContainer &&
       new Player(instanceSettings.initOptions.mediaContainer, {
-        key: process.env.BITMOVIN_KEY || "",
+        key:
+          instanceSettings.initOptions.bitmovinPlayerKey ||
+          process.env.BITMOVIN_KEY ||
+          "",
         ui: false,
         // autoplay is handled on our side to guarantee a proper eventflow
         playback: { autoplay: false },
