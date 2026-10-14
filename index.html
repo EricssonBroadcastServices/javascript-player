@@ -173,6 +173,13 @@ SPDX-License-Identifier: MIT
                 <option value="bitmovin">bitmovin</option>
               </select>
               <input
+                name="bitmovinPlayerKey"
+                type="text"
+                placeholder="Bitmovin license key"
+                autocomplete="off"
+                style="flex: 1 1 200px"
+              />
+              <input
                 name="startTime"
                 type="number"
                 placeholder="Start time (client-side)"
@@ -308,6 +315,11 @@ SPDX-License-Identifier: MIT
       </section>
       <article id="fullscreen-element">
         <div id="video-wrapper"></div>
+        <p
+          id="engine-info"
+          hidden
+          style="margin: 0.5rem 0; font-family: monospace"
+        ></p>
         <label>Seek to UTC time</label>
         <input
           id="utcTime"

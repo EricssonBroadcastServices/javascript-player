@@ -4746,6 +4746,7 @@ var $utcTimeInput = qs("#utcTime");
 var $qrCodeCanvas = qs("#qr");
 var $logsContainer = qs("#player-logs"); // HTMLCodeElement doesn't exist
 var $wrapper = document.querySelector("div#video-wrapper");
+var $engineInfo = qs("#engine-info");
 var $eventSubscriptions = qs("#eventSubscriptions");
 var $loginButton = qs("#login-button");
 var $loginDialog = qs("#login-dialog");
@@ -4950,6 +4951,18 @@ function getFilteredFormEntries() {
         ];
     });
 }
+function resolveBitmovinPlayerKey(formValue) {
+    var _process_env_BITMOVIN_KEY;
+    var fromForm = formValue === null || formValue === void 0 ? void 0 : formValue.trim();
+    if (fromForm) {
+        return fromForm;
+    }
+    var fromEnv = (_process_env_BITMOVIN_KEY = undefined) === null || _process_env_BITMOVIN_KEY === void 0 ? void 0 : _process_env_BITMOVIN_KEY.trim();
+    if (!fromEnv || fromEnv === "bitmovin_key") {
+        return undefined;
+    }
+    return fromEnv;
+}
 function getPlayerOptions() {
     var data = Object.fromEntries(getFilteredFormEntries());
     var _data_engine;
@@ -4972,7 +4985,8 @@ function getPlayerOptions() {
         autoplay: data.autoplay === "true",
         wrapperElement: $wrapper,
         logLevel: _ericssonbroadcastservices_js_player_shared__WEBPACK_IMPORTED_MODULE_159__.LogLevel.DEBUG,
-        keysystem: data.keySystem
+        keysystem: data.keySystem,
+        bitmovinPlayerKey: resolveBitmovinPlayerKey(data.bitmovinPlayerKey)
     };
 }
 function getLoadOptions() {
@@ -4998,8 +5012,20 @@ function getLoadOptions() {
         }, ssaiCustomParams && Object.fromEntries(new URLSearchParams(ssaiCustomParams).entries()))
     });
 }
+function updateEngineInfo(playerInstance) {
+    var _playerInstance_getSession;
+    var engine = (_playerInstance_getSession = playerInstance.getSession()) === null || _playerInstance_getSession === void 0 ? void 0 : _playerInstance_getSession.playerEngine;
+    if (engine === null || engine === void 0 ? void 0 : engine.name) {
+        $engineInfo.hidden = false;
+        $engineInfo.textContent = "Engine: ".concat(engine.name).concat(engine.version ? " (".concat(engine.version, ")") : "");
+    } else {
+        $engineInfo.hidden = true;
+        $engineInfo.textContent = "";
+    }
+}
 function loadHandler(playerInstance) {
     player = playerInstance;
+    updateEngineInfo(playerInstance);
     // Update play history
     var _getPlayerOptions = getPlayerOptions(), castAppId = _getPlayerOptions.castAppId, customer = _getPlayerOptions.customer, businessUnit = _getPlayerOptions.businessUnit, exposureBaseUrl = _getPlayerOptions.exposureBaseUrl, sessionToken = _getPlayerOptions.sessionToken;
     var source = $form.source.value;
@@ -5209,6 +5235,8 @@ function _init() {
                 evt.preventDefault();
                 cleanup === null || cleanup === void 0 ? void 0 : cleanup();
                 $logsContainer.innerHTML = "";
+                $engineInfo.hidden = true;
+                $engineInfo.textContent = "";
                 document.querySelectorAll(".player-required").forEach(function(element) {
                     element.disabled = true;
                 });
@@ -150606,7 +150634,7 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
         _this.name = "Bitmovin";
         _this.playertechVersion = "";
         _this.bitmovinPlayer = instanceSettings.initOptions.mediaContainer && new bitmovin_player_1.Player(instanceSettings.initOptions.mediaContainer, {
-            key:  false || "",
+            key: instanceSettings.initOptions.bitmovinPlayerKey || undefined || "",
             ui: false,
             // autoplay is handled on our side to guarantee a proper eventflow
             playback: {
@@ -156042,6 +156070,10 @@ var AdInsertionPlayer = /*#__PURE__*/ function(_AssetPlayer_1_AssetPlayer) {
                         return devEngine;
                     }
                 }
+                var bitmovinEngine = this.createBitmovinEngine();
+                if (bitmovinEngine) {
+                    return bitmovinEngine;
+                }
                 switch(format.format){
                     case "HLS":
                         if ((0, helpers_1.isNativeHlsSupported)()) {
@@ -156700,6 +156732,10 @@ var AssetPlayer = /*#__PURE__*/ function(_BasePlayer_1_BasePlayer) {
                         return devEngine;
                     }
                 }
+                var bitmovinEngine = this.createBitmovinEngine();
+                if (bitmovinEngine) {
+                    return bitmovinEngine;
+                }
                 switch(format){
                     case "HLS":
                         if (((_a = this.instanceSettings.mediaInfo) === null || _a === void 0 ? void 0 : _a.isLive) && !this.license && liveDelay && (0, helpers_1.isMSESupported)()) {
@@ -157161,6 +157197,20 @@ var BasePlayer = /*#__PURE__*/ function(_AbstractPlayer_1_AbstractPlayer) {
         },
         {
             /**
+     * Bitmovin is the default engine when a license key was provided at init.
+     * Without a key, callers keep the stream-type engine selection.
+     */ key: "createBitmovinEngine",
+            value: function createBitmovinEngine() {
+                var _a;
+                var key = (_a = this.instanceSettings.initOptions.bitmovinPlayerKey) === null || _a === void 0 ? void 0 : _a.trim();
+                if (!key) {
+                    return undefined;
+                }
+                return new Bitmovin_1.Bitmovin(this.videoElement, this.instanceSettings);
+            }
+        },
+        {
+            /**
      * ONLY AVAILABLE DURING DEVELOPMENT
      * `getPlayerEngine()` calls this method if the property is set, allows
      * developers to select which engine they want to use for a particular session.
@@ -157198,16 +157248,25 @@ var BasePlayer = /*#__PURE__*/ function(_AbstractPlayer_1_AbstractPlayer) {
                 }
                 if ((_a = this.mediaLocator) === null || _a === void 0 ? void 0 : _a.includes(".m3u8")) {
                     this.playbackFormat = "HLS";
+                } else if ((_b = this.mediaLocator) === null || _b === void 0 ? void 0 : _b.includes(".mpd")) {
+                    this.playbackFormat = "DASH";
+                } else if (((_c = this.mediaLocator) === null || _c === void 0 ? void 0 : _c.includes("ism")) || ((_d = this.mediaLocator) === null || _d === void 0 ? void 0 : _d.includes("Manifest"))) {
+                    this.playbackFormat = "SMOOTHSTREAMING";
+                }
+                var bitmovinEngine = this.createBitmovinEngine();
+                if (bitmovinEngine) {
+                    return bitmovinEngine;
+                }
+                if (this.playbackFormat === "HLS") {
                     if ((0, helpers_1.isNativeHlsSupported)()) {
                         return new Native_1.Native(this.videoElement, this.instanceSettings);
                     }
                     return new HlsJs_1.HlsJs(this.videoElement, this.instanceSettings);
-                } else if ((_b = this.mediaLocator) === null || _b === void 0 ? void 0 : _b.includes(".mpd")) {
-                    this.playbackFormat = "DASH";
+                }
+                if (this.playbackFormat === "DASH") {
                     return new Shaka_1.Shaka(this.videoElement, this.instanceSettings);
                 }
-                if (((_c = this.mediaLocator) === null || _c === void 0 ? void 0 : _c.includes("ism")) || ((_d = this.mediaLocator) === null || _d === void 0 ? void 0 : _d.includes("Manifest"))) {
-                    this.playbackFormat = "SMOOTHSTREAMING";
+                if (this.playbackFormat === "SMOOTHSTREAMING") {
                     return new DashJs_1.DashJs(this.videoElement, this.instanceSettings);
                 }
                 return new Native_1.Native(this.videoElement, this.instanceSettings);
@@ -158045,6 +158104,10 @@ var LowLatencyPlayer = /*#__PURE__*/ function(_AssetPlayer_1_AssetPlayer) {
                 this.mediaLocator = format === null || format === void 0 ? void 0 : format.mediaLocator;
                 this.playbackFormat = format === null || format === void 0 ? void 0 : format.format;
                 if ((preferredFormats === null || preferredFormats === void 0 ? void 0 : preferredFormats.includes("DASH")) || (preferredFormats === null || preferredFormats === void 0 ? void 0 : preferredFormats.includes("dash"))) {
+                    var bitmovinEngine = this.createBitmovinEngine();
+                    if (bitmovinEngine) {
+                        return bitmovinEngine;
+                    }
                     return new DashJs_1.DashJs(this.videoElement, this.instanceSettings);
                 }
                 var errMsg = "Low Latency Support for ".concat(preferredFormats, " not yet implemented");
@@ -286370,7 +286433,7 @@ function _type_of(obj) {
                         return function(e1, t1) {
                             if (!_instanceof(e1, t1)) throw new TypeError("Cannot call a class as a function");
                         }(this, m), (_$n = u.call(this, e1, t1)).name = "Bitmovin", _$n.playertechVersion = "", _$n.bitmovinPlayer = t1.initOptions.mediaContainer && new _.Player(t1.initOptions.mediaContainer, {
-                            key: "",
+                            key: t1.initOptions.bitmovinPlayerKey || "",
                             ui: !1,
                             playback: {
                                 autoplay: !1
@@ -290197,14 +290260,17 @@ function _type_of(obj) {
                             key: "getPlayerEngine",
                             value: function value() {
                                 var _$e = this.getFormat();
-                                switch(this.mediaLocator = _$e.mediaLocator, this.license = _$e.drm, this.playbackFormat = _$e.format, _$e.format){
+                                this.mediaLocator = _$e.mediaLocator, this.license = _$e.drm, this.playbackFormat = _$e.format;
+                                var _$t = this.createBitmovinEngine();
+                                if (_$t) return _$t;
+                                switch(_$e.format){
                                     case "HLS":
                                         return (0, y.isNativeHlsSupported)() ? new m.Native(this.videoElement, this.instanceSettings) : new v.HlsJs(this.videoElement, this.instanceSettings);
                                     case "DASH":
                                         return (0, p.isLGTV)() || "firefox" === (0, p.getBrowser)() ? new g.DashJs(this.videoElement, this.instanceSettings) : new b.Shaka(this.videoElement, this.instanceSettings);
                                     default:
-                                        var _$t = "Ad Stitching Support for ".concat(_$e, " not yet implemented");
-                                        throw new _.InitError(_$t, {
+                                        var _$n = "Ad Stitching Support for ".concat(_$e, " not yet implemented");
+                                        throw new _.InitError(_$n, {
                                             type: _.ErrorTypes.OPTIONS
                                         });
                                 }
@@ -290577,7 +290643,10 @@ function _type_of(obj) {
                             key: "getPlayerEngine",
                             value: function value() {
                                 var _$e, _$t = this.getFormat(), _$n = _$t.format, _$i = _$t.mediaLocator, r = _$t.drm, a1 = _$t.liveDelay;
-                                switch(this.mediaLocator = _$i, this.license = r, this.playbackFormat = _$n, _$n){
+                                this.mediaLocator = _$i, this.license = r, this.playbackFormat = _$n;
+                                var o = this.createBitmovinEngine();
+                                if (o) return o;
+                                switch(_$n){
                                     case "HLS":
                                         return (null === (_$e = this.instanceSettings.mediaInfo) || void 0 === _$e ? void 0 : _$e.isLive) && !this.license && a1 && (0, p.isMSESupported)() ? new d.HlsJs(this.videoElement, this.instanceSettings) : (0, p.isNativeHlsSupported)() ? new h.Native(this.videoElement, this.instanceSettings) : new d.HlsJs(this.videoElement, this.instanceSettings);
                                     case "DASH":
@@ -290797,7 +290866,7 @@ function _type_of(obj) {
                 Object.defineProperty(t1, "__esModule", {
                     value: !0
                 }), t1.BasePlayer = void 0;
-                var c = n(9768), l = n(4977), f = (n(3992), n(6171)), d = n(4592), h = n(4792), _ = n(4935), p = n(8360), g = n(756), v = n(8045), m = n(8566), b = n(1084), y = function(e1) {
+                var c = n(9768), l = n(4977), f = n(3992), d = n(6171), h = n(4592), _ = n(4792), p = n(4935), g = n(8360), v = n(756), m = n(8045), b = n(8566), y = n(1084), S = function(e1) {
                     !function(e1, t1) {
                         if ("function" != typeof t1 && null !== t1) throw new TypeError("Super expression must either be null or a function");
                         e1.prototype = Object.create(t1 && t1.prototype, {
@@ -290807,30 +290876,30 @@ function _type_of(obj) {
                                 configurable: !0
                             }
                         }), t1 && s1(e1, t1);
-                    }(y, e1);
-                    var _$t, _$n, o, b = u(y);
-                    function y(e1, t1, n, i) {
+                    }(S, e1);
+                    var _$t, _$n, o, y = u(S);
+                    function S(e1, t1, n, i) {
                         var r, a1 = arguments.length > 4 && void 0 !== arguments[4] ? arguments[4] : {};
                         !function(e1, t1) {
                             if (!_instanceof(e1, t1)) throw new TypeError("Cannot call a class as a function");
-                        }(this, y), (r = b.call(this, n, Object.assign(Object.assign({}, a1), {
+                        }(this, S), (r = y.call(this, n, Object.assign(Object.assign({}, a1), {
                             isMuted: n.initOptions.muted,
                             volume: e1.volume
                         }))).videoElement = e1, r.subtitleContainer = t1, r.source = i, r.scrubChange = 0, r.isFakePaused = !1, r.debouncedSeek = !1, r.destroyed = !1, r.setupDebounceSeekTo(), r.playerEngine = r.getPlayerEngine();
                         var o = r.instanceSettings.initOptions.muted;
                         return void 0 !== o && r.setMuted(o), r.setupPlayerEngineEventListeners(), r;
                     }
-                    return _$t = y, _$n = [
+                    return _$t = S, _$n = [
                         {
                             key: "setupPlayerEngineEventListeners",
                             value: function value() {
-                                this.playerEngine.on(h.EngineEvents.DRM_UPDATE, this.onDrmUpdate.bind(this)), this.playerEngine.on(h.EngineEvents.LOADED, this.onLoaded.bind(this)), this.playerEngine.on(h.EngineEvents.PLAY, this.onPlay.bind(this)), this.playerEngine.on(h.EngineEvents.PLAYING, this.onPlaying.bind(this)), this.playerEngine.on(h.EngineEvents.PAUSE, this.onPause.bind(this)), this.playerEngine.on(h.EngineEvents.TIME_UPDATE, this.onTimeUpdate.bind(this)), this.playerEngine.on(h.EngineEvents.SEEKING, this.onSeeking.bind(this)), this.playerEngine.on(h.EngineEvents.SEEKED, this.onSeeked.bind(this)), this.playerEngine.on(h.EngineEvents.BUFFERING, this.onBuffering.bind(this)), this.playerEngine.on(h.EngineEvents.BUFFERED, this.onBuffered.bind(this)), this.playerEngine.on(h.EngineEvents.DROPPED_FRAMES, this.onDroppedFrames.bind(this)), this.playerEngine.on(h.EngineEvents.SUBTITLE_CHANGED, this.onSubtitleChanged.bind(this)), this.playerEngine.on(h.EngineEvents.AUDIO_CHANGED, this.onAudioChanged.bind(this)), this.playerEngine.on(h.EngineEvents.VOLUME_CHANGE, this.onVolumeChanged.bind(this)), this.playerEngine.on(h.EngineEvents.BITRATE_CHANGED, this.onBitrateChanged.bind(this)), this.playerEngine.on(h.EngineEvents.ENDED, this.onEnded.bind(this)), this.playerEngine.on(h.EngineEvents.ERROR, this.onError.bind(this)), this.playerEngine.on(h.EngineEvents.STATE_CHANGED, this.onEngineStateChange.bind(this)), this.playerEngine.on(h.EngineEvents.TRACKS_CHANGED, this.onTracksChanged.bind(this)), this.playerEngine.on(h.EngineEvents.SUBTITLE_CUE_CHANGED, this.onSubtitleCueChanged.bind(this)), this.playerEngine.on(h.EngineEvents.METADATA_EVENT, this.onMetadataChanged.bind(this));
+                                this.playerEngine.on(_.EngineEvents.DRM_UPDATE, this.onDrmUpdate.bind(this)), this.playerEngine.on(_.EngineEvents.LOADED, this.onLoaded.bind(this)), this.playerEngine.on(_.EngineEvents.PLAY, this.onPlay.bind(this)), this.playerEngine.on(_.EngineEvents.PLAYING, this.onPlaying.bind(this)), this.playerEngine.on(_.EngineEvents.PAUSE, this.onPause.bind(this)), this.playerEngine.on(_.EngineEvents.TIME_UPDATE, this.onTimeUpdate.bind(this)), this.playerEngine.on(_.EngineEvents.SEEKING, this.onSeeking.bind(this)), this.playerEngine.on(_.EngineEvents.SEEKED, this.onSeeked.bind(this)), this.playerEngine.on(_.EngineEvents.BUFFERING, this.onBuffering.bind(this)), this.playerEngine.on(_.EngineEvents.BUFFERED, this.onBuffered.bind(this)), this.playerEngine.on(_.EngineEvents.DROPPED_FRAMES, this.onDroppedFrames.bind(this)), this.playerEngine.on(_.EngineEvents.SUBTITLE_CHANGED, this.onSubtitleChanged.bind(this)), this.playerEngine.on(_.EngineEvents.AUDIO_CHANGED, this.onAudioChanged.bind(this)), this.playerEngine.on(_.EngineEvents.VOLUME_CHANGE, this.onVolumeChanged.bind(this)), this.playerEngine.on(_.EngineEvents.BITRATE_CHANGED, this.onBitrateChanged.bind(this)), this.playerEngine.on(_.EngineEvents.ENDED, this.onEnded.bind(this)), this.playerEngine.on(_.EngineEvents.ERROR, this.onError.bind(this)), this.playerEngine.on(_.EngineEvents.STATE_CHANGED, this.onEngineStateChange.bind(this)), this.playerEngine.on(_.EngineEvents.TRACKS_CHANGED, this.onTracksChanged.bind(this)), this.playerEngine.on(_.EngineEvents.SUBTITLE_CUE_CHANGED, this.onSubtitleCueChanged.bind(this)), this.playerEngine.on(_.EngineEvents.METADATA_EVENT, this.onMetadataChanged.bind(this));
                             }
                         },
                         {
                             key: "getPreferredLanguages",
                             value: function value() {
-                                var _$e = (0, m.getPreferences)();
+                                var _$e = (0, b.getPreferences)();
                                 return {
                                     audio: _$e.audio,
                                     subtitle: _$e.subtitle
@@ -290855,6 +290924,13 @@ function _type_of(obj) {
                             }
                         },
                         {
+                            key: "createBitmovinEngine",
+                            value: function value() {
+                                var _$e;
+                                if (null === (_$e = this.instanceSettings.initOptions.bitmovinPlayerKey) || void 0 === _$e ? void 0 : _$e.trim()) return new f.Bitmovin(this.videoElement, this.instanceSettings);
+                            }
+                        },
+                        {
                             key: "getPlayerEngineDev",
                             value: function value() {}
                         },
@@ -290862,7 +290938,9 @@ function _type_of(obj) {
                             key: "getPlayerEngine",
                             value: function value() {
                                 var _$e, _$t, _$n, _$i;
-                                return this.mediaLocator = this.source, (null === (_$e = this.mediaLocator) || void 0 === _$e ? void 0 : _$e.includes(".m3u8")) ? (this.playbackFormat = "HLS", (0, v.isNativeHlsSupported)() ? new _.Native(this.videoElement, this.instanceSettings) : new d.HlsJs(this.videoElement, this.instanceSettings)) : (null === (_$t = this.mediaLocator) || void 0 === _$t ? void 0 : _$t.includes(".mpd")) ? (this.playbackFormat = "DASH", new p.Shaka(this.videoElement, this.instanceSettings)) : (null === (_$n = this.mediaLocator) || void 0 === _$n ? void 0 : _$n.includes("ism")) || (null === (_$i = this.mediaLocator) || void 0 === _$i ? void 0 : _$i.includes("Manifest")) ? (this.playbackFormat = "SMOOTHSTREAMING", new f.DashJs(this.videoElement, this.instanceSettings)) : new _.Native(this.videoElement, this.instanceSettings);
+                                this.mediaLocator = this.source, (null === (_$e = this.mediaLocator) || void 0 === _$e ? void 0 : _$e.includes(".m3u8")) ? this.playbackFormat = "HLS" : (null === (_$t = this.mediaLocator) || void 0 === _$t ? void 0 : _$t.includes(".mpd")) ? this.playbackFormat = "DASH" : ((null === (_$n = this.mediaLocator) || void 0 === _$n ? void 0 : _$n.includes("ism")) || (null === (_$i = this.mediaLocator) || void 0 === _$i ? void 0 : _$i.includes("Manifest"))) && (this.playbackFormat = "SMOOTHSTREAMING");
+                                var r = this.createBitmovinEngine();
+                                return r || ("HLS" === this.playbackFormat ? (0, m.isNativeHlsSupported)() ? new p.Native(this.videoElement, this.instanceSettings) : new h.HlsJs(this.videoElement, this.instanceSettings) : "DASH" === this.playbackFormat ? new g.Shaka(this.videoElement, this.instanceSettings) : "SMOOTHSTREAMING" === this.playbackFormat ? new d.DashJs(this.videoElement, this.instanceSettings) : new p.Native(this.videoElement, this.instanceSettings));
                             }
                         },
                         {
@@ -290886,7 +290964,7 @@ function _type_of(obj) {
                         {
                             key: "isLive",
                             value: function value() {
-                                return this.playerEngine ? this.playerEngine.isLive() : r(a1(y.prototype), "isLive", this).call(this);
+                                return this.playerEngine ? this.playerEngine.isLive() : r(a1(S.prototype), "isLive", this).call(this);
                             }
                         },
                         {
@@ -290896,7 +290974,7 @@ function _type_of(obj) {
                                     start: 0,
                                     end: 0
                                 };
-                                return this.playerEngine.isLive() ? _$t.end - _$t.start > g.MIN_DVR_WINDOW : _$t.end - _$t.start > 0;
+                                return this.playerEngine.isLive() ? _$t.end - _$t.start > v.MIN_DVR_WINDOW : _$t.end - _$t.start > 0;
                             }
                         },
                         {
@@ -291120,7 +291198,7 @@ function _type_of(obj) {
                                 var _$n = arguments.length > 2 && void 0 !== arguments[2] && arguments[2];
                                 this.isFakePaused && !_$n || ("isSeekable" in e1 && this.playerEngine.setClientRestrictions({
                                     timeshiftEnabled: e1.isSeekable
-                                }), r(a1(y.prototype), "setState", this).call(this, e1, t1));
+                                }), r(a1(S.prototype), "setState", this).call(this, e1, t1));
                             }
                         },
                         {
@@ -291288,7 +291366,7 @@ function _type_of(obj) {
                                 })), this.setState({
                                     subtitleTrack: this.getSubtitleTrack(),
                                     subtitleTracks: this.getSubtitleTracks()
-                                }), !e1.shouldUpdatePreferences || (null === (_$t = e1.track) || void 0 === _$t ? void 0 : _$t.kind) && !l.SUPPORTED_TEXT_TRACK_KINDS.includes(e1.track.kind) || (0, m.setPreferences)({
+                                }), !e1.shouldUpdatePreferences || (null === (_$t = e1.track) || void 0 === _$t ? void 0 : _$t.kind) && !l.SUPPORTED_TEXT_TRACK_KINDS.includes(e1.track.kind) || (0, b.setPreferences)({
                                     subtitle: {
                                         language: null === (_$n = e1.track) || void 0 === _$n ? void 0 : _$n.language,
                                         kind: null === (_$i = e1.track) || void 0 === _$i ? void 0 : _$i.kind
@@ -291315,7 +291393,7 @@ function _type_of(obj) {
                                 this.state.hasStarted && this.emit(c.PlayerEvents.AUDIO_CHANGED, Object.assign(Object.assign({}, this.getDefaultPlayerEvent()), e1)), this.setState({
                                     audioTrack: e1.track,
                                     audioTracks: this.getAudioTracks()
-                                }), (0, m.setPreferences)({
+                                }), (0, b.setPreferences)({
                                     audio: {
                                         language: null === (_$t = e1.track) || void 0 === _$t ? void 0 : _$t.language,
                                         kind: null === (_$n = e1.track) || void 0 === _$n ? void 0 : _$n.kind
@@ -291403,12 +291481,12 @@ function _type_of(obj) {
                         {
                             key: "destroy",
                             value: function value() {
-                                this.destroyed = !0, this.stop(), this.playerEngine.destroy(), r(a1(y.prototype), "destroy", this).call(this);
+                                this.destroyed = !0, this.stop(), this.playerEngine.destroy(), r(a1(S.prototype), "destroy", this).call(this);
                             }
                         }
-                    ], _$n && i(_$t.prototype, _$n), o && i(_$t, o), y;
-                }(b.AbstractPlayer);
-                t1.BasePlayer = y;
+                    ], _$n && i(_$t.prototype, _$n), o && i(_$t, o), S;
+                }(y.AbstractPlayer);
+                t1.BasePlayer = S;
             },
             8958: function(e1, t1, n) {
                 "use strict";
@@ -291482,9 +291560,12 @@ function _type_of(obj) {
                                 var _$e, _$t, _$n = this.instanceSettings.initOptions.preferredFormats, _$i = null === (_$t = null === (_$e = this.instanceSettings) || void 0 === _$e ? void 0 : _$e.formats) || void 0 === _$t ? void 0 : _$t.find(function(e1) {
                                     return "DASH" === e1.format;
                                 });
-                                if (this.mediaLocator = null == _$i ? void 0 : _$i.mediaLocator, this.playbackFormat = null == _$i ? void 0 : _$i.format, (null == _$n ? void 0 : _$n.includes("DASH")) || (null == _$n ? void 0 : _$n.includes("dash"))) return new c.DashJs(this.videoElement, this.instanceSettings);
-                                var r = "Low Latency Support for ".concat(_$n, " not yet implemented");
-                                throw new u.InitError(r, {
+                                if (this.mediaLocator = null == _$i ? void 0 : _$i.mediaLocator, this.playbackFormat = null == _$i ? void 0 : _$i.format, (null == _$n ? void 0 : _$n.includes("DASH")) || (null == _$n ? void 0 : _$n.includes("dash"))) {
+                                    var r = this.createBitmovinEngine();
+                                    return r || new c.DashJs(this.videoElement, this.instanceSettings);
+                                }
+                                var a1 = "Low Latency Support for ".concat(_$n, " not yet implemented");
+                                throw new u.InitError(a1, {
                                     type: u.ErrorTypes.OPTIONS
                                 });
                             }
@@ -315956,7 +316037,7 @@ function _type_of(obj) {
                 }, p = u.HL, g = u.xn, v = u.$W;
             }
         }, __webpack_module_cache__ = {};
-        function __nested_webpack_require_12739732__(e1) {
+        function __nested_webpack_require_12740892__(e1) {
             var t1 = __webpack_module_cache__[e1];
             if (void 0 !== t1) return t1.exports;
             var n = __webpack_module_cache__[e1] = {
@@ -315964,35 +316045,35 @@ function _type_of(obj) {
                 loaded: !1,
                 exports: {}
             };
-            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12739732__), n.loaded = !0, n.exports;
+            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12740892__), n.loaded = !0, n.exports;
         }
-        __nested_webpack_require_12739732__.d = function(e1, t1) {
-            for(var n in t1)__nested_webpack_require_12739732__.o(t1, n) && !__nested_webpack_require_12739732__.o(e1, n) && Object.defineProperty(e1, n, {
+        __nested_webpack_require_12740892__.d = function(e1, t1) {
+            for(var n in t1)__nested_webpack_require_12740892__.o(t1, n) && !__nested_webpack_require_12740892__.o(e1, n) && Object.defineProperty(e1, n, {
                 enumerable: !0,
                 get: t1[n]
             });
-        }, __nested_webpack_require_12739732__.g = function() {
+        }, __nested_webpack_require_12740892__.g = function() {
             if ("object" == typeof globalThis) return globalThis;
             try {
                 return this || new Function("return this")();
             } catch (e1) {
                 if ("object" == typeof window) return window;
             }
-        }(), __nested_webpack_require_12739732__.o = function(e1, t1) {
+        }(), __nested_webpack_require_12740892__.o = function(e1, t1) {
             return Object.prototype.hasOwnProperty.call(e1, t1);
-        }, __nested_webpack_require_12739732__.r = function(e1) {
+        }, __nested_webpack_require_12740892__.r = function(e1) {
             "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e1, Symbol.toStringTag, {
                 value: "Module"
             }), Object.defineProperty(e1, "__esModule", {
                 value: !0
             });
-        }, __nested_webpack_require_12739732__.nmd = function(e1) {
+        }, __nested_webpack_require_12740892__.nmd = function(e1) {
             return e1.paths = [], e1.children || (e1.children = []), e1;
         };
         var __nested_webpack_exports__ = {};
         return function() {
             "use strict";
-            __nested_webpack_require_12739732__.r(__nested_webpack_exports__), __nested_webpack_require_12739732__.d(__nested_webpack_exports__, {
+            __nested_webpack_require_12740892__.r(__nested_webpack_exports__), __nested_webpack_require_12740892__.d(__nested_webpack_exports__, {
                 ContentType: function ContentType() {
                     return t1.ContentType;
                 },
@@ -316012,7 +316093,7 @@ function _type_of(obj) {
                     return S;
                 }
             });
-            var e1 = __nested_webpack_require_12739732__(1382), t1 = __nested_webpack_require_12739732__(9768), n = __nested_webpack_require_12739732__(9899), i = __nested_webpack_require_12739732__(3718), r = __nested_webpack_require_12739732__(5072);
+            var e1 = __nested_webpack_require_12740892__(1382), t1 = __nested_webpack_require_12740892__(9768), n = __nested_webpack_require_12740892__(9899), i = __nested_webpack_require_12740892__(3718), r = __nested_webpack_require_12740892__(5072);
             function a1(e1, t1) {
                 (null == t1 || t1 > e1.length) && (t1 = e1.length);
                 for(var n = 0, i = new Array(t1); n < t1; n++)i[n] = e1[n];
