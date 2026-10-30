@@ -1,3 +1,9 @@
+**v1.9.1-internal.0** (2026-10-30)
+
+Bug Fixes
+
+* Sync package-lock for Node 24 npm publish
+
 **v1.9.0** (2026-10-30)
 
 **v1.9.0-internal.0** (2026-10-14)

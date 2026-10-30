@@ -1,3 +1,12 @@
+## [1.9.1-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.9.0...v1.9.1-internal.0) (2026-10-30)
+
+
+### Bug Fixes
+
+* sync package-lock for Node 24 npm publish ([#25](https://github.com/ericssonbroadcastservices/javascript-player/issues/25)) ([5371f9b](https://github.com/ericssonbroadcastservices/javascript-player/commit/5371f9bcd4bd2302b098731686e5ac50f698d48a))
+
+
+
 # [1.9.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.9.0-internal.0...v1.9.0) (2026-10-30)
 
 
