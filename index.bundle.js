@@ -143683,7 +143683,7 @@ var PlayerCore = /*#__PURE__*/ function(_js_player_shared_1_EmitterBaseClass) {
         _this.mediaContainer = mediaContainer;
         _this.container = container;
         _this.instanceSettings = {
-            playerSDKVersion:  true ? "1.9.0" : 0,
+            playerSDKVersion:  true ? "1.9.1-internal.0" : 0,
             initOptions: Object.assign(Object.assign(Object.assign({}, defaults_1.PLAYER_OPTIONS), options), {
                 mediaContainer: mediaContainer
             }),
@@ -280416,7 +280416,7 @@ function _type_of(obj) {
                         o.className = U, o.tabIndex = 0;
                         var s1 = document.createElement("div");
                         if (s1.className = F, o.appendChild(s1), _$t.videoElement = (0, M.setupVideoElement)(), s1.appendChild(_$t.videoElement), _$t.subtitleContainer = document.createElement("div"), _$t.subtitleContainer.className = B, s1.appendChild(_$t.subtitleContainer), _$t.mediaContainer = s1, _$t.container = o, _$t.instanceSettings = {
-                            playerSDKVersion: "1.9.0",
+                            playerSDKVersion: "1.9.1-internal.0",
                             initOptions: Object.assign(Object.assign(Object.assign({}, P.PLAYER_OPTIONS), e1), {
                                 mediaContainer: s1
                             }),
@@ -312443,7 +312443,7 @@ function _type_of(obj) {
                 }, p = u.HL, g = u.xn, v = u.$W;
             }
         }, __webpack_module_cache__ = {};
-        function __nested_webpack_require_12740881__(e1) {
+        function __nested_webpack_require_12740892__(e1) {
             var t1 = __webpack_module_cache__[e1];
             if (void 0 !== t1) return t1.exports;
             var n = __webpack_module_cache__[e1] = {
@@ -312451,35 +312451,35 @@ function _type_of(obj) {
                 loaded: !1,
                 exports: {}
             };
-            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12740881__), n.loaded = !0, n.exports;
+            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12740892__), n.loaded = !0, n.exports;
         }
-        __nested_webpack_require_12740881__.d = function(e1, t1) {
-            for(var n in t1)__nested_webpack_require_12740881__.o(t1, n) && !__nested_webpack_require_12740881__.o(e1, n) && Object.defineProperty(e1, n, {
+        __nested_webpack_require_12740892__.d = function(e1, t1) {
+            for(var n in t1)__nested_webpack_require_12740892__.o(t1, n) && !__nested_webpack_require_12740892__.o(e1, n) && Object.defineProperty(e1, n, {
                 enumerable: !0,
                 get: t1[n]
             });
-        }, __nested_webpack_require_12740881__.g = function() {
+        }, __nested_webpack_require_12740892__.g = function() {
             if ("object" == typeof globalThis) return globalThis;
             try {
                 return this || new Function("return this")();
             } catch (e1) {
                 if ("object" == typeof window) return window;
             }
-        }(), __nested_webpack_require_12740881__.o = function(e1, t1) {
+        }(), __nested_webpack_require_12740892__.o = function(e1, t1) {
             return Object.prototype.hasOwnProperty.call(e1, t1);
-        }, __nested_webpack_require_12740881__.r = function(e1) {
+        }, __nested_webpack_require_12740892__.r = function(e1) {
             "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e1, Symbol.toStringTag, {
                 value: "Module"
             }), Object.defineProperty(e1, "__esModule", {
                 value: !0
             });
-        }, __nested_webpack_require_12740881__.nmd = function(e1) {
+        }, __nested_webpack_require_12740892__.nmd = function(e1) {
             return e1.paths = [], e1.children || (e1.children = []), e1;
         };
         var __nested_webpack_exports__ = {};
         return function() {
             "use strict";
-            __nested_webpack_require_12740881__.r(__nested_webpack_exports__), __nested_webpack_require_12740881__.d(__nested_webpack_exports__, {
+            __nested_webpack_require_12740892__.r(__nested_webpack_exports__), __nested_webpack_require_12740892__.d(__nested_webpack_exports__, {
                 ContentType: function ContentType() {
                     return t1.ContentType;
                 },
@@ -312499,7 +312499,7 @@ function _type_of(obj) {
                     return S;
                 }
             });
-            var e1 = __nested_webpack_require_12740881__(1382), t1 = __nested_webpack_require_12740881__(9768), n = __nested_webpack_require_12740881__(9899), i = __nested_webpack_require_12740881__(3718), r = __nested_webpack_require_12740881__(5072);
+            var e1 = __nested_webpack_require_12740892__(1382), t1 = __nested_webpack_require_12740892__(9768), n = __nested_webpack_require_12740892__(9899), i = __nested_webpack_require_12740892__(3718), r = __nested_webpack_require_12740892__(5072);
             function a1(e1, t1) {
                 (null == t1 || t1 > e1.length) && (t1 = e1.length);
                 for(var n = 0, i = new Array(t1); n < t1; n++)i[n] = e1[n];
