@@ -426,3600 +426,6 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/dist/index.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/dist/index.js ***!
-  \******************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-var e = __webpack_require__(/*! preact */ "../../node_modules/preact/dist/preact.module.js"), t = __webpack_require__(/*! classnames */ "../../node_modules/classnames/index.js"), n = __webpack_require__(/*! preact/hooks */ "../../node_modules/preact/hooks/dist/hooks.module.js"), i = __webpack_require__(/*! mdi-preact/SkipNextIcon */ "../../node_modules/mdi-preact/SkipNextIcon.js"), r = __webpack_require__(/*! @ericssonbroadcastservices/js-player-shared */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/index.js"), l = __webpack_require__(/*! humanize-duration */ "../../node_modules/humanize-duration/humanize-duration.js"), a = __webpack_require__(/*! mdi-preact/FormatListBulletedIcon */ "../../node_modules/mdi-preact/FormatListBulletedIcon.js"), o = __webpack_require__(/*! mdi-preact/Rewind10Icon */ "../../node_modules/mdi-preact/Rewind10Icon.js"), u = __webpack_require__(/*! preact/compat */ "../../node_modules/preact/compat/dist/compat.module.js"), s = __webpack_require__(/*! mdi-preact/FastForward10Icon */ "../../node_modules/mdi-preact/FastForward10Icon.js"), c = __webpack_require__(/*! mdi-preact/PauseIcon */ "../../node_modules/mdi-preact/PauseIcon.js"), d = __webpack_require__(/*! mdi-preact/PlayIcon */ "../../node_modules/mdi-preact/PlayIcon.js"), v = __webpack_require__(/*! mdi-preact/StopIcon */ "../../node_modules/mdi-preact/StopIcon.js"), f = __webpack_require__(/*! mdi-preact/CogIcon */ "../../node_modules/mdi-preact/CogIcon.js"), h = __webpack_require__(/*! mdi-preact/SubtitlesOutlineIcon */ "../../node_modules/mdi-preact/SubtitlesOutlineIcon.js"), T = __webpack_require__(/*! mdi-preact/VolumeHighIcon */ "../../node_modules/mdi-preact/VolumeHighIcon.js"), k = __webpack_require__(/*! mdi-preact/VolumeMuteIcon */ "../../node_modules/mdi-preact/VolumeMuteIcon.js"), m = __webpack_require__(/*! mdi-preact/CastIcon */ "../../node_modules/mdi-preact/CastIcon.js"), p = __webpack_require__(/*! mdi-preact/CloseIcon */ "../../node_modules/mdi-preact/CloseIcon.js"), S = __webpack_require__(/*! mdi-preact/MapMarkerIcon */ "../../node_modules/mdi-preact/MapMarkerIcon.js"), b = __webpack_require__(/*! mdi-preact/AccountVoiceIcon */ "../../node_modules/mdi-preact/AccountVoiceIcon.js"), E = __webpack_require__(/*! mdi-preact/MovieCogIcon */ "../../node_modules/mdi-preact/MovieCogIcon.js"), _ = __webpack_require__(/*! mdi-preact/SubtitlesIcon */ "../../node_modules/mdi-preact/SubtitlesIcon.js"), C = __webpack_require__(/*! mdi-preact/LinkVariantIcon */ "../../node_modules/mdi-preact/LinkVariantIcon.js"), g = __webpack_require__(/*! mdi-preact/AppleAirplayIcon */ "../../node_modules/mdi-preact/AppleAirplayIcon.js"), A = __webpack_require__(/*! mdi-preact/FullscreenExitIcon */ "../../node_modules/mdi-preact/FullscreenExitIcon.js"), M = __webpack_require__(/*! mdi-preact/FullscreenIcon */ "../../node_modules/mdi-preact/FullscreenIcon.js"), y = __webpack_require__(/*! mdi-preact/PictureInPictureTopRightIcon */ "../../node_modules/mdi-preact/PictureInPictureTopRightIcon.js"), w = __webpack_require__(/*! hotkeys-js */ "../../node_modules/hotkeys-js/dist/hotkeys.esm.js");
-function I(e) {
-    return e && "object" == typeof e && "default" in e ? e : {
-        default: e
-    };
-}
-var N = /*#__PURE__*/ I(t), L = /*#__PURE__*/ I(i), P = /*#__PURE__*/ I(l), R = /*#__PURE__*/ I(a), D = /*#__PURE__*/ I(o), O = /*#__PURE__*/ I(s), U = /*#__PURE__*/ I(c), q = /*#__PURE__*/ I(d), B = /*#__PURE__*/ I(v), H = /*#__PURE__*/ I(f), x = /*#__PURE__*/ I(h), G = /*#__PURE__*/ I(T), V = /*#__PURE__*/ I(k), F = /*#__PURE__*/ I(m), W = /*#__PURE__*/ I(p), K = /*#__PURE__*/ I(S), Z = /*#__PURE__*/ I(b), j = /*#__PURE__*/ I(E), z = /*#__PURE__*/ I(_), Q = /*#__PURE__*/ I(C), J = /*#__PURE__*/ I(g), X = /*#__PURE__*/ I(A), Y = /*#__PURE__*/ I(M), $ = /*#__PURE__*/ I(y), ee = /*#__PURE__*/ I(w);
-function te() {
-    return te = Object.assign ? Object.assign.bind() : function te(e) {
-        for(var t = 1; t < arguments.length; t++){
-            var n = arguments[t];
-            for(var i in n)Object.prototype.hasOwnProperty.call(n, i) && (e[i] = n[i]);
-        }
-        return e;
-    }, te.apply(this, arguments);
-}
-var ne = {
-    hideControlsTimer: 2500,
-    showMetadata: !0,
-    showWallClock: !1,
-    showQualitySelector: !0,
-    showSubtitlesToggleButton: !1,
-    showJumpButtons: !0,
-    allowPictureInPicture: !0,
-    keyboardShortcuts: !0
-};
-function ie(e, t) {
-    void 0 === t && (t = !0);
-    try {
-        return new Intl.DateTimeFormat("sv-SE", te({
-            hour: "2-digit",
-            minute: "2-digit"
-        }, t && {
-            second: "2-digit"
-        }, e && {
-            timeZone: e
-        }));
-    } catch (n) {
-        if (e) return ie(void 0, t);
-        throw n;
-    }
-}
-function re(e) {
-    return void 0 === e && (e = 0), [
-        Math.floor(e / 3600) % 24,
-        Math.floor(e / 60) % 60,
-        Math.floor(e % 60)
-    ].map(function(e) {
-        return e < 10 ? "0" + e : e;
-    }).filter(function(e, t) {
-        return "00" !== e || t > 0;
-    }).join(":");
-}
-function le(e, t) {
-    var n = ie(t);
-    return 1970 === new Date(e).getFullYear() && (e *= 1e3), n.format(new Date(e));
-}
-var ae = function ae(e, t, n) {
-    var i, l, a, o;
-    void 0 === n && (n = "en");
-    var u = e;
-    null != t && t.asset && (u = t.asset);
-    var s = null != (i = r.getAssetTitle(u, n)) ? i : "", c = null != (l = r.getAssetDescription(u, n)) ? l : "", d = {
-        image: null != (a = null == (o = r.getLocalizedImageByType(u.localized, "LANDSCAPE", "cover", n)) ? void 0 : o.url) ? a : "",
-        title: s,
-        description: c
-    };
-    return null != t && t.startTime && t.endTime ? d.duration = [
-        new Date(t.startTime),
-        new Date(t.endTime)
-    ].map(function(e) {
-        return ie(void 0, !1).format(e);
-    }).join(" - ") : e.duration && (d.duration = function(e, t) {
-        return P.default(e, {
-            language: t,
-            fallbacks: [
-                "en"
-            ],
-            round: !0
-        });
-    }(e.duration, n)), d;
-};
-function oe(e, t) {
-    var i = n.useState(te({}, r.DefaultPlayerState, {
-        isAirPlaying: !1,
-        isAirPlayAvailable: !1,
-        contractRestrictions: void 0
-    })), l = i[0], a = i[1], o = n.useState({
-        asset: void 0,
-        timelineSpriteCues: [],
-        activeIntro: void 0
-    }), u = o[0], s = o[1];
-    return n.useEffect(function() {
-        null == e || e.on(r.PlayerEvents.STATE_CHANGED, function(e) {
-            a(function(t) {
-                return te({}, t, e);
-            });
-        }), null == e || e.on(r.PlayerEvents.LOADED, function() {
-            null != e && e.getAssetInfo() && (s(function(n) {
-                var i, r = null == e ? void 0 : e.getAssetInfo();
-                return te({}, n, {
-                    asset: r && ae(r, null == e || null == (i = e.getProgramInfo()) ? void 0 : i.current, t)
-                });
-            }), null == e || e.getTimelineSpriteCues().then(function(e) {
-                s(function(t) {
-                    return te({}, t, {
-                        timelineSpriteCues: e
-                    });
-                });
-            }));
-        }), null == e || e.on(r.PlayerEvents.PROGRAM_CHANGED, function(e) {
-            var n = e.channel, i = e.program;
-            s(function(e) {
-                return te({}, e, {
-                    asset: ae(n, i, t)
-                });
-            });
-        }), null == e || e.on(r.PlayerEvents.INTRO_START, function(e) {
-            var _$t = e.contentMarker;
-            s(function(e) {
-                return te({}, e, {
-                    activeIntro: _$t
-                });
-            });
-        }), null == e || e.on(r.PlayerEvents.INTRO_END, function(e) {
-            var _$t = e.contentMarker;
-            s(function(e) {
-                var n;
-                return te({}, e, {
-                    activeIntro: _$t.offset === (null == (n = e.activeIntro) ? void 0 : n.offset) ? void 0 : e.activeIntro
-                });
-            });
-        });
-    }, [
-        e,
-        t
-    ]), n.useEffect(function() {
-        var _$t, n;
-        return window.addEventListener("resize", _$t = function t() {
-            clearTimeout(n), n = window.setTimeout(function() {
-                null == e || e.getTimelineSpriteCues().then(function(e) {
-                    a(function(t) {
-                        return te({}, t, {
-                            timelineSpriteCues: e
-                        });
-                    });
-                });
-            }, 500);
-        }), function() {
-            return window.removeEventListener("resize", _$t);
-        };
-    }, []), [
-        l,
-        u
-    ];
-}
-var ue = {
-    container: "_zDmI-",
-    slideIn: "_m3sfy",
-    isMobile: "_jmdrk",
-    hidden: "_SrUR9",
-    skipButtonExit: "_x09aO",
-    slideOut: "_AD2wD",
-    skipButton: "_U18uE",
-    title: "_vHAmu"
-};
-function se(t) {
-    var i, l, a = t.playerCore, o = t.showSkipOption, u = t.locale, s = t.isMobile, c = oe(a, u), d = c[0].currentTime, v = c[1].activeIntro, f = n.useState(!1), h = f[0], T = f[1], k = n.useState(!1), m = k[0], p = k[1], S = v && o;
-    n.useEffect(function() {
-        S && !h ? T(!0) : !S && h && (p(!0), setTimeout(function() {
-            T(!1), p(!1);
-        }, 500));
-    }, [
-        d
-    ]);
-    var b = n.useCallback(function() {
-        null != v && v.endOffset && (null == a || a.seekTo(v.endOffset / 1e3));
-    }, [
-        a,
-        v
-    ]);
-    return e.h("div", {
-        class: N.default(ue.container, (i = {}, i[ue.skipButtonExit] = m, i[ue.hidden] = !h, i[ue.isMobile] = s, i)),
-        onClick: b
-    }, e.h("div", {
-        class: ue.skipButton
-    }, e.h(L.default, null), e.h("div", {
-        class: ue.title
-    }, r.getLocalizedTitle(null != (l = null == v ? void 0 : v.localized) ? l : [], u))));
-}
-var ce = {
-    container: "_tviQo"
-};
-function de() {
-    return e.h("div", {
-        class: ce.container
-    }, "Unfortunately, the title cannot be played at the moment for technical reasons.");
-}
-var ve = {
-    container: "_aDSwM",
-    loader: "_gluyA",
-    rotation: "_i3wdj"
-};
-function fe() {
-    return e.h("div", {
-        class: ve.container
-    }, e.h("span", {
-        class: ve.loader
-    }));
-}
-var he = {
-    META_DATA_VIEW: "metaDataView",
-    CONTENT_MARKERS_MENU: "contentMarkersMenu",
-    SETTINGS_MENU: "settings"
-}, Te = {
-    container: "_1DnQ9",
-    isMobile: "_kbb2W",
-    adIndexLabel: "_zM-Fn"
-};
-function ke(t) {
-    var n, i = t.currentAdIndex, r = t.currentAdBreakTotal, l = t.translations;
-    return e.h("div", {
-        class: N.default(Te.container, (n = {}, n[Te.isMobile] = !!t.isMobile, n))
-    }, e.h("div", {
-        class: Te.adIndexLabel
-    }, (null == l ? void 0 : l.AD) || "Ad", " ", i, "/", r));
-}
-var me = {
-    buttonContainer: "_m6UOb"
-};
-function pe(t) {
-    return e.h("div", null, e.h("div", {
-        class: me.buttonContainer,
-        onClick: t.toggleMenu
-    }, e.h(R.default, null)));
-}
-var Se = e.createContext(void 0), be = Se.Provider;
-function Ee() {
-    return n.useContext(Se);
-}
-function _e() {
-    var e = n.useContext(Se);
-    if (e && !("isConnected" in e)) return e;
-}
-function Ce() {
-    var e = Ee();
-    return n.useCallback(function() {
-        e && (e.isPlaying() ? e.pause() : e.play());
-    }, [
-        e
-    ]);
-}
-var ge = "_Y0ZHd", Ae = u.memo(function() {
-    var t = Ee();
-    return e.h("div", {
-        class: ge,
-        onClick: function onClick() {
-            return null == t ? void 0 : t.scrub(-r.QuickSeekTime);
-        }
-    }, e.h(D.default, null));
-}), Me = u.memo(function() {
-    var t = Ee();
-    return e.h("div", {
-        class: ge,
-        onClick: function onClick() {
-            return null == t ? void 0 : t.scrub(r.QuickSeekTime);
-        }
-    }, e.h(O.default, null));
-}), ye = u.memo(function(t) {
-    var n, i = t.isAtLiveEdge, r = Ee();
-    return e.h("span", {
-        onClick: function onClick() {
-            return null == r ? void 0 : r.seekToLive();
-        },
-        class: N.default("_x6XyB", (n = {}, n["_7N-Qj"] = !i, n))
-    }, "LIVE");
-}), we = u.memo(function(t) {
-    var n = t.state, i = t.pausable, l = void 0 === i || i, a = t.className, o = Ce(), u = e.h(l ? U.default : B.default, null);
-    return e.h("div", {
-        class: N.default("_CoOBd", a),
-        onClick: o
-    }, n !== r.PlaybackState.PLAYING ? e.h(q.default, null) : u);
-}), Ie = {
-    buttonContainer: "_d9js2"
-};
-function Ne(t) {
-    return e.h("div", null, e.h("div", {
-        class: Ie.buttonContainer,
-        onClick: t.toggleMenu
-    }, e.h(H.default, null)));
-}
-var Le = {
-    container: "_6N8My"
-}, Pe = u.memo(function(t) {
-    var n = t.isEnabled, i = Ee();
-    return e.h("div", {
-        class: Le.buttonContainer,
-        onClick: function onClick() {
-            var e;
-            if (i && 0 !== (null == (e = i.getSubtitleTracks()) ? void 0 : e.length)) {
-                var _$t = i.getSubtitleTracks(), n = i.getSubtitleTrack();
-                i.setSubtitleTrack(n ? void 0 : _$t[0]);
-            }
-        }
-    }, e.h(x.default, n ? {
-        color: "rgba(255, 255, 255, 1"
-    } : {
-        color: "rgba(255, 255, 255, 0.5"
-    }));
-}), Re = {
-    container: "_0MV3a",
-    hoverIndicator: "_C-pA6",
-    wrapper: "_ZEE0w",
-    hoverBar: "_w8DfN",
-    progress: "_bslHT",
-    indicator: "_3TX4U",
-    adBreakContainer: "_uuIlP",
-    marker: "_16FYa"
-};
-function De(e, t) {
-    return parseFloat((e / t * 100).toFixed(2));
-}
-function Oe(e) {
-    var t, n = e.currentTarget;
-    return De(e.changedTouches[0].clientX - (t = n, t.__RBM_CLIENT_RECT || (t.__RBM_CLIENT_RECT = t.getBoundingClientRect())).left, n.offsetWidth);
-}
-function Ue(t) {
-    var i, r, l = t.value, a = t.hoverIndicator, o = t.adMarkerPositions, u = t.onSelect;
-    l = Math.min(l, 100);
-    var s = n.useState(-1), c = s[0], d = s[1], v = n.useRef(null), f = n.useRef(null), h = null == (i = f.current) ? void 0 : i.getBoundingClientRect(), T = null == (r = v.current) ? void 0 : r.getBoundingClientRect(), k = n.useState(50), m = k[0], p = k[1], S = n.useState(0), b = S[0], E = S[1], _ = n.useState(0), C = _[0], g = _[1], A = n.useState(c), M = A[0], y = A[1], w = n.useCallback(function(e) {
-        e.preventDefault(), d(Oe(e));
-    }, []), _$I = n.useCallback(function(e) {
-        e.preventDefault(), u(Oe(e)), d(-1), e.currentTarget.__RBM_CLIENT_RECT = null;
-    }, [
-        u
-    ]), N = n.useCallback(function(e) {
-        var _$t = De(e.offsetX, e.currentTarget.offsetWidth);
-        d(_$t);
-    }, []), L = n.useCallback(function() {
-        d(-1);
-    }, []), P = n.useCallback(function(e) {
-        u(De(e.offsetX, e.currentTarget.offsetWidth));
-    }, [
-        u
-    ]), R = c > -1, D = {
-        left: "0",
-        width: "0"
-    };
-    return R && (l > c ? (D.left = l - (l - c) + "%", D.width = l - c + "%") : l < c && (D.left = l + "%", D.width = c - l + "%")), n.useLayoutEffect(function() {
-        if (h && T) {
-            var e = De(h.width, T.width), _$t = parseFloat((e / 2).toFixed(2));
-            E(_$t);
-            var n = parseFloat((100 - e / 2).toFixed(2));
-            g(n), c > _$t && c < n ? p(50) : c <= _$t ? (y(0), p(0)) : c >= n && (y(100), p(100));
-        }
-    }, [
-        c,
-        T,
-        h,
-        m
-    ]), e.h("div", {
-        ref: v,
-        class: Re.container,
-        onTouchStart: w,
-        onTouchMove: w,
-        onTouchEnd: _$I,
-        onMouseMove: N,
-        onMouseUp: P,
-        onMouseLeave: L
-    }, a && R && e.h("span", {
-        ref: f,
-        class: Re.hoverIndicator,
-        style: {
-            left: function(e) {
-                return e < b || e > C ? M : e;
-            }(c) + "%",
-            transform: "TranslateX(-" + function(e) {
-                return e < b || e > C ? m : 50;
-            }(c) + "%)"
-        }
-    }, a(c)), e.h("div", {
-        class: Re.wrapper
-    }, e.h("div", {
-        class: Re.progress,
-        style: {
-            width: l + "%"
-        }
-    }, e.h("div", {
-        className: Re.indicator
-    })), o && e.h("div", {
-        className: Re.adBreakContainer
-    }, o.map(function(t, n) {
-        return e.h("span", {
-            key: n + "-" + t,
-            className: Re.marker,
-            style: {
-                left: t + "%"
-            }
-        });
-    })), e.h("div", {
-        class: Re.hoverBar,
-        style: D
-    })));
-}
-var qe = u.memo(function(t) {
-    var i, r, l = t.muted, a = t.volume, o = t.disableSlider, u = Ee(), s = n.useRef(), c = n.useState(!1), d = c[0], v = c[1], f = n.useCallback(function() {
-        window.clearTimeout(s.current), o || v(!0);
-    }, [
-        o
-    ]), h = n.useCallback(function() {
-        return s.current = window.setTimeout(function() {
-            return v(!1);
-        }, 1e3);
-    }, []);
-    return e.h("div", {
-        class: N.default("_Evjv-", (i = {}, i._F1jb2 = o, i)),
-        onMouseOver: f,
-        onMouseOut: h
-    }, e.h("div", {
-        class: "_Jq-pq",
-        onClick: function onClick() {
-            return null == u ? void 0 : u.toggleMuted();
-        }
-    }, e.h(l ? V.default : G.default, null)), e.h("div", {
-        class: N.default("_jkibU", (r = {}, r._hN5f7 = d, r))
-    }, e.h(Ue, {
-        onSelect: function onSelect(e) {
-            return null == u ? void 0 : u.setVolume({
-                percentage: e
-            });
-        },
-        value: 100 * a
-    })));
-}), Be = u.memo(function(t) {
-    var n = t.image;
-    return e.h("div", {
-        class: "_l8hBS"
-    }, e.h("span", {
-        class: "_pNgVv"
-    }, t.title), n && e.h("img", {
-        class: "_2Ccot",
-        src: n,
-        alt: ""
-    }), !n && e.h(F.default, null));
-}), He = u.memo(function(t) {
-    var n = t.items, i = t.icon, l = t.setActiveView, a = t.locale, o = Ee();
-    return n ? e.h("div", {
-        class: "_HhEZP"
-    }, e.h("div", {
-        class: "_Kd2UR"
-    }, i), e.h("ul", null, n.map(function(t, n) {
-        var i;
-        return e.h("li", {
-            key: t.type + "_" + n,
-            onClick: function onClick() {
-                null == o || o.seekTo(t.offset / 1e3), l(void 0);
-            }
-        }, e.h("div", {
-            class: "_0N1SR"
-        }, e.h("div", {
-            class: "_NYsVs"
-        }, re(t.offset / 1e3)), e.h("div", {
-            class: "_x6q7H"
-        }, e.h("div", null, r.getLocalizedTitle(null != (i = t.localized) ? i : [], a)))));
-    }))) : null;
-}), xe = u.memo(function(t) {
-    var n, i = t.visible, r = t.contentMarkers, l = void 0 === r ? [] : r, a = t.fillScreen, o = t.locale, u = t.setActiveView;
-    return e.h("div", {
-        class: N.default("_DNBWK", (n = {}, n._ZUgWR = a, n._P1EVF = !a, n._JzoOU = !i, n))
-    }, e.h("div", {
-        onClick: function onClick() {
-            return u(void 0);
-        },
-        class: "_UIPcJ"
-    }, e.h(W.default, null)), e.h("div", {
-        class: "_-1xX1"
-    }, !!l.length && e.h(He, {
-        icon: e.h(K.default, null),
-        items: l.filter(function(e) {
-            return "POINT" === e.type || "CHAPTER" === e.type;
-        }),
-        setActiveView: u,
-        locale: o
-    })));
-}), Ge = {
-    hoverIndicator: "_RUNmY",
-    sprite: "_mKx-M",
-    visible: "_q18d-"
-};
-function Ve(t) {
-    var i, r, l = t.isLive, a = t.spriteCue, o = t.time, u = t.duration;
-    r = t.showWallClock ? le(o, t.timeZone) : l ? "- " + re(Math.max(u - o, 0)) : "" + re(Math.max(o, 0));
-    var s = n.useState(!1), c = s[0], d = s[1];
-    return n.useEffect(function() {
-        if (d(!1), null != a && a.image) {
-            var e = new Image;
-            return e.onload = function() {
-                return d(!0);
-            }, e.src = a.image, function() {
-                return e.onload = null;
-            };
-        }
-    }, [
-        null == a ? void 0 : a.image
-    ]), e.h("div", {
-        class: Ge.hoverIndicator
-    }, a && e.h("div", {
-        class: N.default(Ge.sprite, (i = {}, i[Ge.visible] = c, i)),
-        style: {
-            width: a.dimensions.width + "px",
-            height: a.dimensions.height + "px",
-            backgroundImage: "url(" + a.image + ")",
-            backgroundPosition: -a.dimensions.x + "px " + -a.dimensions.y + "px"
-        }
-    }), e.h("span", null, r));
-}
-function Fe(t) {
-    var i = t.seekable, r = t.isLive, l = t.currentTime, a = t.timelineSpriteCues, o = t.showWallClock, u = t.timeZone, s = t.utcSeekable, c = t.adMarkerPositions, d = Ee(), v = o ? (s.end - s.start) / 1e3 : i.end - i.start, f = n.useCallback(function(e) {
-        var _$t = null == d ? void 0 : d.getSeekable();
-        _$t && (null == d || d.seekTo(_$t.start + e * (_$t.end - _$t.start) / 100));
-    }, [
-        d
-    ]), h = n.useCallback(function(t) {
-        var n = t / 100 * v, i = a.find(function(e) {
-            return n >= e.start && n < e.end;
-        });
-        return e.h(Ve, {
-            isLive: r,
-            showWallClock: o,
-            timeZone: u,
-            spriteCue: i,
-            time: o ? s.start + 1e3 * n : n,
-            duration: v
-        });
-    }, [
-        v,
-        a,
-        r,
-        o,
-        u,
-        s.start
-    ]), T = function(e, t, n) {
-        return parseFloat(((n - e) / (t - e) * 100).toFixed(2));
-    }(i.start, i.end, l);
-    return e.h(Ue, {
-        value: T,
-        onSelect: f,
-        hoverIndicator: h,
-        adMarkerPositions: c
-    });
-}
-var We = "_2SOwL", Ke = "_OWD8Z", Ze = "_cUmx9";
-function je(t) {
-    var n, i = t.items, r = t.icon, l = t.onSelect, a = t.selected, o = t.isSubtitles, u = o && (!a || !i.find(function(e) {
-        return e.language === (null == a ? void 0 : a.language) && e.label === (null == a ? void 0 : a.label);
-    }));
-    return 0 === i.length ? null : e.h("div", {
-        class: Ke
-    }, e.h("div", {
-        class: Ze
-    }, r), e.h("ul", null, o && e.h("li", {
-        class: N.default("_xUD5h", (n = {}, n[We] = u, n)),
-        onClick: function onClick() {
-            return l(void 0);
-        }
-    }, "Off"), i.map(function(t) {
-        return e.h("li", {
-            key: t.id,
-            class: t.language === (null == a ? void 0 : a.language) && t.label === (null == a ? void 0 : a.label) ? We : "",
-            onClick: function onClick() {
-                return l(t);
-            }
-        }, t.label);
-    })));
-}
-function ze(t) {
-    var n = t.items, i = t.onSelect, r = t.selected;
-    return 0 === n.length ? null : e.h("div", {
-        class: Ke
-    }, e.h("div", {
-        class: Ze
-    }, t.icon), e.h("ul", null, n.map(function(t) {
-        return e.h("li", {
-            key: t.id,
-            class: t.id === r.id ? We : "",
-            onClick: function onClick() {
-                return i(t);
-            }
-        }, t.name || t.height);
-    })));
-}
-function Qe(e) {
-    var t = e.qualityLevels;
-    return e.subtitleTracks.length >= 1 || e.audioTracks.length >= 2 || t && t.length > 2;
-}
-var Je = u.memo(function(t) {
-    var n, i = t.visible, r = t.subtitleTrack, l = t.subtitleTracks, a = t.audioTrack, o = t.audioTracks, u = t.qualityLevel, s = t.qualityLevels, c = t.fillScreen, d = t.setActiveView, v = Ee();
-    return e.h("div", {
-        class: N.default("_BIBFX", (n = {}, n._mhms2 = c, n._e2KJO = !c, n._XzFa4 = !i, n))
-    }, e.h("div", {
-        onClick: function onClick() {
-            return d();
-        },
-        class: "_b6xAC"
-    }, e.h(W.default, null)), e.h("div", {
-        class: "_qPIOW"
-    }, l && l.length >= 1 && e.h(je, {
-        selected: r,
-        items: l,
-        icon: e.h(z.default, null),
-        onSelect: function onSelect(e) {
-            return null == v ? void 0 : v.setSubtitleTrack(e);
-        },
-        isSubtitles: !0
-    }), o && o.length >= 2 && e.h(je, {
-        selected: a,
-        items: o,
-        icon: e.h(Z.default, null),
-        onSelect: function onSelect(e) {
-            return null == v ? void 0 : v.setAudioTrack(e);
-        }
-    }), s && s.length > 2 && e.h(ze, {
-        icon: e.h(j.default, null),
-        selected: u,
-        items: s,
-        onSelect: function onSelect(e) {
-            return null == v ? void 0 : v.setQualityLevel(e);
-        }
-    })));
-}), Xe = {
-    wrapper: "_PVRf6",
-    fadeIn: "_KNL6m",
-    bottomContainer: "_zOX53",
-    topControls: "_eMoIf",
-    playPauseStop: "_Vj8-i",
-    controls: "_wuNBb",
-    time: "_-Eidl",
-    buttons: "_WCDbq",
-    divider: "_Jv7y0"
-};
-function Ye(t) {
-    var i, l, a, o, u, s, c, d = t.options, v = t.locale, f = function(e, t) {
-        var i = n.useState(r.DefaultPlayerState), l = i[0], a = i[1], o = n.useState({
-            title: void 0,
-            imageUrl: void 0
-        }), u = o[0], s = o[1];
-        return n.useEffect(function() {
-            var _$t = function t(e) {
-                a(function(t) {
-                    return te({}, t, e);
-                });
-            }, n = function n(e) {
-                s(function(t) {
-                    return te({}, t, e);
-                });
-            };
-            return null == e || e.on(r.CastSenderEvent.STATE_CHANGE, _$t), null == e || e.on(r.CastSenderEvent.METADATA_UPDATE, n), function() {
-                null == e || e.off(r.CastSenderEvent.STATE_CHANGE, _$t), null == e || e.off(r.CastSenderEvent.METADATA_UPDATE, n);
-            };
-        }, [
-            e,
-            t
-        ]), [
-            l,
-            u
-        ];
-    }(t.castSender, v), h = f[0], T = f[1], k = n.useState(), m = k[0], p = k[1], S = !h.isSeekable || !d.showJumpButtons, b = !h.isSeekable || !d.showJumpButtons || h.isAtLiveEdge, E = d.showWallClock && h.utcDuration > -1, _ = E ? le(h.utcCurrentTime, d.timeZone) : re(h.currentTime), C = E ? le(h.utcDuration, d.timeZone) : re(h.duration), g = (null == (i = h.adMarkers) ? void 0 : i.map(function(e) {
-        return e.startTime / h.duration * 100;
-    })) || [], A = !(null == (l = h.contentMarkers) || !l.filter(function(e) {
-        return "CHAPTER" === e.type || "POINT" === e.type;
-    }).length), M = n.useRef(null), y = [
-        r.PlaybackState.IDLE,
-        r.PlaybackState.ENDED
-    ].some(function(e) {
-        return e === h.playbackState;
-    });
-    return e.h("div", {
-        class: Xe.wrapper
-    }, e.h(Be, {
-        title: T.title,
-        image: T.imageUrl
-    }), h.contentType === r.ContentType.AD && (null == (a = h.currentAd) ? void 0 : a.adIndex) && (null == (o = h.currentAd) ? void 0 : o.adsTotal) && e.h(ke, {
-        currentAdIndex: null == (u = h.currentAd) ? void 0 : u.adIndex,
-        currentAdBreakTotal: null == (s = h.currentAd) ? void 0 : s.adsTotal,
-        translations: null == d ? void 0 : d.translations
-    }), e.h(xe, {
-        visible: m === he.CONTENT_MARKERS_MENU,
-        contentMarkers: null != (c = h.contentMarkers) ? c : [],
-        duration: h.duration,
-        fillScreen: !0,
-        setActiveView: function setActiveView(e) {
-            return p(e);
-        },
-        locale: v
-    }), e.h(Je, {
-        visible: m === he.SETTINGS_MENU,
-        fillScreen: !0,
-        audioTrack: h.audioTrack,
-        subtitleTrack: h.subtitleTrack,
-        setActiveView: p,
-        subtitleTracks: h.subtitleTracks,
-        audioTracks: h.audioTracks,
-        qualityLevel: h.qualityLevel,
-        qualityLevels: h.qualityLevels
-    }), !m && e.h("div", {
-        ref: M,
-        class: N.default(Xe.bottomContainer)
-    }, !y && e.h("div", {
-        class: N.default(Xe.topControls)
-    }, !S && e.h(Ae, null), e.h(we, {
-        pausable: h.contentType === r.ContentType.AD || h.isSeekable,
-        state: h.playbackState,
-        className: Xe.playPauseStop
-    }), !b && e.h(Me, null)), e.h("div", {
-        class: Xe.controls
-    }, e.h("div", {
-        class: Xe.buttons
-    }, h.isLive && e.h(ye, {
-        isAtLiveEdge: h.isAtLiveEdge
-    }), !y && !h.isLive && e.h("span", {
-        class: Xe.time
-    }, _, " / ", C), e.h("div", {
-        class: Xe.divider
-    }), A && e.h(pe, {
-        toggleMenu: m === he.CONTENT_MARKERS_MENU ? function() {
-            return p(void 0);
-        } : function() {
-            return p(he.CONTENT_MARKERS_MENU);
-        }
-    }), Qe(te({
-        audioTracks: h.audioTracks,
-        subtitleTracks: h.subtitleTracks
-    }, d.showQualitySelector && {
-        qualityLevels: h.qualityLevels
-    })) && e.h(Ne, {
-        toggleMenu: m === he.SETTINGS_MENU ? function() {
-            return p(void 0);
-        } : function() {
-            return p(he.SETTINGS_MENU);
-        }
-    }), d.showSubtitlesToggleButton && 1 === h.subtitleTracks.length && e.h(Pe, {
-        isEnabled: Boolean(h.subtitleTrack)
-    }), e.h("google-cast-launcher", null), e.h(qe, {
-        muted: h.isMuted,
-        volume: h.volume || 0,
-        disableSlider: !0
-    })), h.isSeekable && e.h(Fe, {
-        isLive: h.isLive,
-        currentTime: h.currentTime,
-        seekable: h.seekable,
-        timelineSpriteCues: [],
-        showWallClock: null != E && E,
-        timeZone: d.timeZone,
-        utcCurrentTime: h.utcCurrentTime,
-        utcSeekable: h.utcSeekable,
-        adMarkerPositions: g
-    }))));
-}
-var $e = {
-    container: "_aDWzl",
-    isMobile: "_G8q3B",
-    hidden: "_wyFaE",
-    clickthroughButton: "_iijT4"
-};
-function et(t) {
-    var i, r = t.isMobile, l = t.onClickThrough, a = t.clickThroughUrl, o = t.translations, u = n.useCallback(function() {
-        null == l || l();
-    }, [
-        l
-    ]), s = !(null == o || !o.AD_CLICK_THROUGH_TEXT);
-    return e.h("div", {
-        class: N.default($e.container, (i = {}, i[$e.hidden] = !a, i[$e.isMobile] = r, i)),
-        onClick: u
-    }, e.h("div", {
-        class: $e.clickthroughButton
-    }, !s && e.h(Q.default, null), s && (null == o ? void 0 : o.AD_CLICK_THROUGH_TEXT)));
-}
-var tt = u.memo(function() {
-    var t = _e();
-    return e.h("div", {
-        class: "_lFcXW",
-        onClick: function onClick() {
-            return null == t ? void 0 : t.toggleAirPlay();
-        }
-    }, e.h(J.default, null));
-}), nt = u.memo(function(t) {
-    var n = t.poster, i = Ce();
-    return e.h("div", {
-        class: "_K0M1i",
-        style: n && {
-            backgroundColor: "#000",
-            backgroundImage: 'url("' + n + '")',
-            backgroundSize: "contain",
-            backgroundPosition: "50% 50%"
-        },
-        onClick: i
-    }, e.h(q.default, null));
-}), it = u.memo(function(t) {
-    var n = t.isFullscreen, i = _e();
-    return e.h("div", {
-        class: "_0kShs",
-        onClick: function onClick() {
-            return null == i ? void 0 : i.toggleFullscreen();
-        }
-    }, e.h(n ? X.default : Y.default, null));
-}), rt = u.memo(function() {
-    var t = _e();
-    return e.h("div", {
-        class: "_zHlM3",
-        onClick: function onClick() {
-            return null == t ? void 0 : t.togglePictureInPicture();
-        }
-    }, e.h($.default, null));
-});
-function lt(e) {
-    var t = e.doubleTap, i = e.singleTap, r = n.useRef();
-    return n.useCallback(function(e) {
-        e.preventDefault(), e.stopPropagation(), r.current ? (window.clearTimeout(r.current), r.current = void 0, null == t || t()) : r.current = window.setTimeout(function() {
-            null == i || i(), r.current = void 0;
-        }, 300);
-    }, [
-        t,
-        i
-    ]);
-}
-var at = u.memo(function(t) {
-    var n = t.onSingleTap, i = t.isSkinHidden, l = t.pointer, a = void 0 !== l && l, o = Ee(), u = lt({
-        doubleTap: function doubleTap() {
-            return null == o ? void 0 : o.scrub(r.QuickSeekTime);
-        },
-        singleTap: n
-    }), s = lt({
-        doubleTap: function doubleTap() {
-            return null == o ? void 0 : o.scrub(-r.QuickSeekTime);
-        },
-        singleTap: n
-    }), c = te({}, a && {
-        cursor: "pointer"
-    }, i && {
-        zIndex: 99
-    });
-    return e.h("div", {
-        class: "_B5QPi",
-        onTouchStart: function onTouchStart(e) {
-            return e.preventDefault();
-        },
-        onTouchMove: function onTouchMove(e) {
-            return e.preventDefault();
-        },
-        onClick: function onClick(e) {
-            return e.preventDefault();
-        },
-        style: c
-    }, e.h("div", {
-        class: "_TcFgs",
-        onTouchStart: s,
-        onClick: s
-    }), e.h("div", {
-        class: "_h3orD",
-        onTouchStart: u,
-        onClick: u
-    }));
-}), ot = {
-    metadata: "_beqAR",
-    slideIn: "_Vj12U",
-    hidden: "_DqTtp",
-    container: "_UUg0w",
-    imageWrapper: "_IGFxk",
-    aspectWrapper: "_5CB-B",
-    image: "_tBQ17",
-    contentHolder: "_YI31I",
-    textWrapper: "_BEmf2"
-};
-function ut(t) {
-    var i, r = t.asset, l = t.visible, a = n.useMemo(function() {
-        if (!r || !r.image) return null;
-        var e = new URL(r.image);
-        return e.searchParams.set("w", "307"), e.searchParams.set("h", "171"), e.toString();
-    }, [
-        r
-    ]);
-    return r && r.title ? e.h("div", {
-        class: N.default(ot.metadata, (i = {}, i[ot.hidden] = !l, i))
-    }, e.h("div", {
-        class: ot.container
-    }, a && e.h("div", {
-        class: ot.imageWrapper
-    }, e.h("div", {
-        class: ot.aspectWrapper
-    }, e.h("img", {
-        class: ot.image,
-        src: a
-    }))), e.h("div", {
-        class: ot.contentHolder
-    }, e.h("h4", null, r.title), e.h("span", null, r.duration), e.h("div", {
-        class: ot.textWrapper
-    }, e.h("p", null, r.description))))) : null;
-}
-var st = {
-    container: "_LVsid",
-    time: "_dPZUs"
-};
-function ct(t) {
-    var n = t.seekable, i = t.isLive, r = t.currentTime, l = t.isAtLiveEdge, a = t.timelineSpriteCues, o = t.showWallClock, u = t.timeZone, s = t.utcCurrentTime, c = t.utcSeekable, d = t.adMarkerPositions, v = n.end - n.start, f = l ? "00:00" : "- " + re(n.end - r), h = o ? le(s, u) : i ? f : re(r);
-    return e.h("div", {
-        class: st.container
-    }, e.h("span", {
-        class: st.time
-    }, h), e.h(Fe, {
-        seekable: n,
-        isLive: i,
-        currentTime: r,
-        timelineSpriteCues: a,
-        showWallClock: o,
-        timeZone: u,
-        utcCurrentTime: s,
-        utcSeekable: c,
-        adMarkerPositions: d
-    }), i ? e.h(ye, {
-        isAtLiveEdge: l
-    }) : e.h("span", {
-        class: st.time
-    }, o ? le(c.end, u) : re(v)));
-}
-function dt(e) {
-    var t = e.onSkinHidden, i = e.onSkinVisible, r = e.isSkinHidden;
-    n.useEffect(function() {
-        r ? null == t || t() : null == i || i();
-    }, [
-        r,
-        t,
-        i
-    ]);
-}
-function vt(e) {
-    var t = e.userActiveTimeout, i = n.useState(!1), r = i[0], l = i[1], a = n.useRef();
-    n.useEffect(function() {
-        return function() {
-            return window.clearTimeout(a.current);
-        };
-    }, []);
-    var o = n.useCallback(function() {
-        window.clearTimeout(a.current), l(!0), a.current = window.setTimeout(function() {
-            l(!1);
-        }, t);
-    }, [
-        t
-    ]), u = n.useCallback(function() {
-        window.clearTimeout(a.current), l(!r);
-    }, [
-        r
-    ]);
-    return [
-        r,
-        o,
-        u
-    ];
-}
-var ft = {
-    wrapper: "_0g3Kg",
-    fadeIn: "_hZT-B",
-    bottomContainer: "_OEoO3",
-    hidden: "_-cDzl",
-    controls: "_biwot",
-    buttons: "_HmmRN",
-    menuButtons: "_6YcpD",
-    divider: "_LhZwY"
-};
-function ht(t) {
-    var i, l, a, o, u, s, c, d, v, f, h, T, k, m = t.playerCore, p = t.options, S = t.locale, b = t.isCastAvailable, E = t.onSkinHidden, _ = t.onSkinVisible, C = oe(m, S), g = C[0], A = C[1], M = function(e) {
-        var _$t = n.useState(!0), i = _$t[0], r = _$t[1];
-        return n.useEffect(function() {
-            e.isVolumeReadOnly().then(function(e) {
-                return r(e);
-            });
-        }, [
-            e
-        ]), i;
-    }(m), y = n.useState(), w = y[0], _$I = y[1], L = vt({
-        userActiveTimeout: null != (i = p.hideControlsTimer) ? i : 2500
-    }), P = L[1], R = "ontouchstart" in document.documentElement, D = !L[0] && g.playbackState !== r.PlaybackState.IDLE && g.playbackState !== r.PlaybackState.PAUSED && w !== he.SETTINGS_MENU && w !== he.CONTENT_MARKERS_MENU;
-    dt({
-        onSkinHidden: E,
-        onSkinVisible: _,
-        isSkinHidden: D
-    });
-    var O = !g.isSeekable || !p.showJumpButtons || g.contractRestrictions && !1 === g.contractRestrictions.rwEnabled, U = !g.isSeekable || !p.showJumpButtons || g.contractRestrictions && !1 === g.contractRestrictions.ffEnabled || g.isAtLiveEdge, q = (!g.hasStarted || g.isLive && !g.isSeekable) && g.playbackState === r.PlaybackState.PAUSED, B = p.showWallClock && g.utcDuration > -1, H = (null == (l = g.adMarkers) ? void 0 : l.map(function(e) {
-        return e.startTime / g.duration * 100;
-    })) || [], x = !(null == (a = g.contentMarkers) || !a.filter(function(e) {
-        return "CHAPTER" === e.type || "POINT" === e.type;
-    }).length), G = null == (o = g.currentAd) ? void 0 : o.clickThrough, V = !(!G || w === he.CONTENT_MARKERS_MENU || w === he.SETTINGS_MENU), F = n.useCallback(function() {
-        R ? P() : m.clickThrough();
-    }, [
-        m
-    ]);
-    n.useEffect(function() {
-        p.showMetadata && !w && _$I(he.META_DATA_VIEW);
-    }, [
-        w,
-        p.showMetadata
-    ]);
-    var W = n.useRef(null);
-    return n.useEffect(function() {
-        var e, _$t, n = D ? 0 : null != (e = null == (_$t = W.current) ? void 0 : _$t.clientHeight) ? e : 0;
-        m.getSubtitleContainerElement().style.marginBottom = n + "px";
-    }, [
-        D,
-        m,
-        W,
-        g.isSeekable,
-        w
-    ]), e.h("div", {
-        class: ft.wrapper,
-        onMouseMove: P,
-        onTouchMove: P
-    }, e.h(at, {
-        onSingleTap: F,
-        isSkinHidden: D,
-        pointer: V
-    }), q && e.h(nt, {
-        poster: (null == (u = m.getSession()) || null == (u = u.loadOptions) ? void 0 : u.poster) || (null == A || null == (s = A.asset) ? void 0 : s.image)
-    }), g.contentType === r.ContentType.AD && (null == (c = g.currentAd) ? void 0 : c.adIndex) && (null == (d = g.currentAd) ? void 0 : d.adsTotal) && e.h(ke, {
-        currentAdIndex: null == (v = g.currentAd) ? void 0 : v.adIndex,
-        currentAdBreakTotal: null == (f = g.currentAd) ? void 0 : f.adsTotal,
-        isMobile: !1,
-        translations: null == p ? void 0 : p.translations
-    }), V && e.h(et, {
-        isMobile: !1,
-        onClickThrough: function onClickThrough() {
-            return m.clickThrough();
-        },
-        clickThroughUrl: G,
-        translations: null == p ? void 0 : p.translations
-    }), !q && e.h("div", {
-        class: N.default(ft.bottomContainer, (h = {}, h[ft.hidden] = D, h))
-    }, e.h(Je, {
-        fillScreen: !1,
-        visible: w === he.SETTINGS_MENU,
-        audioTrack: g.audioTrack,
-        audioTracks: g.audioTracks,
-        subtitleTrack: g.subtitleTrack,
-        subtitleTracks: g.subtitleTracks,
-        qualityLevel: g.qualityLevel,
-        qualityLevels: g.qualityLevels,
-        setActiveView: _$I
-    }), e.h("div", {
-        ref: W
-    }, p.showMetadata && e.h(ut, {
-        asset: null == A ? void 0 : A.asset,
-        visible: w === he.META_DATA_VIEW
-    }), e.h(xe, {
-        visible: w === he.CONTENT_MARKERS_MENU,
-        contentMarkers: null != (T = g.contentMarkers) ? T : [],
-        duration: g.duration,
-        fillScreen: !1,
-        locale: S,
-        setActiveView: _$I
-    }), e.h("div", {
-        class: ft.controls
-    }, e.h("div", {
-        class: ft.buttons
-    }, e.h(we, {
-        pausable: g.isSeekable,
-        state: g.playbackState
-    }), !O && e.h(Ae, null), !U && e.h(Me, null), e.h(qe, {
-        muted: g.isMuted,
-        volume: g.volume || 0,
-        disableSlider: M
-    }), g.isLive && !g.isSeekable && e.h(ye, {
-        isAtLiveEdge: g.isAtLiveEdge
-    }), e.h("div", {
-        class: ft.divider
-    }), e.h("div", {
-        class: ft.menuButtons
-    }, x && e.h(pe, {
-        toggleMenu: w === he.CONTENT_MARKERS_MENU ? function() {
-            return _$I(void 0);
-        } : function() {
-            return _$I(he.CONTENT_MARKERS_MENU);
-        }
-    }), Qe(te({
-        subtitleTracks: g.subtitleTracks,
-        audioTracks: g.audioTracks
-    }, p.showQualitySelector && {
-        qualityLevels: g.qualityLevels
-    })) && e.h(Ne, {
-        toggleMenu: w === he.SETTINGS_MENU ? function() {
-            return _$I(void 0);
-        } : function() {
-            return _$I(he.SETTINGS_MENU);
-        }
-    })), p.showSubtitlesToggleButton && 1 === g.subtitleTracks.length && e.h(Pe, {
-        isEnabled: Boolean(g.subtitleTrack)
-    }), g.isAirPlayAvailable && e.h(tt, null), b && e.h("google-cast-launcher", null), m.isPictureInPictureSupported() && p.allowPictureInPicture && e.h(rt, null), e.h(it, {
-        isFullscreen: null != (k = m.isFullscreen()) && k
-    })), g.isSeekable && e.h(ct, {
-        isAtLiveEdge: g.isAtLiveEdge,
-        isLive: g.isLive,
-        currentTime: g.currentTime,
-        seekable: g.seekable,
-        utcCurrentTime: g.utcCurrentTime,
-        utcSeekable: g.utcSeekable,
-        timelineSpriteCues: A.timelineSpriteCues,
-        showWallClock: null != B && B,
-        timeZone: p.timeZone,
-        adMarkerPositions: H
-    })))));
-}
-var Tt = {
-    wrapper: "_M4hxK",
-    fadeIn: "_nP9Ry",
-    touchContainer: "_Ma1i4",
-    touchRight: "_CD8Xd",
-    touchLeft: "_qMVzY",
-    centerContainer: "_mZcwz",
-    playPauseStop: "_l7jwT",
-    bottomContainer: "_tL9H8",
-    hidden: "_D3V4N",
-    controls: "_fvJvi",
-    time: "_LSJK-",
-    buttons: "_m54-2",
-    divider: "_e5AM3"
-};
-function kt(t) {
-    var i, l, a, o, u, s, c, d, v, f, h, T, k = t.playerCore, m = t.options, p = t.locale, S = t.isCastAvailable, b = t.onSkinHidden, E = t.onSkinVisible, _ = oe(k, p), C = _[0], g = _[1], A = n.useState(), M = A[0], y = A[1], w = vt({
-        userActiveTimeout: null != (i = m.hideControlsTimer) ? i : 2500
-    }), _$I = w[0], L = w[1], P = w[2], R = n.useCallback(function() {
-        P();
-    }, [
-        P
-    ]), D = C.hasStarted && !_$I && !M && C.playbackState !== r.PlaybackState.IDLE;
-    dt({
-        onSkinHidden: b,
-        onSkinVisible: E,
-        isSkinHidden: D
-    });
-    var O = !C.isSeekable || !m.showJumpButtons || C.contractRestrictions && !1 === C.contractRestrictions.rwEnabled, U = !C.isSeekable || !m.showJumpButtons || C.contractRestrictions && !1 === C.contractRestrictions.ffEnabled || C.isAtLiveEdge, q = m.showWallClock && C.utcDuration > -1, B = q ? le(C.utcCurrentTime, m.timeZone) : re(C.currentTime), H = q ? le(C.utcDuration, m.timeZone) : re(C.duration), x = (null == (l = C.adMarkers) ? void 0 : l.map(function(e) {
-        return e.startTime / C.duration * 100;
-    })) || [], G = !(null == (a = C.contentMarkers) || !a.filter(function(e) {
-        return "CHAPTER" === e.type || "POINT" === e.type;
-    }).length), V = null == (o = C.currentAd) ? void 0 : o.clickThrough, F = !(!V || M === he.CONTENT_MARKERS_MENU || M === he.SETTINGS_MENU), W = n.useRef(null);
-    return n.useEffect(function() {
-        var e, _$t, n = D ? 0 : null != (e = null == (_$t = W.current) ? void 0 : _$t.clientHeight) ? e : 0;
-        k.getSubtitleContainerElement().style.marginBottom = n + "px";
-    }, [
-        D,
-        k,
-        W,
-        C.isSeekable,
-        M
-    ]), e.h("div", {
-        class: Tt.wrapper,
-        onMouseMove: L
-    }, e.h(at, {
-        onSingleTap: R,
-        isSkinHidden: D
-    }), C.contentType === r.ContentType.AD && (null == (u = C.currentAd) ? void 0 : u.adIndex) && (null == (s = C.currentAd) ? void 0 : s.adsTotal) && e.h(ke, {
-        currentAdIndex: null == (c = C.currentAd) ? void 0 : c.adIndex,
-        currentAdBreakTotal: null == (d = C.currentAd) ? void 0 : d.adsTotal,
-        isMobile: !0,
-        translations: null == m ? void 0 : m.translations
-    }), F && e.h(et, {
-        isMobile: !0,
-        onClickThrough: function onClickThrough() {
-            return k.clickThrough();
-        },
-        clickThroughUrl: V,
-        translations: null == m ? void 0 : m.translations
-    }), e.h("div", {
-        class: N.default(Tt.centerContainer, (v = {}, v[Tt.hidden] = D, v))
-    }, !O && e.h(Ae, null), e.h(we, {
-        pausable: C.isSeekable,
-        state: C.playbackState,
-        className: Tt.playPauseStop
-    }), !U && e.h(Me, null)), e.h(xe, {
-        visible: M === he.CONTENT_MARKERS_MENU,
-        contentMarkers: null != (f = C.contentMarkers) ? f : [],
-        duration: C.duration,
-        fillScreen: !0,
-        setActiveView: function setActiveView(e) {
-            return y(e);
-        },
-        locale: p
-    }), e.h(Je, {
-        visible: M === he.SETTINGS_MENU,
-        fillScreen: !0,
-        audioTrack: C.audioTrack,
-        subtitleTrack: C.subtitleTrack,
-        setActiveView: y,
-        subtitleTracks: C.subtitleTracks,
-        audioTracks: C.audioTracks,
-        qualityLevel: C.qualityLevel,
-        qualityLevels: C.qualityLevels
-    }), !M && e.h("div", {
-        ref: W,
-        class: N.default(Tt.bottomContainer, (h = {}, h[Tt.hidden] = D, h))
-    }, e.h("div", {
-        class: Tt.controls
-    }, e.h("div", {
-        class: Tt.buttons
-    }, C.isLive && e.h(ye, {
-        isAtLiveEdge: C.isAtLiveEdge
-    }), !C.isLive && e.h("span", {
-        class: Tt.time
-    }, B, " / ", H), e.h("div", {
-        class: Tt.divider
-    }), G && e.h(pe, {
-        toggleMenu: M === he.CONTENT_MARKERS_MENU ? function() {
-            return y(void 0);
-        } : function() {
-            return y(he.CONTENT_MARKERS_MENU);
-        }
-    }), Qe(te({
-        audioTracks: C.audioTracks,
-        subtitleTracks: C.subtitleTracks
-    }, m.showQualitySelector && {
-        qualityLevels: C.qualityLevels
-    })) && e.h(Ne, {
-        toggleMenu: M === he.SETTINGS_MENU ? function() {
-            return y(void 0);
-        } : function() {
-            return y(he.SETTINGS_MENU);
-        }
-    }), m.showSubtitlesToggleButton && 1 === C.subtitleTracks.length && e.h(Pe, {
-        isEnabled: Boolean(C.subtitleTrack)
-    }), C.isAirPlayAvailable && e.h(tt, null), S && e.h("google-cast-launcher", null), k.isPictureInPictureSupported() && m.allowPictureInPicture && e.h(rt, null), e.h(qe, {
-        muted: C.isMuted,
-        volume: C.volume || 0,
-        disableSlider: !0
-    }), e.h(it, {
-        isFullscreen: null != (T = k.isFullscreen()) && T
-    })), C.isSeekable && e.h(Fe, {
-        isLive: C.isLive,
-        currentTime: C.currentTime,
-        seekable: C.seekable,
-        timelineSpriteCues: g.timelineSpriteCues,
-        showWallClock: null != q && q,
-        timeZone: m.timeZone,
-        utcCurrentTime: C.utcCurrentTime,
-        utcSeekable: C.utcSeekable,
-        adMarkerPositions: x
-    }))));
-}
-function mt(t) {
-    var i, l = t.playerCore, a = t.castSender, o = t.options, u = t.onSkinHidden, s = t.onSkinVisible, c = o.locale, d = void 0 === c ? "en" : c, v = n.useRef(null), f = !!(v.current && v.current.offsetHeight <= 640 && /iphone|ipod|ipad|android|blackberry|windows phone|iemobile|wpdesktop/.test(window.navigator.userAgent.toLowerCase())), h = f ? kt : ht, T = function(e, t) {
-        var i = n.useState(!1), l = i[0], a = i[1];
-        return n.useEffect(function() {
-            var n = function n(e) {
-                var _$t = e.playbackState;
-                a(_$t === r.PlaybackState.LOADING || _$t === r.PlaybackState.BUFFERING || _$t === r.PlaybackState.SEEKING);
-            };
-            return e ? (e.on(r.PlayerEvents.STATE_CHANGED, n), function() {
-                return e.off(r.PlayerEvents.STATE_CHANGED, n);
-            }) : t ? (t.on(r.CastSenderEvent.STATE_CHANGE, n), function() {
-                t.off(r.CastSenderEvent.STATE_CHANGE, n);
-            }) : void 0;
-        }, [
-            e,
-            t
-        ]), l;
-    }(l, a), k = function(e) {
-        var _$t = n.useState(!1), i = _$t[0], l = _$t[1];
-        return n.useEffect(function() {
-            if (e) {
-                var _$t = function t(e) {
-                    l(e.available);
-                };
-                return e.on(r.CastSenderEvent.AVAILABILITY_CHANGED, _$t), function() {
-                    return e.off(r.CastSenderEvent.AVAILABILITY_CHANGED, _$t);
-                };
-            }
-        }, [
-            e
-        ]), i;
-    }(a), m = function(e, t) {
-        var i = n.useState(!1), l = i[0], a = i[1];
-        return n.useEffect(function() {
-            var n = function n(e) {
-                a(e.playbackState === r.PlaybackState.ERROR);
-            };
-            return e ? (e.on(r.PlayerEvents.STATE_CHANGED, n), function() {
-                return e.off(r.PlayerEvents.STATE_CHANGED, n);
-            }) : t ? (t.on(r.CastSenderEvent.STATE_CHANGE, n), function() {
-                t.off(r.CastSenderEvent.STATE_CHANGE, n);
-            }) : void 0;
-        }, [
-            e,
-            t
-        ]), l;
-    }(l, a), p = vt({
-        userActiveTimeout: 2.5 * (null != (i = o.hideControlsTimer) ? i : 2800)
-    }), S = p[0], b = p[1];
-    return m ? e.h(de, null) : e.h("div", {
-        ref: v,
-        tabIndex: 0,
-        class: N.default("_i1uQ-"),
-        onMouseMove: b
-    }, e.h(se, {
-        playerCore: l,
-        isMobile: f,
-        showSkipOption: S,
-        locale: d
-    }), e.h(be, {
-        value: l || a
-    }, l && e.h(h, {
-        playerCore: l,
-        options: o,
-        locale: d,
-        isCastAvailable: k,
-        onSkinHidden: u,
-        onSkinVisible: s
-    }), !l && a && e.h(Ye, {
-        castSender: a,
-        options: o,
-        locale: d
-    })), e.h("div", {
-        class: "_24bHW"
-    }, T && e.h(fe, null)));
-}
-var pt = {
-    TOGGLE_PLAY: "space",
-    FORWARD: "right",
-    BACKWARD: "left",
-    VOLUME_UP: "up",
-    VOLUME_DOWN: "down",
-    TOGGLE_MUTE: "m",
-    TOGGLE_FULLSCREEN: "f"
-}, St = "@redbeemedia/javascript-player-shortcuts", bt = /*#__PURE__*/ function() {
-    function t(e, t, n) {
-        this.events = void 0, this.skinContainer = void 0, this.cleanupKeyboardShortcuts = void 0, this.options = void 0, this.events = n, this.options = te({}, ne, t), this.skinContainer = document.createElement("div"), this.skinContainer.classList.add("redbee-player-skin-container", "_-xL4b"), e.appendChild(this.skinContainer), Object.assign(e.style, {
-            position: "relative",
-            overflow: "visible"
-        });
-    }
-    var n = t.prototype;
-    return n.render = function(t, n) {
-        var i, l, a = t || n;
-        if (!a) return e.render(null, this.skinContainer);
-        this.options.keyboardShortcuts && (this.cleanupKeyboardShortcuts = function(e, t) {
-            return ee.default(Object.values(pt).join(","), St, function(n, i) {
-                if (t === document.activeElement || t.contains(document.activeElement)) switch(i.key){
-                    case pt.TOGGLE_PLAY:
-                        n.preventDefault(), e.isPlaying() ? e.pause() : e.play();
-                        break;
-                    case pt.BACKWARD:
-                        n.preventDefault(), e.scrub(-r.QuickSeekTime);
-                        break;
-                    case pt.FORWARD:
-                        n.preventDefault(), e.scrub(r.QuickSeekTime);
-                        break;
-                    case pt.TOGGLE_MUTE:
-                        n.preventDefault(), e.toggleMuted();
-                        break;
-                    case pt.TOGGLE_FULLSCREEN:
-                        n.preventDefault(), null == e.toggleFullscreen || e.toggleFullscreen();
-                }
-            }), ee.default.setScope(St), function() {
-                ee.default.deleteScope(St);
-            };
-        }(a, this.skinContainer)), e.render(e.h(mt, {
-            playerCore: t,
-            castSender: n,
-            options: this.options,
-            onSkinHidden: null == (i = this.events) ? void 0 : i.onSkinHidden,
-            onSkinVisible: null == (l = this.events) ? void 0 : l.onSkinVisible
-        }), this.skinContainer);
-    }, n.destroy = function() {
-        var _$t;
-        null == (_$t = this.cleanupKeyboardShortcuts) || _$t.call(this), e.render(null, this.skinContainer), this.skinContainer.remove();
-    }, t;
-}();
-exports.PlayerSkin = mt, exports.RedBeeSkin = bt;
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/EmitterBaseClass.js":
-/*!**************************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/EmitterBaseClass.js ***!
-  \**************************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-function _class_call_check(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-    }
-}
-function _defineProperties(target, props) {
-    for(var i = 0; i < props.length; i++){
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-    }
-}
-function _create_class(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    return Constructor;
-}
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-var __importDefault = this && this.__importDefault || function(mod) {
-    return mod && mod.__esModule ? mod : {
-        "default": mod
-    };
-};
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.EmitterBaseClass = void 0;
-var mitt_1 = __importDefault(__webpack_require__(/*! mitt */ "../../node_modules/mitt/dist/mitt.js"));
-var EmitterBaseClass = /*#__PURE__*/ function() {
-    function EmitterBaseClass() {
-        _class_call_check(this, EmitterBaseClass);
-        this.allHandlers = new Map();
-        this.emitter = (0, mitt_1.default)();
-    }
-    _create_class(EmitterBaseClass, [
-        {
-            key: "emit",
-            value: function emit(event, data) {
-                if (!this.emitter) {
-                    console.warn("[EmitterBaseClass] trying to emit on destroyed emitter");
-                    return;
-                }
-                this.emitter.emit(event, data);
-            }
-        },
-        {
-            key: "once",
-            value: function once(event, handler) {
-                var _this = this;
-                var _a;
-                var fn = function(data) {
-                    var _a;
-                    (_a = _this.emitter) === null || _a === void 0 ? void 0 : _a.off(event, fn);
-                    handler(data);
-                };
-                (_a = this.emitter) === null || _a === void 0 ? void 0 : _a.on(event, fn);
-            }
-        },
-        {
-            key: "on",
-            value: function on(event, handler) {
-                var _a;
-                (_a = this.emitter) === null || _a === void 0 ? void 0 : _a.on(event, handler);
-            }
-        },
-        {
-            key: "onAll",
-            value: function onAll(handler) {
-                var _a;
-                var allHandler = function(event, data) {
-                    handler({
-                        event: event,
-                        data: data
-                    });
-                };
-                if (this.allHandlers.has(handler)) {
-                    this.offAll(handler);
-                }
-                this.allHandlers.set(handler, allHandler);
-                (_a = this.emitter) === null || _a === void 0 ? void 0 : _a.on("*", allHandler);
-            }
-        },
-        {
-            // public onAllTest();
-            key: "off",
-            value: function off(event, handler) {
-                var _a;
-                (_a = this.emitter) === null || _a === void 0 ? void 0 : _a.off(event, handler);
-            }
-        },
-        {
-            key: "offAll",
-            value: function offAll(handler) {
-                var _a;
-                var allHandler = this.allHandlers.get(handler);
-                if (allHandler) {
-                    (_a = this.emitter) === null || _a === void 0 ? void 0 : _a.off("*", allHandler);
-                } else {
-                    console.warn("[EmitterBaseClass] trying to remove non-existing all handler");
-                }
-            }
-        },
-        {
-            key: "addEventListener",
-            value: function addEventListener(event, handler) {
-                this === null || this === void 0 ? void 0 : this.on(event, handler);
-            }
-        },
-        {
-            key: "removeEventListener",
-            value: function removeEventListener(event, handler) {
-                this === null || this === void 0 ? void 0 : this.off(event, handler);
-            }
-        },
-        {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-            key: "destroy",
-            value: function destroy(_) {
-                var _a;
-                (_a = this.emitter) === null || _a === void 0 ? void 0 : _a.off("*");
-                this.emitter = undefined;
-            }
-        }
-    ]);
-    return EmitterBaseClass;
-}();
-exports.EmitterBaseClass = EmitterBaseClass; //# sourceMappingURL=EmitterBaseClass.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/Logger.js":
-/*!****************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/Logger.js ***!
-  \****************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-function _array_like_to_array(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
-    return arr2;
-}
-function _array_without_holes(arr) {
-    if (Array.isArray(arr)) return _array_like_to_array(arr);
-}
-function _class_call_check(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-    }
-}
-function _defineProperties(target, props) {
-    for(var i = 0; i < props.length; i++){
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-    }
-}
-function _create_class(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    return Constructor;
-}
-function _iterable_to_array(iter) {
-    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-}
-function _non_iterable_spread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _to_consumable_array(arr) {
-    return _array_without_holes(arr) || _iterable_to_array(arr) || _unsupported_iterable_to_array(arr) || _non_iterable_spread();
-}
-function _unsupported_iterable_to_array(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _array_like_to_array(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _array_like_to_array(o, minLen);
-}
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.Logger = exports.LogLevel = void 0;
-exports.LogLevel = {
-    DEBUG: 0,
-    INFO: 1,
-    WARN: 2,
-    ERROR: 3,
-    NONE: 4
-};
-var Logger = /*#__PURE__*/ function() {
-    function Logger(options) {
-        _class_call_check(this, Logger);
-        var _a;
-        this.prefix = options.prefix;
-        this.logLevel = (_a = options.logLevel) !== null && _a !== void 0 ? _a : exports.LogLevel.ERROR;
-        this.initTime = Date.now();
-    }
-    _create_class(Logger, [
-        {
-            key: "setLogLevel",
-            value: function setLogLevel(logLevel) {
-                this.logLevel = logLevel;
-            }
-        },
-        {
-            key: "debug",
-            value: function debug() {
-                for(var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++){
-                    args[_key] = arguments[_key];
-                }
-                if (this.logLevel <= exports.LogLevel.DEBUG) {
-                    var _console;
-                    (_console = console).debug.apply(_console, [
-                        this.prefix
-                    ].concat(_to_consumable_array(args), [
-                        Date.now() - this.initTime
-                    ]));
-                }
-            }
-        },
-        {
-            key: "info",
-            value: function info() {
-                for(var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++){
-                    args[_key] = arguments[_key];
-                }
-                if (this.logLevel <= exports.LogLevel.INFO) {
-                    var _console;
-                    (_console = console).info.apply(_console, [
-                        this.prefix
-                    ].concat(_to_consumable_array(args)));
-                }
-            }
-        },
-        {
-            key: "warn",
-            value: function warn() {
-                for(var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++){
-                    args[_key] = arguments[_key];
-                }
-                if (this.logLevel <= exports.LogLevel.WARN) {
-                    var _console;
-                    (_console = console).warn.apply(_console, [
-                        this.prefix
-                    ].concat(_to_consumable_array(args)));
-                }
-            }
-        },
-        {
-            key: "error",
-            value: function error() {
-                for(var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++){
-                    args[_key] = arguments[_key];
-                }
-                if (this.logLevel <= exports.LogLevel.ERROR) {
-                    var _console;
-                    (_console = console).error.apply(_console, [
-                        this.prefix
-                    ].concat(_to_consumable_array(args)));
-                }
-            }
-        }
-    ]);
-    return Logger;
-}();
-exports.Logger = Logger; //# sourceMappingURL=Logger.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/constants.js":
-/*!*******************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/constants.js ***!
-  \*******************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.QuickSeekTime = void 0;
-exports.QuickSeekTime = 10; //# sourceMappingURL=constants.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/defaults.js":
-/*!******************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/defaults.js ***!
-  \******************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.DefaultPlayerState = exports.AUTO_QUALITY_LEVEL_DEFINITION = void 0;
-var player_1 = __webpack_require__(/*! ./interfaces/player */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/player.js");
-exports.AUTO_QUALITY_LEVEL_DEFINITION = {
-    id: -1,
-    name: "auto",
-    bandwidth: -1,
-    width: -1,
-    height: -1
-};
-exports.DefaultPlayerState = {
-    playbackState: player_1.PlaybackState.IDLE,
-    contentType: undefined,
-    mediaType: undefined,
-    currentTime: 0,
-    duration: 0,
-    seekable: {
-        start: 0,
-        end: 0
-    },
-    utcCurrentTime: 0,
-    utcDuration: 0,
-    utcSeekable: {
-        start: 0,
-        end: 0
-    },
-    currentAd: null,
-    adMarkers: [],
-    contentMarkers: [],
-    volume: 0,
-    subtitleTrack: null,
-    subtitleTracks: [],
-    audioTrack: null,
-    audioTracks: [],
-    qualityLevel: exports.AUTO_QUALITY_LEVEL_DEFINITION,
-    qualityLevels: [],
-    droppedFrames: 0,
-    bufferingEvents: 0,
-    hasStarted: false,
-    isMuted: false,
-    isLive: false,
-    isSeekable: false,
-    isAtLiveEdge: false
-}; //# sourceMappingURL=defaults.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/error.js":
-/*!***************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/error.js ***!
-  \***************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-function _array_like_to_array(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
-    return arr2;
-}
-function _array_with_holes(arr) {
-    if (Array.isArray(arr)) return arr;
-}
-function _assert_this_initialized(self) {
-    if (self === void 0) {
-        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    }
-    return self;
-}
-function _class_call_check(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-        throw new TypeError("Cannot call a class as a function");
-    }
-}
-function _construct(Parent, args, Class) {
-    if (_is_native_reflect_construct()) {
-        _construct = Reflect.construct;
-    } else {
-        _construct = function construct(Parent, args, Class) {
-            var a = [
-                null
-            ];
-            a.push.apply(a, args);
-            var Constructor = Function.bind.apply(Parent, a);
-            var instance = new Constructor();
-            if (Class) _set_prototype_of(instance, Class.prototype);
-            return instance;
-        };
-    }
-    return _construct.apply(null, arguments);
-}
-function _defineProperties(target, props) {
-    for(var i = 0; i < props.length; i++){
-        var descriptor = props[i];
-        descriptor.enumerable = descriptor.enumerable || false;
-        descriptor.configurable = true;
-        if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
-    }
-}
-function _create_class(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    return Constructor;
-}
-function _get_prototype_of(o) {
-    _get_prototype_of = Object.setPrototypeOf ? Object.getPrototypeOf : function getPrototypeOf(o) {
-        return o.__proto__ || Object.getPrototypeOf(o);
-    };
-    return _get_prototype_of(o);
-}
-function _inherits(subClass, superClass) {
-    if (typeof superClass !== "function" && superClass !== null) {
-        throw new TypeError("Super expression must either be null or a function");
-    }
-    subClass.prototype = Object.create(superClass && superClass.prototype, {
-        constructor: {
-            value: subClass,
-            writable: true,
-            configurable: true
-        }
-    });
-    if (superClass) _set_prototype_of(subClass, superClass);
-}
-function _is_native_function(fn) {
-    return Function.toString.call(fn).indexOf("[native code]") !== -1;
-}
-function _iterable_to_array_limit(arr, i) {
-    var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-    if (_i == null) return;
-    var _arr = [];
-    var _n = true;
-    var _d = false;
-    var _s, _e;
-    try {
-        for(_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true){
-            _arr.push(_s.value);
-            if (i && _arr.length === i) break;
-        }
-    } catch (err) {
-        _d = true;
-        _e = err;
-    } finally{
-        try {
-            if (!_n && _i["return"] != null) _i["return"]();
-        } finally{
-            if (_d) throw _e;
-        }
-    }
-    return _arr;
-}
-function _non_iterable_rest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _possible_constructor_return(self, call) {
-    if (call && (_type_of(call) === "object" || typeof call === "function")) {
-        return call;
-    }
-    return _assert_this_initialized(self);
-}
-function _set_prototype_of(o, p) {
-    _set_prototype_of = Object.setPrototypeOf || function setPrototypeOf(o, p) {
-        o.__proto__ = p;
-        return o;
-    };
-    return _set_prototype_of(o, p);
-}
-function _sliced_to_array(arr, i) {
-    return _array_with_holes(arr) || _iterable_to_array_limit(arr, i) || _unsupported_iterable_to_array(arr, i) || _non_iterable_rest();
-}
-function _type_of(obj) {
-    "@swc/helpers - typeof";
-    return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj;
-}
-function _unsupported_iterable_to_array(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _array_like_to_array(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _array_like_to_array(o, minLen);
-}
-function _wrap_native_super(Class) {
-    var _cache = typeof Map === "function" ? new Map() : undefined;
-    _wrap_native_super = function wrapNativeSuper(Class) {
-        if (Class === null || !_is_native_function(Class)) return Class;
-        if (typeof Class !== "function") {
-            throw new TypeError("Super expression must either be null or a function");
-        }
-        if (typeof _cache !== "undefined") {
-            if (_cache.has(Class)) return _cache.get(Class);
-            _cache.set(Class, Wrapper);
-        }
-        function Wrapper() {
-            return _construct(Class, arguments, _get_prototype_of(this).constructor);
-        }
-        Wrapper.prototype = Object.create(Class.prototype, {
-            constructor: {
-                value: Wrapper,
-                enumerable: false,
-                writable: true,
-                configurable: true
-            }
-        });
-        return _set_prototype_of(Wrapper, Class);
-    };
-    return _wrap_native_super(Class);
-}
-function _is_native_reflect_construct() {
-    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-    if (Reflect.construct.sham) return false;
-    if (typeof Proxy === "function") return true;
-    try {
-        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {}));
-        return true;
-    } catch (e) {
-        return false;
-    }
-}
-function _create_super(Derived) {
-    var hasNativeReflectConstruct = _is_native_reflect_construct();
-    return function _createSuperInternal() {
-        var Super = _get_prototype_of(Derived), result;
-        if (hasNativeReflectConstruct) {
-            var NewTarget = _get_prototype_of(this).constructor;
-            result = Reflect.construct(Super, arguments, NewTarget);
-        } else {
-            result = Super.apply(this, arguments);
-        }
-        return _possible_constructor_return(this, result);
-    };
-}
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.BitmovinPlayerError = exports.ShakaPlayerError = exports.HlsJsPlayerError = exports.DashJsPlayerError = exports.InitError = exports.UserError = exports.APIError = exports.PlayerError = exports.ErrorTypes = void 0;
-exports.ErrorTypes = {
-    GENERIC: "GENERIC",
-    OPTIONS: "INIT_OPTIONS",
-    ABORTED: "ABORTED",
-    API_AUTH: "AUTH_FAILED",
-    API_AUTH_ANON: "AUTH_ANON_FAILED",
-    API_PLAY_REQUEST: "PLAY_REQUEST_FAILED",
-    API_ASSET: "ASSET_REQUEST_FAILED",
-    DECODE: "DECODE_ERROR",
-    DRM: "DRM_ERROR",
-    NETWORK: "NETWORK_ERROR",
-    STREAM_NOT_AVAILABLE: "STREAM_NOT_AVAILABLE",
-    STREAM_LIMIT: "STREAM_LIMIT_REACHED",
-    NOT_AUTHENTICATED: "SESSION_NOT_AUTHENTICATED",
-    NOT_AUTHORIZED: "UNAUTHORIZED",
-    GEO_LOCATION: "GEOLOCATION",
-    MANIFEST: "MANIFEST_ERROR",
-    SEGMENT: "SEGMENT_ERROR",
-    MEDIA: "MEDIA_ERROR",
-    CODEC: "CODEC",
-    CAST: "CAST",
-    PLAYER_ENGINE: "GENERIC_PLAYERENGINE_ERROR",
-    UNSUPPORTED_DEVICE: "UNSUPPORTED_DEVICE",
-    UNSUPPORTED_SCREEN: "UNSUPPORTED_SCREEN",
-    OTHER: "OTHER_ERROR",
-    DESTROYED: "DESTROYED",
-    SRC_NOT_SUPPORTED: "SOURCE_NOT_SUPPORTED"
-};
-var PlayerError = /*#__PURE__*/ function(Error1) {
-    _inherits(PlayerError, Error1);
-    var _super = _create_super(PlayerError);
-    function PlayerError(message, param) {
-        var type = param.type, code = param.code, rawError = param.rawError;
-        _class_call_check(this, PlayerError);
-        var _this;
-        _this = _super.call(this, message);
-        _this.category = "PLAYER";
-        _this.message = message;
-        _this.metadata = Object.assign(Object.assign({
-            type: type
-        }, Number.isFinite(code) && {
-            code: code
-        }), rawError && {
-            rawError: rawError
-        });
-        return _this;
-    }
-    _create_class(PlayerError, [
-        {
-            key: "toString",
-            value: function toString() {
-                var metadataString = Object.entries(this.metadata).filter(function(param) {
-                    var _param = _sliced_to_array(param, 1), type = _param[0];
-                    return type !== "rawError";
-                }).map(function(pair) {
-                    return pair.join(": ");
-                }).join(", ");
-                return "".concat(this.category, " Error: ").concat(this.message, " {").concat(metadataString, "}");
-            }
-        }
-    ]);
-    return PlayerError;
-}(_wrap_native_super(Error));
-exports.PlayerError = PlayerError;
-var APIError = /*#__PURE__*/ function(PlayerError) {
-    _inherits(APIError, PlayerError);
-    var _super = _create_super(APIError);
-    function APIError() {
-        _class_call_check(this, APIError);
-        var _this;
-        _this = _super.call.apply(_super, [
-            this
-        ].concat(Array.prototype.slice.call(arguments)));
-        _this.category = "API";
-        return _this;
-    }
-    return APIError;
-}(PlayerError);
-exports.APIError = APIError;
-var UserError = /*#__PURE__*/ function(PlayerError) {
-    _inherits(UserError, PlayerError);
-    var _super = _create_super(UserError);
-    function UserError() {
-        _class_call_check(this, UserError);
-        var _this;
-        _this = _super.call.apply(_super, [
-            this
-        ].concat(Array.prototype.slice.call(arguments)));
-        _this.category = "USER";
-        return _this;
-    }
-    return UserError;
-}(PlayerError);
-exports.UserError = UserError;
-var InitError = /*#__PURE__*/ function(PlayerError) {
-    _inherits(InitError, PlayerError);
-    var _super = _create_super(InitError);
-    function InitError() {
-        _class_call_check(this, InitError);
-        var _this;
-        _this = _super.call.apply(_super, [
-            this
-        ].concat(Array.prototype.slice.call(arguments)));
-        _this.category = "INIT";
-        return _this;
-    }
-    return InitError;
-}(PlayerError);
-exports.InitError = InitError;
-var DashJsPlayerError = /*#__PURE__*/ function(PlayerError) {
-    _inherits(DashJsPlayerError, PlayerError);
-    var _super = _create_super(DashJsPlayerError);
-    function DashJsPlayerError() {
-        _class_call_check(this, DashJsPlayerError);
-        var _this;
-        _this = _super.call.apply(_super, [
-            this
-        ].concat(Array.prototype.slice.call(arguments)));
-        _this.category = "DASHJS";
-        return _this;
-    }
-    return DashJsPlayerError;
-}(PlayerError);
-exports.DashJsPlayerError = DashJsPlayerError;
-var HlsJsPlayerError = /*#__PURE__*/ function(PlayerError) {
-    _inherits(HlsJsPlayerError, PlayerError);
-    var _super = _create_super(HlsJsPlayerError);
-    function HlsJsPlayerError() {
-        _class_call_check(this, HlsJsPlayerError);
-        var _this;
-        _this = _super.call.apply(_super, [
-            this
-        ].concat(Array.prototype.slice.call(arguments)));
-        _this.category = "HLSJS";
-        return _this;
-    }
-    return HlsJsPlayerError;
-}(PlayerError);
-exports.HlsJsPlayerError = HlsJsPlayerError;
-var ShakaPlayerError = /*#__PURE__*/ function(PlayerError) {
-    _inherits(ShakaPlayerError, PlayerError);
-    var _super = _create_super(ShakaPlayerError);
-    function ShakaPlayerError() {
-        _class_call_check(this, ShakaPlayerError);
-        var _this;
-        _this = _super.call.apply(_super, [
-            this
-        ].concat(Array.prototype.slice.call(arguments)));
-        _this.category = "SHAKAPLAYER";
-        return _this;
-    }
-    return ShakaPlayerError;
-}(PlayerError);
-exports.ShakaPlayerError = ShakaPlayerError;
-var BitmovinPlayerError = /*#__PURE__*/ function(PlayerError) {
-    _inherits(BitmovinPlayerError, PlayerError);
-    var _super = _create_super(BitmovinPlayerError);
-    function BitmovinPlayerError() {
-        _class_call_check(this, BitmovinPlayerError);
-        var _this;
-        _this = _super.call.apply(_super, [
-            this
-        ].concat(Array.prototype.slice.call(arguments)));
-        _this.category = "BITMOVIN";
-        return _this;
-    }
-    return BitmovinPlayerError;
-}(PlayerError);
-exports.BitmovinPlayerError = BitmovinPlayerError; //# sourceMappingURL=error.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/helperMethods.js":
-/*!***********************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/helperMethods.js ***!
-  \***********************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-function _array_like_to_array(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
-    return arr2;
-}
-function _array_without_holes(arr) {
-    if (Array.isArray(arr)) return _array_like_to_array(arr);
-}
-function _iterable_to_array(iter) {
-    if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
-}
-function _non_iterable_spread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _to_consumable_array(arr) {
-    return _array_without_holes(arr) || _iterable_to_array(arr) || _unsupported_iterable_to_array(arr) || _non_iterable_spread();
-}
-function _unsupported_iterable_to_array(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _array_like_to_array(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(n);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _array_like_to_array(o, minLen);
-}
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.getSessionIFA = exports.getDeviceId = exports.getUUID = exports.base64EncodeUint8Array = exports.base64DecodeUint8Array = exports.stringToUUID = exports.arrayToString = exports.stringToArray = exports.debounce = exports.clamp = void 0;
-var clamp = function(num, clamp, higher) {
-    return higher ? Math.min(Math.max(num, clamp), higher) : Math.min(num, clamp);
-};
-exports.clamp = clamp;
-var debounce = function(func) {
-    var wait = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 500;
-    // Only way to type declare for both browsers and Node
-    var timeout;
-    return function debounce() {
-        for(var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++){
-            args[_key] = arguments[_key];
-        }
-        clearTimeout(timeout);
-        timeout = setTimeout(function() {
-            func.apply(void 0, _to_consumable_array(args));
-        }, wait);
-    };
-};
-exports.debounce = debounce;
-var stringToArray = function(string) {
-    var buffer = new ArrayBuffer(string.length * 2); // 2 bytes for each char
-    var array = new Uint16Array(buffer);
-    for(var i = 0, strLen = string.length; i < strLen; i++){
-        array[i] = string.charCodeAt(i);
-    }
-    return array;
-};
-exports.stringToArray = stringToArray;
-var arrayToString = function(array) {
-    var uint16array = new Uint16Array(array);
-    return String.fromCharCode.apply(null, uint16array);
-};
-exports.arrayToString = arrayToString;
-var stringToUUID = function(input) {
-    // if the input is 32 char and contain only hex characters, we assume it's a UUID
-    if (/^[0-9a-fA-F]{32}$/.test(input)) {
-        var p1 = input.slice(0, 8);
-        var p2 = input.slice(8, 12);
-        var p3 = input.slice(12, 16);
-        var p4 = input.slice(16, 20);
-        var p5 = input.slice(20);
-        return [
-            p1,
-            p2,
-            p3,
-            p4,
-            p5
-        ].join("-");
-    }
-    // Assuming we already have a UUID string
-    return null;
-};
-exports.stringToUUID = stringToUUID;
-var base64DecodeUint8Array = function(input) {
-    var raw = window.atob(input);
-    var rawLength = raw.length;
-    var array = new Uint8Array(new ArrayBuffer(rawLength));
-    for(var i = 0; i < rawLength; i++){
-        array[i] = raw.charCodeAt(i);
-    }
-    return array;
-};
-exports.base64DecodeUint8Array = base64DecodeUint8Array;
-var base64EncodeUint8Array = function(input) {
-    var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-    var output = "";
-    var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-    var i = 0;
-    while(i < input.length){
-        chr1 = input[i++];
-        chr2 = i < input.length ? input[i++] : Number.NaN; // Not sure if the index
-        chr3 = i < input.length ? input[i++] : Number.NaN; // checks are needed here
-        enc1 = chr1 >> 2;
-        enc2 = (chr1 & 3) << 4 | chr2 >> 4;
-        enc3 = (chr2 & 15) << 2 | chr3 >> 6;
-        enc4 = chr3 & 63;
-        if (isNaN(chr2)) {
-            enc3 = enc4 = 64;
-        } else if (isNaN(chr3)) {
-            enc4 = 64;
-        }
-        output += keyStr.charAt(enc1) + keyStr.charAt(enc2) + keyStr.charAt(enc3) + keyStr.charAt(enc4);
-    }
-    return output;
-};
-exports.base64EncodeUint8Array = base64EncodeUint8Array;
-var getUUID = function() {
-    return [
-        generateS4(),
-        generateS4(),
-        "-",
-        generateS4(),
-        "-",
-        generateS4(),
-        "-",
-        generateS4(),
-        "-",
-        generateS4(),
-        generateS4(),
-        generateS4()
-    ].join("");
-};
-exports.getUUID = getUUID;
-var DUID_STORAGE_KEY = "deviceId";
-/**
- * Get device ID either from sessionToken or generated using getUUID(), the generated one will be stored in localStorage
- */ var getDeviceId = function(sessionToken) {
-    if (sessionToken) {
-        var parts = sessionToken.split("|");
-        return parts[7];
-    }
-    var storedDeviceId = localStorage.getItem(DUID_STORAGE_KEY);
-    if (storedDeviceId) {
-        return storedDeviceId;
-    }
-    var deviceId = (0, exports.getUUID)();
-    try {
-        localStorage.setItem(DUID_STORAGE_KEY, deviceId);
-    } catch (e) {
-    // no-op
-    }
-    return deviceId;
-};
-exports.getDeviceId = getDeviceId;
-/**
- * Get a Identifier for Advertising
- */ var getSessionIFA = function() {
-    var ifa = (0, exports.getUUID)();
-    return {
-        ifa: ifa,
-        ifaType: "sessionid"
-    };
-};
-exports.getSessionIFA = getSessionIFA;
-var generateS4 = function() {
-    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-}; //# sourceMappingURL=helperMethods.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/index.js":
-/*!***************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/index.js ***!
-  \***************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-var __createBinding = this && this.__createBinding || (Object.create ? function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-        desc = {
-            enumerable: true,
-            get: function get() {
-                return m[k];
-            }
-        };
-    }
-    Object.defineProperty(o, k2, desc);
-} : function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-});
-var __exportStar = this && this.__exportStar || function(m, exports1) {
-    for(var p in m)if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports1, p)) __createBinding(exports1, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-__exportStar(__webpack_require__(/*! ./EmitterBaseClass */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/EmitterBaseClass.js"), exports);
-__exportStar(__webpack_require__(/*! ./helperMethods */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/helperMethods.js"), exports);
-__exportStar(__webpack_require__(/*! ./Logger */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/Logger.js"), exports);
-__exportStar(__webpack_require__(/*! ./shakaSSAIManifestPatch */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/shakaSSAIManifestPatch.js"), exports);
-__exportStar(__webpack_require__(/*! ./error */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/error.js"), exports);
-__exportStar(__webpack_require__(/*! ./constants */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/constants.js"), exports);
-__exportStar(__webpack_require__(/*! ./interfaces/common */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/common.js"), exports);
-__exportStar(__webpack_require__(/*! ./interfaces/player */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/player.js"), exports);
-__exportStar(__webpack_require__(/*! ./interfaces/ad */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/ad.js"), exports);
-__exportStar(__webpack_require__(/*! ./interfaces/cast */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/cast.js"), exports);
-__exportStar(__webpack_require__(/*! ./languages */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/languages.js"), exports);
-__exportStar(__webpack_require__(/*! ./defaults */ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/defaults.js"), exports); //# sourceMappingURL=index.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/ad.js":
-/*!***********************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/ad.js ***!
-  \***********************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.TrackingEvent = void 0;
-exports.TrackingEvent = {
-    LOADED: "loaded",
-    START: "start",
-    IMPRESSION: "impression",
-    COMPLETE: "complete",
-    FIRST_QUARTILE: "firstQuartile",
-    MIDPOINT: "midpoint",
-    THIRD_QUARTILE: "thirdQuartile",
-    CLICK_THROUGH: "clickThrough"
-}; //# sourceMappingURL=ad.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/cast.js":
-/*!*************************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/cast.js ***!
-  \*************************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.CastSenderEvent = void 0;
-exports.CastSenderEvent = {
-    AVAILABILITY_CHANGED: "cast:availability_changed",
-    CONNECTED: "cast:connected",
-    RECONNECTED: "cast:reconnected",
-    DISCONNECTED: "cast:disconnected",
-    STATE_CHANGE: "cast:state_change",
-    METADATA_UPDATE: "cast:metadata_update",
-    ERROR: "cast:error"
-}; //# sourceMappingURL=cast.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/common.js":
-/*!***************************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/common.js ***!
-  \***************************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.KeySystem = exports.DRMType = void 0;
-exports.DRMType = {
-    PLAYREADY: "com.microsoft.playready",
-    WIDEVINE: "com.widevine.alpha",
-    FAIRPLAY: "com.apple.fps"
-};
-exports.KeySystem = {
-    FAIRPLAY: "com.apple.fps.1_0",
-    WIDEVINE: "com.widevine.alpha",
-    PLAYREADY: "com.microsoft.playready",
-    PLAYREADY_CHROMECAST: "com.chromecast.playready"
-}; //# sourceMappingURL=common.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/player.js":
-/*!***************************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/interfaces/player.js ***!
-  \***************************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.ContentType = exports.PlayerEvents = exports.HtmlVideoElementEvents = exports.PlaybackState = void 0;
-exports.PlaybackState = {
-    IDLE: "idle",
-    LOADING: "loading",
-    PLAYING: "playing",
-    PAUSED: "paused",
-    BUFFERING: "buffering",
-    SEEKING: "seeking",
-    ENDED: "ended",
-    ERROR: "error"
-};
-exports.HtmlVideoElementEvents = {
-    ERROR: "error",
-    LOADEDMETADATA: "loadedmetadata",
-    LOADSTART: "loadstart",
-    LOADEDDATA: "loadeddata",
-    CANPLAY: "canplay",
-    CANPLAYTHROUGH: "canplaythrough",
-    PLAY: "play",
-    PLAYING: "playing",
-    PAUSE: "pause",
-    ENDED: "ended",
-    TIMEUPDATE: "timeupdate",
-    RATECHANGE: "ratechange",
-    VOLUMECHANGE: "volumechange",
-    SEEKED: "seeked",
-    SEEKING: "seeking",
-    STALLED: "stalled",
-    WAITING: "waiting"
-};
-exports.PlayerEvents = {
-    PLAY: "player:play",
-    PAUSE: "player:pause",
-    STOP: "player:stopped",
-    START: "player:start",
-    RESUME: "player:resume",
-    PLAYING: "player:playing",
-    SEEKING: "player:seeking",
-    SEEK_TIME_CHANGE: "player:seek_time_change",
-    SEEKED: "player:seeked",
-    TIME_UPDATE: "player:timeupdate",
-    ENDED: "player:ended",
-    VOLUME_CHANGE: "player:volumechange",
-    ERROR: "player:error",
-    CAST_ERROR: "player:cast_error",
-    LOADING: "player:loading",
-    LOADED: "player:loaded",
-    LOAD_START: "player:load_start",
-    BUFFERING: "player:buffering",
-    BUFFERED: "player:buffered",
-    ID3: "player:id3",
-    BITRATE_CHANGED: "player:bitrate_changed",
-    CDN_CHANGED: "player:cdn_changed",
-    AUDIO_CHANGED: "player:audio_changed",
-    SUBTITLE_CHANGED: "player:subtitle_changed",
-    LICENSE_EXPIRED: "player:license_expired",
-    DROPPED_FRAMES: "player:dropped_frames",
-    DRM_UPDATE: "player:drm:update",
-    STATE_CHANGED: "player:state_changed",
-    PROGRAM_CHANGED: "player:program_changed",
-    NOT_ENTITLED: "player:not_entitled",
-    BLACKOUT: "player:blackout",
-    EMPTY_SLOT: "player:empty_slot",
-    CAST_START: "player:cast:start",
-    CAST_STOP: "player:cast:stop",
-    AIRPLAY_START: "player:airplay:start",
-    AIRPLAY_STOP: "player:airplay:stop",
-    AD_START: "player:ad:start",
-    AD_COMPLETE: "player:ad:complete",
-    ADBLOCK_START: "player:adblock:start",
-    ADBLOCK_COMPLETE: "player:adblock:complete",
-    INTRO_START: "player:intro:start",
-    INTRO_END: "player:intro:end",
-    CHAPTER_START: "player:chapter:start",
-    CHAPTER_END: "player:chapter:end",
-    MARKER: "player:marker",
-    METADATA_EVENT: "player:metadata_event",
-    SESSION_ACQUIRED: "player:session_acquired",
-    PLAYER_SETUP_COMPLETED: "player:setup_completed",
-    ENTITLEMENT_GRANTED: "player:entitlement_granted"
-};
-exports.ContentType = {
-    VOD: "vod",
-    LIVE: "live",
-    AD: "ad",
-    PODCAST: "podcast"
-}; //# sourceMappingURL=player.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/languages.js":
-/*!*******************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/languages.js ***!
-  \*******************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.getLabel = exports.getLocalizedImageByType = exports.getAssetImages = exports.getAssetDescription = exports.getAssetTitle = exports.getLocalizedTitle = exports.getLocalizedValue = void 0;
-// NOTE: getLocalizedValue and getLocalizedImageByType also exists in app-sdk,
-// but since we can't use esm yet because dashjs and mitt doesn't support it, we
-// can't use tree shaking yet, so they are copied instead.
-function getLocalizedValue(localized, property, locale, defaultLocale) {
-    if (!localized || localized.length === 0) {
-        return undefined;
-    }
-    var localeItem = localized.find(function(localizedItem) {
-        return localizedItem.locale === locale;
-    });
-    var value = localeItem === null || localeItem === void 0 ? void 0 : localeItem[property];
-    if (value && (!Array.isArray(value) || value.length)) {
-        return value ? value : undefined;
-    }
-    if (defaultLocale) {
-        return getLocalizedValue(localized, property, defaultLocale);
-    }
-    if (locale === localized[0].locale) {
-        return undefined;
-    }
-    return getLocalizedValue(localized, property, localized[0].locale);
-}
-exports.getLocalizedValue = getLocalizedValue;
-function getLocalizedTitle(localized, language) {
-    return getLocalizedValue(localized, "title", language, "en");
-}
-exports.getLocalizedTitle = getLocalizedTitle;
-function getAssetTitle(asset, language) {
-    var enrichEpisodeTitles = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
-    var title = getLocalizedValue(asset.localized, "title", language, "en");
-    if (title && asset.episode && asset.season && enrichEpisodeTitles) {
-        return "S".concat(asset.season, " E").concat(asset.episode, " ").concat(title);
-    }
-    return title;
-}
-exports.getAssetTitle = getAssetTitle;
-function getAssetDescription(asset, language) {
-    return getLocalizedValue(asset.localized, "shortDescription", language) || getLocalizedValue(asset.localized, "description", language);
-}
-exports.getAssetDescription = getAssetDescription;
-function getAssetImages(asset, language) {
-    return getLocalizedValue(asset.localized, "images", language, "en") || [];
-}
-exports.getAssetImages = getAssetImages;
-function sortByResolution(a, b) {
-    return b.width - a.width;
-}
-function getLocalizedImageByType(localized, orientation, imageType, locale, defaultLocale) {
-    if (!localized.length) {
-        return;
-    }
-    var allImages = (getLocalizedValue(localized, "images", locale, defaultLocale) || []).sort(sortByResolution);
-    if (!allImages || !allImages.length) {
-        return;
-    }
-    var imagesByCorrectOrientation = allImages.filter(function(i) {
-        return i.orientation === orientation.toUpperCase();
-    });
-    var imagesByCorrectType = imagesByCorrectOrientation.filter(function(i) {
-        return i.type === imageType;
-    });
-    if (imagesByCorrectType.length > 0) {
-        return imagesByCorrectType[0];
-    }
-    if (imagesByCorrectOrientation.length > 0) {
-        return imagesByCorrectOrientation[0];
-    }
-    if (allImages.length > 0) {
-        return allImages[0];
-    }
-    return undefined;
-}
-exports.getLocalizedImageByType = getLocalizedImageByType;
-var LANGUAGES = [
-    {
-        code: "ab",
-        name: "Abkhaz",
-        nativeName: "Аҧсуа"
-    },
-    {
-        code: "aa",
-        name: "Afar",
-        nativeName: "Afaraf"
-    },
-    {
-        code: "af",
-        name: "Afrikaans",
-        nativeName: "Afrikaans"
-    },
-    {
-        code: "ak",
-        name: "Akan",
-        nativeName: "Akan"
-    },
-    {
-        code: "sq",
-        name: "Albanian",
-        nativeName: "Shqip"
-    },
-    {
-        code: "am",
-        name: "Amharic",
-        nativeName: "አማርኛ"
-    },
-    {
-        code: "ar",
-        name: "Arabic",
-        nativeName: "العربية"
-    },
-    {
-        code: "an",
-        name: "Aragonese",
-        nativeName: "Aragon\xe9s"
-    },
-    {
-        code: "hy",
-        name: "Armenian",
-        nativeName: "Հայերեն"
-    },
-    {
-        code: "as",
-        name: "Assamese",
-        nativeName: "অসমীয়া"
-    },
-    {
-        code: "av",
-        name: "Avaric",
-        nativeName: "Авар мацӀ, магӀарул мацӀ"
-    },
-    {
-        code: "ae",
-        name: "Avestan",
-        nativeName: "Avesta"
-    },
-    {
-        code: "ay",
-        name: "Aymara",
-        nativeName: "Aymar aru"
-    },
-    {
-        code: "az",
-        name: "Azerbaijani",
-        nativeName: "Azərbaycan dili"
-    },
-    {
-        code: "bm",
-        name: "Bambara",
-        nativeName: "Bamanankan"
-    },
-    {
-        code: "ba",
-        name: "Bashkir",
-        nativeName: "Башҡорт теле"
-    },
-    {
-        code: "eu",
-        name: "Basque",
-        nativeName: "Euskara, euskera"
-    },
-    {
-        code: "be",
-        name: "Belarusian",
-        nativeName: "Беларуская"
-    },
-    {
-        code: "bn",
-        name: "Bengali",
-        nativeName: "বাংলা"
-    },
-    {
-        code: "bh",
-        name: "Bihari",
-        nativeName: "भोजपुरी"
-    },
-    {
-        code: "bi",
-        name: "Bislama",
-        nativeName: "Bislama"
-    },
-    {
-        code: "bs",
-        name: "Bosnian",
-        nativeName: "Bosanski jezik"
-    },
-    {
-        code: "br",
-        name: "Breton",
-        nativeName: "Brezhoneg"
-    },
-    {
-        code: "bg",
-        name: "Bulgarian",
-        nativeName: "Български език"
-    },
-    {
-        code: "my",
-        name: "Burmese",
-        nativeName: "ဗမာစာ"
-    },
-    {
-        code: "ca",
-        name: "Catalan; Valencian",
-        nativeName: "Catal\xe0"
-    },
-    {
-        code: "ch",
-        name: "Chamorro",
-        nativeName: "Chamoru"
-    },
-    {
-        code: "ce",
-        name: "Chechen",
-        nativeName: "Нохчийн мотт"
-    },
-    {
-        code: "ny",
-        name: "Chichewa; Chewa; Nyanja",
-        nativeName: "ChiCheŵa, chinyanja"
-    },
-    {
-        code: "zh",
-        name: "Chinese",
-        nativeName: "中文 (Zhōngw\xe9n), 汉语, 漢語"
-    },
-    {
-        code: "cv",
-        name: "Chuvash",
-        nativeName: "Чӑваш чӗлхи"
-    },
-    {
-        code: "kw",
-        name: "Cornish",
-        nativeName: "Kernewek"
-    },
-    {
-        code: "co",
-        name: "Corsican",
-        nativeName: "Corsu, lingua corsa"
-    },
-    {
-        code: "cr",
-        name: "Cree",
-        nativeName: "ᓀᐦᐃᔭᐍᐏᐣ"
-    },
-    {
-        code: "hr",
-        name: "Croatian",
-        nativeName: "Hrvatski"
-    },
-    {
-        code: "cs",
-        name: "Czech",
-        nativeName: "Česky, čeština"
-    },
-    {
-        code: "da",
-        name: "Danish",
-        nativeName: "Dansk"
-    },
-    {
-        code: "dv",
-        name: "Divehi; Dhivehi; Maldivian;",
-        nativeName: "ދިވެހި"
-    },
-    {
-        code: "nl",
-        name: "Dutch",
-        nativeName: "Nederlands, Vlaams"
-    },
-    {
-        code: "en",
-        name: "English",
-        nativeName: "English"
-    },
-    {
-        code: "eo",
-        name: "Esperanto",
-        nativeName: "Esperanto"
-    },
-    {
-        code: "et",
-        name: "Estonian",
-        nativeName: "Eesti, eesti keel"
-    },
-    {
-        code: "ee",
-        name: "Ewe",
-        nativeName: "Eʋegbe"
-    },
-    {
-        code: "fo",
-        name: "Faroese",
-        nativeName: "F\xf8royskt"
-    },
-    {
-        code: "fj",
-        name: "Fijian",
-        nativeName: "Vosa Vakaviti"
-    },
-    {
-        code: "fi",
-        name: "Finnish",
-        nativeName: "Suomi, suomen kieli"
-    },
-    {
-        code: "fr",
-        name: "French",
-        nativeName: "Fran\xe7ais"
-    },
-    {
-        code: "ff",
-        name: "Fula; Fulah; Pulaar; Pular",
-        nativeName: "Fulfulde, Pulaar, Pular"
-    },
-    {
-        code: "gl",
-        name: "Galician",
-        nativeName: "Galego"
-    },
-    {
-        code: "ka",
-        name: "Georgian",
-        nativeName: "Ქართული"
-    },
-    {
-        code: "de",
-        name: "German",
-        nativeName: "Deutsch"
-    },
-    {
-        code: "el",
-        name: "Greek, Modern",
-        nativeName: "Ελληνικά"
-    },
-    {
-        code: "gn",
-        name: "Guaran\xed",
-        nativeName: "Ava\xf1eẽ"
-    },
-    {
-        code: "gu",
-        name: "Gujarati",
-        nativeName: "ગુજરાતી"
-    },
-    {
-        code: "ht",
-        name: "Haitian; Haitian Creole",
-        nativeName: "Krey\xf2l ayisyen"
-    },
-    {
-        code: "ha",
-        name: "Hausa",
-        nativeName: "Hausa, هَوُسَ"
-    },
-    {
-        code: "he",
-        name: "Hebrew (modern)",
-        nativeName: "עברית"
-    },
-    {
-        code: "hz",
-        name: "Herero",
-        nativeName: "Otjiherero"
-    },
-    {
-        code: "hi",
-        name: "Hindi",
-        nativeName: "हिन्दी, हिंदी"
-    },
-    {
-        code: "ho",
-        name: "Hiri Motu",
-        nativeName: "Hiri Motu"
-    },
-    {
-        code: "hu",
-        name: "Hungarian",
-        nativeName: "Magyar"
-    },
-    {
-        code: "ia",
-        name: "Interlingua",
-        nativeName: "Interlingua"
-    },
-    {
-        code: "id",
-        name: "Indonesian",
-        nativeName: "Bahasa Indonesia"
-    },
-    {
-        code: "ie",
-        name: "Interlingue",
-        nativeName: "Originally called Occidental; then Interlingue after WWII"
-    },
-    {
-        code: "ga",
-        name: "Irish",
-        nativeName: "Gaeilge"
-    },
-    {
-        code: "ig",
-        name: "Igbo",
-        nativeName: "Asụsụ Igbo"
-    },
-    {
-        code: "ik",
-        name: "Inupiaq",
-        nativeName: "I\xf1upiaq, I\xf1upiatun"
-    },
-    {
-        code: "io",
-        name: "Ido",
-        nativeName: "Ido"
-    },
-    {
-        code: "is",
-        name: "Icelandic",
-        nativeName: "\xcdslenska"
-    },
-    {
-        code: "it",
-        name: "Italian",
-        nativeName: "Italiano"
-    },
-    {
-        code: "iu",
-        name: "Inuktitut",
-        nativeName: "ᐃᓄᒃᑎᑐᑦ"
-    },
-    {
-        code: "ja",
-        name: "Japanese",
-        nativeName: "日本語 (にほんご／にっぽんご)"
-    },
-    {
-        code: "jv",
-        name: "Javanese",
-        nativeName: "Basa Jawa"
-    },
-    {
-        code: "kl",
-        name: "Kalaallisut, Greenlandic",
-        nativeName: "Kalaallisut, kalaallit oqaasii"
-    },
-    {
-        code: "kn",
-        name: "Kannada",
-        nativeName: "ಕನ್ನಡ"
-    },
-    {
-        code: "kr",
-        name: "Kanuri",
-        nativeName: "Kanuri"
-    },
-    {
-        code: "ks",
-        name: "Kashmiri",
-        nativeName: "कश्मीरी, كشميري"
-    },
-    {
-        code: "kk",
-        name: "Kazakh",
-        nativeName: "Қазақ тілі"
-    },
-    {
-        code: "km",
-        name: "Khmer",
-        nativeName: "ភាសាខ្មែរ"
-    },
-    {
-        code: "ki",
-        name: "Kikuyu, Gikuyu",
-        nativeName: "Gĩkũyũ"
-    },
-    {
-        code: "rw",
-        name: "Kinyarwanda",
-        nativeName: "Ikinyarwanda"
-    },
-    {
-        code: "ky",
-        name: "Kirghiz, Kyrgyz",
-        nativeName: "Кыргыз тили"
-    },
-    {
-        code: "kv",
-        name: "Komi",
-        nativeName: "Коми кыв"
-    },
-    {
-        code: "kg",
-        name: "Kongo",
-        nativeName: "KiKongo"
-    },
-    {
-        code: "ko",
-        name: "Korean",
-        nativeName: "한국어 (韓國語), 조선말 (朝鮮語)"
-    },
-    {
-        code: "ku",
-        name: "Kurdish",
-        nativeName: "Kurd\xee, كوردی"
-    },
-    {
-        code: "kj",
-        name: "Kwanyama, Kuanyama",
-        nativeName: "Kuanyama"
-    },
-    {
-        code: "la",
-        name: "Latin",
-        nativeName: "Latine, lingua latina"
-    },
-    {
-        code: "lb",
-        name: "Luxembourgish, Letzeburgesch",
-        nativeName: "L\xebtzebuergesch"
-    },
-    {
-        code: "lg",
-        name: "Luganda",
-        nativeName: "Luganda"
-    },
-    {
-        code: "li",
-        name: "Limburgish, Limburgan, Limburger",
-        nativeName: "Limburgs"
-    },
-    {
-        code: "ln",
-        name: "Lingala",
-        nativeName: "Ling\xe1la"
-    },
-    {
-        code: "lo",
-        name: "Lao",
-        nativeName: "ພາສາລາວ"
-    },
-    {
-        code: "lt",
-        name: "Lithuanian",
-        nativeName: "Lietuvių kalba"
-    },
-    {
-        code: "lu",
-        name: "Luba-Katanga",
-        nativeName: ""
-    },
-    {
-        code: "lv",
-        name: "Latvian",
-        nativeName: "Latviešu valoda"
-    },
-    {
-        code: "gv",
-        name: "Manx",
-        nativeName: "Gaelg, Gailck"
-    },
-    {
-        code: "mk",
-        name: "Macedonian",
-        nativeName: "Македонски јазик"
-    },
-    {
-        code: "mg",
-        name: "Malagasy",
-        nativeName: "Malagasy fiteny"
-    },
-    {
-        code: "ms",
-        name: "Malay",
-        nativeName: "Bahasa Melayu, بهاس ملايو"
-    },
-    {
-        code: "ml",
-        name: "Malayalam",
-        nativeName: "മലയാളം"
-    },
-    {
-        code: "mt",
-        name: "Maltese",
-        nativeName: "Malti"
-    },
-    {
-        code: "mi",
-        name: "Māori",
-        nativeName: "Te reo Māori"
-    },
-    {
-        code: "mr",
-        name: "Marathi (Marāṭhī)",
-        nativeName: "मराठी"
-    },
-    {
-        code: "mh",
-        name: "Marshallese",
-        nativeName: "Kajin M̧ajeļ"
-    },
-    {
-        code: "mn",
-        name: "Mongolian",
-        nativeName: "Монгол"
-    },
-    {
-        code: "na",
-        name: "Nauru",
-        nativeName: "Ekakairũ Naoero"
-    },
-    {
-        code: "nv",
-        name: "Navajo, Navaho",
-        nativeName: "Din\xe9 bizaad, Din\xe9kʼehǰ\xed"
-    },
-    {
-        code: "nb",
-        name: "Norwegian Bokm\xe5l",
-        nativeName: "Norsk bokm\xe5l"
-    },
-    {
-        code: "nd",
-        name: "North Ndebele",
-        nativeName: "IsiNdebele"
-    },
-    {
-        code: "ne",
-        name: "Nepali",
-        nativeName: "नेपाली"
-    },
-    {
-        code: "ng",
-        name: "Ndonga",
-        nativeName: "Owambo"
-    },
-    {
-        code: "nn",
-        name: "Norwegian Nynorsk",
-        nativeName: "Norsk nynorsk"
-    },
-    {
-        code: "no",
-        name: "Norwegian",
-        nativeName: "Norsk"
-    },
-    {
-        code: "ii",
-        name: "Nuosu",
-        nativeName: "ꆈꌠ꒿ Nuosuhxop"
-    },
-    {
-        code: "nr",
-        name: "South Ndebele",
-        nativeName: "IsiNdebele"
-    },
-    {
-        code: "oc",
-        name: "Occitan",
-        nativeName: "Occitan"
-    },
-    {
-        code: "oj",
-        name: "Ojibwe, Ojibwa",
-        nativeName: "ᐊᓂᔑᓈᐯᒧᐎᓐ"
-    },
-    {
-        code: "om",
-        name: "Oromo",
-        nativeName: "Afaan Oromoo"
-    },
-    {
-        code: "or",
-        name: "Oriya",
-        nativeName: "ଓଡ଼ିଆ"
-    },
-    {
-        code: "os",
-        name: "Ossetian, Ossetic",
-        nativeName: "Ирон \xe6взаг"
-    },
-    {
-        code: "pa",
-        name: "Panjabi, Punjabi",
-        nativeName: "ਪੰਜਾਬੀ, پنجابی"
-    },
-    {
-        code: "pi",
-        name: "Pāli",
-        nativeName: "पाऴि"
-    },
-    {
-        code: "fa",
-        name: "Persian",
-        nativeName: "فارسی"
-    },
-    {
-        code: "pl",
-        name: "Polish",
-        nativeName: "Polski"
-    },
-    {
-        code: "ps",
-        name: "Pashto, Pushto",
-        nativeName: "پښتو"
-    },
-    {
-        code: "pt",
-        name: "Portuguese",
-        nativeName: "Portugu\xeas"
-    },
-    {
-        code: "qu",
-        name: "Quechua",
-        nativeName: "Runa Simi, Kichwa"
-    },
-    {
-        code: "rm",
-        name: "Romansh",
-        nativeName: "Rumantsch grischun"
-    },
-    {
-        code: "rn",
-        name: "Kirundi",
-        nativeName: "KiRundi"
-    },
-    {
-        code: "ro",
-        name: "Romanian, Moldavian, Moldovan",
-        nativeName: "Rom\xe2nă"
-    },
-    {
-        code: "ru",
-        name: "Russian",
-        nativeName: "Русский язык"
-    },
-    {
-        code: "sa",
-        name: "Sanskrit (Saṁskṛta)",
-        nativeName: "संस्कृतम्"
-    },
-    {
-        code: "sc",
-        name: "Sardinian",
-        nativeName: "Sardu"
-    },
-    {
-        code: "sd",
-        name: "Sindhi",
-        nativeName: "सिन्धी, سنڌي، سندھی"
-    },
-    {
-        code: "se",
-        name: "Northern Sami",
-        nativeName: "Davvis\xe1megiella"
-    },
-    {
-        code: "sm",
-        name: "Samoan",
-        nativeName: "Gagana faa Samoa"
-    },
-    {
-        code: "sg",
-        name: "Sango",
-        nativeName: "Y\xe2ng\xe2 t\xee s\xe4ng\xf6"
-    },
-    {
-        code: "sr",
-        name: "Serbian",
-        nativeName: "Српски језик"
-    },
-    {
-        code: "gd",
-        name: "Scottish Gaelic; Gaelic",
-        nativeName: "G\xe0idhlig"
-    },
-    {
-        code: "sn",
-        name: "Shona",
-        nativeName: "ChiShona"
-    },
-    {
-        code: "si",
-        name: "Sinhala, Sinhalese",
-        nativeName: "සිංහල"
-    },
-    {
-        code: "sk",
-        name: "Slovak",
-        nativeName: "Slovenčina"
-    },
-    {
-        code: "sl",
-        name: "Slovene",
-        nativeName: "Slovenščina"
-    },
-    {
-        code: "so",
-        name: "Somali",
-        nativeName: "Soomaaliga, af Soomaali"
-    },
-    {
-        code: "st",
-        name: "Southern Sotho",
-        nativeName: "Sesotho"
-    },
-    {
-        code: "es",
-        name: "Spanish; Castilian",
-        nativeName: "Espa\xf1ol, castellano"
-    },
-    {
-        code: "su",
-        name: "Sundanese",
-        nativeName: "Basa Sunda"
-    },
-    {
-        code: "sw",
-        name: "Swahili",
-        nativeName: "Kiswahili"
-    },
-    {
-        code: "ss",
-        name: "Swati",
-        nativeName: "SiSwati"
-    },
-    {
-        code: "sv",
-        name: "Swedish",
-        nativeName: "Svenska"
-    },
-    {
-        code: "ta",
-        name: "Tamil",
-        nativeName: "தமிழ்"
-    },
-    {
-        code: "te",
-        name: "Telugu",
-        nativeName: "తెలుగు"
-    },
-    {
-        code: "tg",
-        name: "Tajik",
-        nativeName: "Тоҷикӣ, toğikī, تاجیکی"
-    },
-    {
-        code: "th",
-        name: "Thai",
-        nativeName: "ไทย"
-    },
-    {
-        code: "ti",
-        name: "Tigrinya",
-        nativeName: "ትግርኛ"
-    },
-    {
-        code: "bo",
-        name: "Tibetan Standard, Tibetan, Central",
-        nativeName: "བོད་ཡིག"
-    },
-    {
-        code: "tk",
-        name: "Turkmen",
-        nativeName: "T\xfcrkmen, Түркмен"
-    },
-    {
-        code: "tl",
-        name: "Tagalog",
-        nativeName: "Wikang Tagalog, ᜏᜒᜃᜅ᜔ ᜆᜄᜎᜓᜄ᜔"
-    },
-    {
-        code: "tn",
-        name: "Tswana",
-        nativeName: "Setswana"
-    },
-    {
-        code: "to",
-        name: "Tonga (Tonga Islands)",
-        nativeName: "Faka Tonga"
-    },
-    {
-        code: "tr",
-        name: "Turkish",
-        nativeName: "T\xfcrk\xe7e"
-    },
-    {
-        code: "ts",
-        name: "Tsonga",
-        nativeName: "Xitsonga"
-    },
-    {
-        code: "tt",
-        name: "Tatar",
-        nativeName: "Татарча, tatar\xe7a, تاتارچا"
-    },
-    {
-        code: "tw",
-        name: "Twi",
-        nativeName: "Twi"
-    },
-    {
-        code: "ty",
-        name: "Tahitian",
-        nativeName: "Reo Tahiti"
-    },
-    {
-        code: "ug",
-        name: "Uighur, Uyghur",
-        nativeName: "Uyƣurqə, ئۇيغۇرچە"
-    },
-    {
-        code: "uk",
-        name: "Ukrainian",
-        nativeName: "Українська"
-    },
-    {
-        code: "ur",
-        name: "Urdu",
-        nativeName: "اردو"
-    },
-    {
-        code: "uz",
-        name: "Uzbek",
-        nativeName: "Zbek, Ўзбек, أۇزبېك"
-    },
-    {
-        code: "ve",
-        name: "Venda",
-        nativeName: "Tshivenḓa"
-    },
-    {
-        code: "vi",
-        name: "Vietnamese",
-        nativeName: "Tiếng Việt"
-    },
-    {
-        code: "vo",
-        name: "Volap\xfck",
-        nativeName: "Volap\xfck"
-    },
-    {
-        code: "wa",
-        name: "Walloon",
-        nativeName: "Walon"
-    },
-    {
-        code: "cy",
-        name: "Welsh",
-        nativeName: "Cymraeg"
-    },
-    {
-        code: "wo",
-        name: "Wolof",
-        nativeName: "Wollof"
-    },
-    {
-        code: "fy",
-        name: "Western Frisian",
-        nativeName: "Frysk"
-    },
-    {
-        code: "xh",
-        name: "Xhosa",
-        nativeName: "IsiXhosa"
-    },
-    {
-        code: "yi",
-        name: "Yiddish",
-        nativeName: "ייִדיש"
-    },
-    {
-        code: "yo",
-        name: "Yoruba",
-        nativeName: "Yor\xf9b\xe1"
-    },
-    {
-        code: "za",
-        name: "Zhuang, Chuang",
-        nativeName: "Saɯ cueŋƅ, Saw cuengh"
-    }
-];
-function getLabel(languageCode) {
-    var _a, _b;
-    return (_b = (_a = LANGUAGES.find(function(language) {
-        return language.code === languageCode;
-    })) === null || _a === void 0 ? void 0 : _a.nativeName) !== null && _b !== void 0 ? _b : languageCode.toUpperCase();
-}
-exports.getLabel = getLabel; //# sourceMappingURL=languages.js.map
-
-
-/***/ }),
-
-/***/ "./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/shakaSSAIManifestPatch.js":
-/*!********************************************************************************************************************************************************!*\
-  !*** ./node_modules/@ericssonbroadcastservices/js-player-skin/node_modules/@ericssonbroadcastservices/js-player-shared/dist/shakaSSAIManifestPatch.js ***!
-  \********************************************************************************************************************************************************/
-/***/ (function(__unused_webpack_module, exports) {
-
-"use strict";
-
-// SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
-//
-// SPDX-License-Identifier: MIT
-Object.defineProperty(exports, "__esModule", ({
-    value: true
-}));
-exports.patchShakaSSAIManifest = void 0;
-function getAudioAdaptionSetsFromClipCategory(periods, clips, category) {
-    return clips.flatMap(function(clip, index) {
-        if (clip.category !== category) {
-            return [];
-        }
-        return Array.from(periods[index].querySelectorAll("AdaptationSet[lang][mimeType^=audio/*] Representation, AdaptationSet[lang] Representation[mimeType^=audio/*]")).flatMap(function(e) {
-            return e.closest("AdaptationSet") || [];
-        });
-    });
-}
-// Revert Shakas audio track normalization for periods, causing ads only languages to appear in the normal options
-// See https://github.com/shaka-project/shaka-player/issues/2887#issuecomment-701594716
-var patchShakaSSAIManifest = function() {
-    var clips = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : [];
-    return function(manifest) {
-        var _a, _b;
-        var periods = manifest.querySelectorAll("Period");
-        if (periods.length <= 1 || periods.length !== (clips === null || clips === void 0 ? void 0 : clips.length)) {
-            return [];
-        }
-        var firstAudioLang = (_b = (_a = getAudioAdaptionSetsFromClipCategory(periods, clips, "vod")) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.getAttribute("lang");
-        if (firstAudioLang) {
-            getAudioAdaptionSetsFromClipCategory(periods, clips, "ad").forEach(function(el) {
-                return el.setAttribute("lang", firstAudioLang);
-            });
-        }
-    };
-};
-exports.patchShakaSSAIManifest = patchShakaSSAIManifest; //# sourceMappingURL=shakaSSAIManifestPatch.js.map
-
-
-/***/ }),
-
 /***/ "./src/index.ts":
 /*!**********************!*\
   !*** ./src/index.ts ***!
@@ -5316,7 +1722,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ericssonbroadcastservices_js_player_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_ericssonbroadcastservices_js_player_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ericssonbroadcastservices_js_player_shared__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ericssonbroadcastservices/js-player-shared */ "../../packages/shared/dist/index.js");
 /* harmony import */ var _ericssonbroadcastservices_js_player_shared__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_ericssonbroadcastservices_js_player_shared__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _ericssonbroadcastservices_js_player_skin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ericssonbroadcastservices/js-player-skin */ "./node_modules/@ericssonbroadcastservices/js-player-skin/dist/index.js");
+/* harmony import */ var _ericssonbroadcastservices_js_player_skin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ericssonbroadcastservices/js-player-skin */ "../../packages/skin/dist/index.js");
 // SPDX-FileCopyrightText: 2024 Red Bee Media Ltd <https://www.redbeemedia.com/>
 //
 // SPDX-License-Identifier: MIT
@@ -147277,7 +143683,7 @@ var PlayerCore = /*#__PURE__*/ function(_js_player_shared_1_EmitterBaseClass) {
         _this.mediaContainer = mediaContainer;
         _this.container = container;
         _this.instanceSettings = {
-            playerSDKVersion:  true ? "1.9.0-internal.0" : 0,
+            playerSDKVersion:  true ? "1.9.0" : 0,
             initOptions: Object.assign(Object.assign(Object.assign({}, defaults_1.PLAYER_OPTIONS), options), {
                 mediaContainer: mediaContainer
             }),
@@ -284010,7 +280416,7 @@ function _type_of(obj) {
                         o.className = U, o.tabIndex = 0;
                         var s1 = document.createElement("div");
                         if (s1.className = F, o.appendChild(s1), _$t.videoElement = (0, M.setupVideoElement)(), s1.appendChild(_$t.videoElement), _$t.subtitleContainer = document.createElement("div"), _$t.subtitleContainer.className = B, s1.appendChild(_$t.subtitleContainer), _$t.mediaContainer = s1, _$t.container = o, _$t.instanceSettings = {
-                            playerSDKVersion: "1.9.0-internal.0",
+                            playerSDKVersion: "1.9.0",
                             initOptions: Object.assign(Object.assign(Object.assign({}, P.PLAYER_OPTIONS), e1), {
                                 mediaContainer: s1
                             }),
@@ -316037,7 +312443,7 @@ function _type_of(obj) {
                 }, p = u.HL, g = u.xn, v = u.$W;
             }
         }, __webpack_module_cache__ = {};
-        function __nested_webpack_require_12740892__(e1) {
+        function __nested_webpack_require_12740881__(e1) {
             var t1 = __webpack_module_cache__[e1];
             if (void 0 !== t1) return t1.exports;
             var n = __webpack_module_cache__[e1] = {
@@ -316045,35 +312451,35 @@ function _type_of(obj) {
                 loaded: !1,
                 exports: {}
             };
-            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12740892__), n.loaded = !0, n.exports;
+            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12740881__), n.loaded = !0, n.exports;
         }
-        __nested_webpack_require_12740892__.d = function(e1, t1) {
-            for(var n in t1)__nested_webpack_require_12740892__.o(t1, n) && !__nested_webpack_require_12740892__.o(e1, n) && Object.defineProperty(e1, n, {
+        __nested_webpack_require_12740881__.d = function(e1, t1) {
+            for(var n in t1)__nested_webpack_require_12740881__.o(t1, n) && !__nested_webpack_require_12740881__.o(e1, n) && Object.defineProperty(e1, n, {
                 enumerable: !0,
                 get: t1[n]
             });
-        }, __nested_webpack_require_12740892__.g = function() {
+        }, __nested_webpack_require_12740881__.g = function() {
             if ("object" == typeof globalThis) return globalThis;
             try {
                 return this || new Function("return this")();
             } catch (e1) {
                 if ("object" == typeof window) return window;
             }
-        }(), __nested_webpack_require_12740892__.o = function(e1, t1) {
+        }(), __nested_webpack_require_12740881__.o = function(e1, t1) {
             return Object.prototype.hasOwnProperty.call(e1, t1);
-        }, __nested_webpack_require_12740892__.r = function(e1) {
+        }, __nested_webpack_require_12740881__.r = function(e1) {
             "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e1, Symbol.toStringTag, {
                 value: "Module"
             }), Object.defineProperty(e1, "__esModule", {
                 value: !0
             });
-        }, __nested_webpack_require_12740892__.nmd = function(e1) {
+        }, __nested_webpack_require_12740881__.nmd = function(e1) {
             return e1.paths = [], e1.children || (e1.children = []), e1;
         };
         var __nested_webpack_exports__ = {};
         return function() {
             "use strict";
-            __nested_webpack_require_12740892__.r(__nested_webpack_exports__), __nested_webpack_require_12740892__.d(__nested_webpack_exports__, {
+            __nested_webpack_require_12740881__.r(__nested_webpack_exports__), __nested_webpack_require_12740881__.d(__nested_webpack_exports__, {
                 ContentType: function ContentType() {
                     return t1.ContentType;
                 },
@@ -316093,7 +312499,7 @@ function _type_of(obj) {
                     return S;
                 }
             });
-            var e1 = __nested_webpack_require_12740892__(1382), t1 = __nested_webpack_require_12740892__(9768), n = __nested_webpack_require_12740892__(9899), i = __nested_webpack_require_12740892__(3718), r = __nested_webpack_require_12740892__(5072);
+            var e1 = __nested_webpack_require_12740881__(1382), t1 = __nested_webpack_require_12740881__(9768), n = __nested_webpack_require_12740881__(9899), i = __nested_webpack_require_12740881__(3718), r = __nested_webpack_require_12740881__(5072);
             function a1(e1, t1) {
                 (null == t1 || t1 > e1.length) && (t1 = e1.length);
                 for(var n = 0, i = new Array(t1); n < t1; n++)i[n] = e1[n];
@@ -319902,6 +316308,1388 @@ var patchShakaSSAIManifest = function() {
     };
 };
 exports.patchShakaSSAIManifest = patchShakaSSAIManifest; //# sourceMappingURL=shakaSSAIManifestPatch.js.map
+
+
+/***/ }),
+
+/***/ "../../packages/skin/dist/index.js":
+/*!*****************************************!*\
+  !*** ../../packages/skin/dist/index.js ***!
+  \*****************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+var e = __webpack_require__(/*! preact */ "../../node_modules/preact/dist/preact.module.js"), t = __webpack_require__(/*! classnames */ "../../node_modules/classnames/index.js"), n = __webpack_require__(/*! preact/hooks */ "../../node_modules/preact/hooks/dist/hooks.module.js"), i = __webpack_require__(/*! mdi-preact/SkipNextIcon */ "../../node_modules/mdi-preact/SkipNextIcon.js"), r = __webpack_require__(/*! @ericssonbroadcastservices/js-player-shared */ "../../packages/shared/dist/index.js"), l = __webpack_require__(/*! humanize-duration */ "../../node_modules/humanize-duration/humanize-duration.js"), a = __webpack_require__(/*! mdi-preact/FormatListBulletedIcon */ "../../node_modules/mdi-preact/FormatListBulletedIcon.js"), o = __webpack_require__(/*! mdi-preact/Rewind10Icon */ "../../node_modules/mdi-preact/Rewind10Icon.js"), u = __webpack_require__(/*! preact/compat */ "../../node_modules/preact/compat/dist/compat.module.js"), s = __webpack_require__(/*! mdi-preact/FastForward10Icon */ "../../node_modules/mdi-preact/FastForward10Icon.js"), c = __webpack_require__(/*! mdi-preact/PauseIcon */ "../../node_modules/mdi-preact/PauseIcon.js"), d = __webpack_require__(/*! mdi-preact/PlayIcon */ "../../node_modules/mdi-preact/PlayIcon.js"), v = __webpack_require__(/*! mdi-preact/StopIcon */ "../../node_modules/mdi-preact/StopIcon.js"), f = __webpack_require__(/*! mdi-preact/CogIcon */ "../../node_modules/mdi-preact/CogIcon.js"), h = __webpack_require__(/*! mdi-preact/SubtitlesOutlineIcon */ "../../node_modules/mdi-preact/SubtitlesOutlineIcon.js"), T = __webpack_require__(/*! mdi-preact/VolumeHighIcon */ "../../node_modules/mdi-preact/VolumeHighIcon.js"), k = __webpack_require__(/*! mdi-preact/VolumeMuteIcon */ "../../node_modules/mdi-preact/VolumeMuteIcon.js"), m = __webpack_require__(/*! mdi-preact/CastIcon */ "../../node_modules/mdi-preact/CastIcon.js"), p = __webpack_require__(/*! mdi-preact/CloseIcon */ "../../node_modules/mdi-preact/CloseIcon.js"), S = __webpack_require__(/*! mdi-preact/MapMarkerIcon */ "../../node_modules/mdi-preact/MapMarkerIcon.js"), b = __webpack_require__(/*! mdi-preact/AccountVoiceIcon */ "../../node_modules/mdi-preact/AccountVoiceIcon.js"), E = __webpack_require__(/*! mdi-preact/MovieCogIcon */ "../../node_modules/mdi-preact/MovieCogIcon.js"), _ = __webpack_require__(/*! mdi-preact/SubtitlesIcon */ "../../node_modules/mdi-preact/SubtitlesIcon.js"), C = __webpack_require__(/*! mdi-preact/LinkVariantIcon */ "../../node_modules/mdi-preact/LinkVariantIcon.js"), g = __webpack_require__(/*! mdi-preact/AppleAirplayIcon */ "../../node_modules/mdi-preact/AppleAirplayIcon.js"), A = __webpack_require__(/*! mdi-preact/FullscreenExitIcon */ "../../node_modules/mdi-preact/FullscreenExitIcon.js"), M = __webpack_require__(/*! mdi-preact/FullscreenIcon */ "../../node_modules/mdi-preact/FullscreenIcon.js"), y = __webpack_require__(/*! mdi-preact/PictureInPictureTopRightIcon */ "../../node_modules/mdi-preact/PictureInPictureTopRightIcon.js"), w = __webpack_require__(/*! hotkeys-js */ "../../node_modules/hotkeys-js/dist/hotkeys.esm.js");
+function I(e) {
+    return e && "object" == typeof e && "default" in e ? e : {
+        default: e
+    };
+}
+var N = /*#__PURE__*/ I(t), L = /*#__PURE__*/ I(i), P = /*#__PURE__*/ I(l), R = /*#__PURE__*/ I(a), D = /*#__PURE__*/ I(o), O = /*#__PURE__*/ I(s), U = /*#__PURE__*/ I(c), q = /*#__PURE__*/ I(d), B = /*#__PURE__*/ I(v), H = /*#__PURE__*/ I(f), x = /*#__PURE__*/ I(h), G = /*#__PURE__*/ I(T), V = /*#__PURE__*/ I(k), F = /*#__PURE__*/ I(m), W = /*#__PURE__*/ I(p), K = /*#__PURE__*/ I(S), Z = /*#__PURE__*/ I(b), j = /*#__PURE__*/ I(E), z = /*#__PURE__*/ I(_), Q = /*#__PURE__*/ I(C), J = /*#__PURE__*/ I(g), X = /*#__PURE__*/ I(A), Y = /*#__PURE__*/ I(M), $ = /*#__PURE__*/ I(y), ee = /*#__PURE__*/ I(w);
+function te() {
+    return te = Object.assign ? Object.assign.bind() : function te(e) {
+        for(var t = 1; t < arguments.length; t++){
+            var n = arguments[t];
+            for(var i in n)Object.prototype.hasOwnProperty.call(n, i) && (e[i] = n[i]);
+        }
+        return e;
+    }, te.apply(this, arguments);
+}
+var ne = {
+    hideControlsTimer: 2500,
+    showMetadata: !0,
+    showWallClock: !1,
+    showQualitySelector: !0,
+    showSubtitlesToggleButton: !1,
+    showJumpButtons: !0,
+    allowPictureInPicture: !0,
+    keyboardShortcuts: !0
+};
+function ie(e, t) {
+    void 0 === t && (t = !0);
+    try {
+        return new Intl.DateTimeFormat("sv-SE", te({
+            hour: "2-digit",
+            minute: "2-digit"
+        }, t && {
+            second: "2-digit"
+        }, e && {
+            timeZone: e
+        }));
+    } catch (n) {
+        if (e) return ie(void 0, t);
+        throw n;
+    }
+}
+function re(e) {
+    return void 0 === e && (e = 0), [
+        Math.floor(e / 3600) % 24,
+        Math.floor(e / 60) % 60,
+        Math.floor(e % 60)
+    ].map(function(e) {
+        return e < 10 ? "0" + e : e;
+    }).filter(function(e, t) {
+        return "00" !== e || t > 0;
+    }).join(":");
+}
+function le(e, t) {
+    var n = ie(t);
+    return 1970 === new Date(e).getFullYear() && (e *= 1e3), n.format(new Date(e));
+}
+var ae = function ae(e, t, n) {
+    var i, l, a, o;
+    void 0 === n && (n = "en");
+    var u = e;
+    null != t && t.asset && (u = t.asset);
+    var s = null != (i = r.getAssetTitle(u, n)) ? i : "", c = null != (l = r.getAssetDescription(u, n)) ? l : "", d = {
+        image: null != (a = null == (o = r.getLocalizedImageByType(u.localized, "LANDSCAPE", "cover", n)) ? void 0 : o.url) ? a : "",
+        title: s,
+        description: c
+    };
+    return null != t && t.startTime && t.endTime ? d.duration = [
+        new Date(t.startTime),
+        new Date(t.endTime)
+    ].map(function(e) {
+        return ie(void 0, !1).format(e);
+    }).join(" - ") : e.duration && (d.duration = function(e, t) {
+        return P.default(e, {
+            language: t,
+            fallbacks: [
+                "en"
+            ],
+            round: !0
+        });
+    }(e.duration, n)), d;
+};
+function oe(e, t) {
+    var i = n.useState(te({}, r.DefaultPlayerState, {
+        isAirPlaying: !1,
+        isAirPlayAvailable: !1,
+        contractRestrictions: void 0
+    })), l = i[0], a = i[1], o = n.useState({
+        asset: void 0,
+        timelineSpriteCues: [],
+        activeIntro: void 0
+    }), u = o[0], s = o[1];
+    return n.useEffect(function() {
+        null == e || e.on(r.PlayerEvents.STATE_CHANGED, function(e) {
+            a(function(t) {
+                return te({}, t, e);
+            });
+        }), null == e || e.on(r.PlayerEvents.LOADED, function() {
+            null != e && e.getAssetInfo() && (s(function(n) {
+                var i, r = null == e ? void 0 : e.getAssetInfo();
+                return te({}, n, {
+                    asset: r && ae(r, null == e || null == (i = e.getProgramInfo()) ? void 0 : i.current, t)
+                });
+            }), null == e || e.getTimelineSpriteCues().then(function(e) {
+                s(function(t) {
+                    return te({}, t, {
+                        timelineSpriteCues: e
+                    });
+                });
+            }));
+        }), null == e || e.on(r.PlayerEvents.PROGRAM_CHANGED, function(e) {
+            var n = e.channel, i = e.program;
+            s(function(e) {
+                return te({}, e, {
+                    asset: ae(n, i, t)
+                });
+            });
+        }), null == e || e.on(r.PlayerEvents.INTRO_START, function(e) {
+            var _$t = e.contentMarker;
+            s(function(e) {
+                return te({}, e, {
+                    activeIntro: _$t
+                });
+            });
+        }), null == e || e.on(r.PlayerEvents.INTRO_END, function(e) {
+            var _$t = e.contentMarker;
+            s(function(e) {
+                var n;
+                return te({}, e, {
+                    activeIntro: _$t.offset === (null == (n = e.activeIntro) ? void 0 : n.offset) ? void 0 : e.activeIntro
+                });
+            });
+        });
+    }, [
+        e,
+        t
+    ]), n.useEffect(function() {
+        var _$t, n;
+        return window.addEventListener("resize", _$t = function t() {
+            clearTimeout(n), n = window.setTimeout(function() {
+                null == e || e.getTimelineSpriteCues().then(function(e) {
+                    a(function(t) {
+                        return te({}, t, {
+                            timelineSpriteCues: e
+                        });
+                    });
+                });
+            }, 500);
+        }), function() {
+            return window.removeEventListener("resize", _$t);
+        };
+    }, []), [
+        l,
+        u
+    ];
+}
+var ue = {
+    container: "_zDmI-",
+    slideIn: "_m3sfy",
+    isMobile: "_jmdrk",
+    hidden: "_SrUR9",
+    skipButtonExit: "_x09aO",
+    slideOut: "_AD2wD",
+    skipButton: "_U18uE",
+    title: "_vHAmu"
+};
+function se(t) {
+    var i, l, a = t.playerCore, o = t.showSkipOption, u = t.locale, s = t.isMobile, c = oe(a, u), d = c[0].currentTime, v = c[1].activeIntro, f = n.useState(!1), h = f[0], T = f[1], k = n.useState(!1), m = k[0], p = k[1], S = v && o;
+    n.useEffect(function() {
+        S && !h ? T(!0) : !S && h && (p(!0), setTimeout(function() {
+            T(!1), p(!1);
+        }, 500));
+    }, [
+        d
+    ]);
+    var b = n.useCallback(function() {
+        null != v && v.endOffset && (null == a || a.seekTo(v.endOffset / 1e3));
+    }, [
+        a,
+        v
+    ]);
+    return e.h("div", {
+        class: N.default(ue.container, (i = {}, i[ue.skipButtonExit] = m, i[ue.hidden] = !h, i[ue.isMobile] = s, i)),
+        onClick: b
+    }, e.h("div", {
+        class: ue.skipButton
+    }, e.h(L.default, null), e.h("div", {
+        class: ue.title
+    }, r.getLocalizedTitle(null != (l = null == v ? void 0 : v.localized) ? l : [], u))));
+}
+var ce = {
+    container: "_tviQo"
+};
+function de() {
+    return e.h("div", {
+        class: ce.container
+    }, "Unfortunately, the title cannot be played at the moment for technical reasons.");
+}
+var ve = {
+    container: "_aDSwM",
+    loader: "_gluyA",
+    rotation: "_i3wdj"
+};
+function fe() {
+    return e.h("div", {
+        class: ve.container
+    }, e.h("span", {
+        class: ve.loader
+    }));
+}
+var he = {
+    META_DATA_VIEW: "metaDataView",
+    CONTENT_MARKERS_MENU: "contentMarkersMenu",
+    SETTINGS_MENU: "settings"
+}, Te = {
+    container: "_1DnQ9",
+    isMobile: "_kbb2W",
+    adIndexLabel: "_zM-Fn"
+};
+function ke(t) {
+    var n, i = t.currentAdIndex, r = t.currentAdBreakTotal, l = t.translations;
+    return e.h("div", {
+        class: N.default(Te.container, (n = {}, n[Te.isMobile] = !!t.isMobile, n))
+    }, e.h("div", {
+        class: Te.adIndexLabel
+    }, (null == l ? void 0 : l.AD) || "Ad", " ", i, "/", r));
+}
+var me = {
+    buttonContainer: "_m6UOb"
+};
+function pe(t) {
+    return e.h("div", null, e.h("div", {
+        class: me.buttonContainer,
+        onClick: t.toggleMenu
+    }, e.h(R.default, null)));
+}
+var Se = e.createContext(void 0), be = Se.Provider;
+function Ee() {
+    return n.useContext(Se);
+}
+function _e() {
+    var e = n.useContext(Se);
+    if (e && !("isConnected" in e)) return e;
+}
+function Ce() {
+    var e = Ee();
+    return n.useCallback(function() {
+        e && (e.isPlaying() ? e.pause() : e.play());
+    }, [
+        e
+    ]);
+}
+var ge = "_Y0ZHd", Ae = u.memo(function() {
+    var t = Ee();
+    return e.h("div", {
+        class: ge,
+        onClick: function onClick() {
+            return null == t ? void 0 : t.scrub(-r.QuickSeekTime);
+        }
+    }, e.h(D.default, null));
+}), Me = u.memo(function() {
+    var t = Ee();
+    return e.h("div", {
+        class: ge,
+        onClick: function onClick() {
+            return null == t ? void 0 : t.scrub(r.QuickSeekTime);
+        }
+    }, e.h(O.default, null));
+}), ye = u.memo(function(t) {
+    var n, i = t.isAtLiveEdge, r = Ee();
+    return e.h("span", {
+        onClick: function onClick() {
+            return null == r ? void 0 : r.seekToLive();
+        },
+        class: N.default("_x6XyB", (n = {}, n["_7N-Qj"] = !i, n))
+    }, "LIVE");
+}), we = u.memo(function(t) {
+    var n = t.state, i = t.pausable, l = void 0 === i || i, a = t.className, o = Ce(), u = e.h(l ? U.default : B.default, null);
+    return e.h("div", {
+        class: N.default("_CoOBd", a),
+        onClick: o
+    }, n !== r.PlaybackState.PLAYING ? e.h(q.default, null) : u);
+}), Ie = {
+    buttonContainer: "_d9js2"
+};
+function Ne(t) {
+    return e.h("div", null, e.h("div", {
+        class: Ie.buttonContainer,
+        onClick: t.toggleMenu
+    }, e.h(H.default, null)));
+}
+var Le = {
+    container: "_6N8My"
+}, Pe = u.memo(function(t) {
+    var n = t.isEnabled, i = Ee();
+    return e.h("div", {
+        class: Le.buttonContainer,
+        onClick: function onClick() {
+            var e;
+            if (i && 0 !== (null == (e = i.getSubtitleTracks()) ? void 0 : e.length)) {
+                var _$t = i.getSubtitleTracks(), n = i.getSubtitleTrack();
+                i.setSubtitleTrack(n ? void 0 : _$t[0]);
+            }
+        }
+    }, e.h(x.default, n ? {
+        color: "rgba(255, 255, 255, 1"
+    } : {
+        color: "rgba(255, 255, 255, 0.5"
+    }));
+}), Re = {
+    container: "_0MV3a",
+    hoverIndicator: "_C-pA6",
+    wrapper: "_ZEE0w",
+    hoverBar: "_w8DfN",
+    progress: "_bslHT",
+    indicator: "_3TX4U",
+    adBreakContainer: "_uuIlP",
+    marker: "_16FYa"
+};
+function De(e, t) {
+    return parseFloat((e / t * 100).toFixed(2));
+}
+function Oe(e) {
+    var t, n = e.currentTarget;
+    return De(e.changedTouches[0].clientX - (t = n, t.__RBM_CLIENT_RECT || (t.__RBM_CLIENT_RECT = t.getBoundingClientRect())).left, n.offsetWidth);
+}
+function Ue(t) {
+    var i, r, l = t.value, a = t.hoverIndicator, o = t.adMarkerPositions, u = t.onSelect;
+    l = Math.min(l, 100);
+    var s = n.useState(-1), c = s[0], d = s[1], v = n.useRef(null), f = n.useRef(null), h = null == (i = f.current) ? void 0 : i.getBoundingClientRect(), T = null == (r = v.current) ? void 0 : r.getBoundingClientRect(), k = n.useState(50), m = k[0], p = k[1], S = n.useState(0), b = S[0], E = S[1], _ = n.useState(0), C = _[0], g = _[1], A = n.useState(c), M = A[0], y = A[1], w = n.useCallback(function(e) {
+        e.preventDefault(), d(Oe(e));
+    }, []), _$I = n.useCallback(function(e) {
+        e.preventDefault(), u(Oe(e)), d(-1), e.currentTarget.__RBM_CLIENT_RECT = null;
+    }, [
+        u
+    ]), N = n.useCallback(function(e) {
+        var _$t = De(e.offsetX, e.currentTarget.offsetWidth);
+        d(_$t);
+    }, []), L = n.useCallback(function() {
+        d(-1);
+    }, []), P = n.useCallback(function(e) {
+        u(De(e.offsetX, e.currentTarget.offsetWidth));
+    }, [
+        u
+    ]), R = c > -1, D = {
+        left: "0",
+        width: "0"
+    };
+    return R && (l > c ? (D.left = l - (l - c) + "%", D.width = l - c + "%") : l < c && (D.left = l + "%", D.width = c - l + "%")), n.useLayoutEffect(function() {
+        if (h && T) {
+            var e = De(h.width, T.width), _$t = parseFloat((e / 2).toFixed(2));
+            E(_$t);
+            var n = parseFloat((100 - e / 2).toFixed(2));
+            g(n), c > _$t && c < n ? p(50) : c <= _$t ? (y(0), p(0)) : c >= n && (y(100), p(100));
+        }
+    }, [
+        c,
+        T,
+        h,
+        m
+    ]), e.h("div", {
+        ref: v,
+        class: Re.container,
+        onTouchStart: w,
+        onTouchMove: w,
+        onTouchEnd: _$I,
+        onMouseMove: N,
+        onMouseUp: P,
+        onMouseLeave: L
+    }, a && R && e.h("span", {
+        ref: f,
+        class: Re.hoverIndicator,
+        style: {
+            left: function(e) {
+                return e < b || e > C ? M : e;
+            }(c) + "%",
+            transform: "TranslateX(-" + function(e) {
+                return e < b || e > C ? m : 50;
+            }(c) + "%)"
+        }
+    }, a(c)), e.h("div", {
+        class: Re.wrapper
+    }, e.h("div", {
+        class: Re.progress,
+        style: {
+            width: l + "%"
+        }
+    }, e.h("div", {
+        className: Re.indicator
+    })), o && e.h("div", {
+        className: Re.adBreakContainer
+    }, o.map(function(t, n) {
+        return e.h("span", {
+            key: n + "-" + t,
+            className: Re.marker,
+            style: {
+                left: t + "%"
+            }
+        });
+    })), e.h("div", {
+        class: Re.hoverBar,
+        style: D
+    })));
+}
+var qe = u.memo(function(t) {
+    var i, r, l = t.muted, a = t.volume, o = t.disableSlider, u = Ee(), s = n.useRef(), c = n.useState(!1), d = c[0], v = c[1], f = n.useCallback(function() {
+        window.clearTimeout(s.current), o || v(!0);
+    }, [
+        o
+    ]), h = n.useCallback(function() {
+        return s.current = window.setTimeout(function() {
+            return v(!1);
+        }, 1e3);
+    }, []);
+    return e.h("div", {
+        class: N.default("_Evjv-", (i = {}, i._F1jb2 = o, i)),
+        onMouseOver: f,
+        onMouseOut: h
+    }, e.h("div", {
+        class: "_Jq-pq",
+        onClick: function onClick() {
+            return null == u ? void 0 : u.toggleMuted();
+        }
+    }, e.h(l ? V.default : G.default, null)), e.h("div", {
+        class: N.default("_jkibU", (r = {}, r._hN5f7 = d, r))
+    }, e.h(Ue, {
+        onSelect: function onSelect(e) {
+            return null == u ? void 0 : u.setVolume({
+                percentage: e
+            });
+        },
+        value: 100 * a
+    })));
+}), Be = u.memo(function(t) {
+    var n = t.image;
+    return e.h("div", {
+        class: "_l8hBS"
+    }, e.h("span", {
+        class: "_pNgVv"
+    }, t.title), n && e.h("img", {
+        class: "_2Ccot",
+        src: n,
+        alt: ""
+    }), !n && e.h(F.default, null));
+}), He = u.memo(function(t) {
+    var n = t.items, i = t.icon, l = t.setActiveView, a = t.locale, o = Ee();
+    return n ? e.h("div", {
+        class: "_HhEZP"
+    }, e.h("div", {
+        class: "_Kd2UR"
+    }, i), e.h("ul", null, n.map(function(t, n) {
+        var i;
+        return e.h("li", {
+            key: t.type + "_" + n,
+            onClick: function onClick() {
+                null == o || o.seekTo(t.offset / 1e3), l(void 0);
+            }
+        }, e.h("div", {
+            class: "_0N1SR"
+        }, e.h("div", {
+            class: "_NYsVs"
+        }, re(t.offset / 1e3)), e.h("div", {
+            class: "_x6q7H"
+        }, e.h("div", null, r.getLocalizedTitle(null != (i = t.localized) ? i : [], a)))));
+    }))) : null;
+}), xe = u.memo(function(t) {
+    var n, i = t.visible, r = t.contentMarkers, l = void 0 === r ? [] : r, a = t.fillScreen, o = t.locale, u = t.setActiveView;
+    return e.h("div", {
+        class: N.default("_DNBWK", (n = {}, n._ZUgWR = a, n._P1EVF = !a, n._JzoOU = !i, n))
+    }, e.h("div", {
+        onClick: function onClick() {
+            return u(void 0);
+        },
+        class: "_UIPcJ"
+    }, e.h(W.default, null)), e.h("div", {
+        class: "_-1xX1"
+    }, !!l.length && e.h(He, {
+        icon: e.h(K.default, null),
+        items: l.filter(function(e) {
+            return "POINT" === e.type || "CHAPTER" === e.type;
+        }),
+        setActiveView: u,
+        locale: o
+    })));
+}), Ge = {
+    hoverIndicator: "_RUNmY",
+    sprite: "_mKx-M",
+    visible: "_q18d-"
+};
+function Ve(t) {
+    var i, r, l = t.isLive, a = t.spriteCue, o = t.time, u = t.duration;
+    r = t.showWallClock ? le(o, t.timeZone) : l ? "- " + re(Math.max(u - o, 0)) : "" + re(Math.max(o, 0));
+    var s = n.useState(!1), c = s[0], d = s[1];
+    return n.useEffect(function() {
+        if (d(!1), null != a && a.image) {
+            var e = new Image;
+            return e.onload = function() {
+                return d(!0);
+            }, e.src = a.image, function() {
+                return e.onload = null;
+            };
+        }
+    }, [
+        null == a ? void 0 : a.image
+    ]), e.h("div", {
+        class: Ge.hoverIndicator
+    }, a && e.h("div", {
+        class: N.default(Ge.sprite, (i = {}, i[Ge.visible] = c, i)),
+        style: {
+            width: a.dimensions.width + "px",
+            height: a.dimensions.height + "px",
+            backgroundImage: "url(" + a.image + ")",
+            backgroundPosition: -a.dimensions.x + "px " + -a.dimensions.y + "px"
+        }
+    }), e.h("span", null, r));
+}
+function Fe(t) {
+    var i = t.seekable, r = t.isLive, l = t.currentTime, a = t.timelineSpriteCues, o = t.showWallClock, u = t.timeZone, s = t.utcSeekable, c = t.adMarkerPositions, d = Ee(), v = o ? (s.end - s.start) / 1e3 : i.end - i.start, f = n.useCallback(function(e) {
+        var _$t = null == d ? void 0 : d.getSeekable();
+        _$t && (null == d || d.seekTo(_$t.start + e * (_$t.end - _$t.start) / 100));
+    }, [
+        d
+    ]), h = n.useCallback(function(t) {
+        var n = t / 100 * v, i = a.find(function(e) {
+            return n >= e.start && n < e.end;
+        });
+        return e.h(Ve, {
+            isLive: r,
+            showWallClock: o,
+            timeZone: u,
+            spriteCue: i,
+            time: o ? s.start + 1e3 * n : n,
+            duration: v
+        });
+    }, [
+        v,
+        a,
+        r,
+        o,
+        u,
+        s.start
+    ]), T = function(e, t, n) {
+        return parseFloat(((n - e) / (t - e) * 100).toFixed(2));
+    }(i.start, i.end, l);
+    return e.h(Ue, {
+        value: T,
+        onSelect: f,
+        hoverIndicator: h,
+        adMarkerPositions: c
+    });
+}
+var We = "_2SOwL", Ke = "_OWD8Z", Ze = "_cUmx9";
+function je(t) {
+    var n, i = t.items, r = t.icon, l = t.onSelect, a = t.selected, o = t.isSubtitles, u = o && (!a || !i.find(function(e) {
+        return e.language === (null == a ? void 0 : a.language) && e.label === (null == a ? void 0 : a.label);
+    }));
+    return 0 === i.length ? null : e.h("div", {
+        class: Ke
+    }, e.h("div", {
+        class: Ze
+    }, r), e.h("ul", null, o && e.h("li", {
+        class: N.default("_xUD5h", (n = {}, n[We] = u, n)),
+        onClick: function onClick() {
+            return l(void 0);
+        }
+    }, "Off"), i.map(function(t) {
+        return e.h("li", {
+            key: t.id,
+            class: t.language === (null == a ? void 0 : a.language) && t.label === (null == a ? void 0 : a.label) ? We : "",
+            onClick: function onClick() {
+                return l(t);
+            }
+        }, t.label);
+    })));
+}
+function ze(t) {
+    var n = t.items, i = t.onSelect, r = t.selected;
+    return 0 === n.length ? null : e.h("div", {
+        class: Ke
+    }, e.h("div", {
+        class: Ze
+    }, t.icon), e.h("ul", null, n.map(function(t) {
+        return e.h("li", {
+            key: t.id,
+            class: t.id === r.id ? We : "",
+            onClick: function onClick() {
+                return i(t);
+            }
+        }, t.name || t.height);
+    })));
+}
+function Qe(e) {
+    var t = e.qualityLevels;
+    return e.subtitleTracks.length >= 1 || e.audioTracks.length >= 2 || t && t.length > 2;
+}
+var Je = u.memo(function(t) {
+    var n, i = t.visible, r = t.subtitleTrack, l = t.subtitleTracks, a = t.audioTrack, o = t.audioTracks, u = t.qualityLevel, s = t.qualityLevels, c = t.fillScreen, d = t.setActiveView, v = Ee();
+    return e.h("div", {
+        class: N.default("_BIBFX", (n = {}, n._mhms2 = c, n._e2KJO = !c, n._XzFa4 = !i, n))
+    }, e.h("div", {
+        onClick: function onClick() {
+            return d();
+        },
+        class: "_b6xAC"
+    }, e.h(W.default, null)), e.h("div", {
+        class: "_qPIOW"
+    }, l && l.length >= 1 && e.h(je, {
+        selected: r,
+        items: l,
+        icon: e.h(z.default, null),
+        onSelect: function onSelect(e) {
+            return null == v ? void 0 : v.setSubtitleTrack(e);
+        },
+        isSubtitles: !0
+    }), o && o.length >= 2 && e.h(je, {
+        selected: a,
+        items: o,
+        icon: e.h(Z.default, null),
+        onSelect: function onSelect(e) {
+            return null == v ? void 0 : v.setAudioTrack(e);
+        }
+    }), s && s.length > 2 && e.h(ze, {
+        icon: e.h(j.default, null),
+        selected: u,
+        items: s,
+        onSelect: function onSelect(e) {
+            return null == v ? void 0 : v.setQualityLevel(e);
+        }
+    })));
+}), Xe = {
+    wrapper: "_PVRf6",
+    fadeIn: "_KNL6m",
+    bottomContainer: "_zOX53",
+    topControls: "_eMoIf",
+    playPauseStop: "_Vj8-i",
+    controls: "_wuNBb",
+    time: "_-Eidl",
+    buttons: "_WCDbq",
+    divider: "_Jv7y0"
+};
+function Ye(t) {
+    var i, l, a, o, u, s, c, d = t.options, v = t.locale, f = function(e, t) {
+        var i = n.useState(r.DefaultPlayerState), l = i[0], a = i[1], o = n.useState({
+            title: void 0,
+            imageUrl: void 0
+        }), u = o[0], s = o[1];
+        return n.useEffect(function() {
+            var _$t = function t(e) {
+                a(function(t) {
+                    return te({}, t, e);
+                });
+            }, n = function n(e) {
+                s(function(t) {
+                    return te({}, t, e);
+                });
+            };
+            return null == e || e.on(r.CastSenderEvent.STATE_CHANGE, _$t), null == e || e.on(r.CastSenderEvent.METADATA_UPDATE, n), function() {
+                null == e || e.off(r.CastSenderEvent.STATE_CHANGE, _$t), null == e || e.off(r.CastSenderEvent.METADATA_UPDATE, n);
+            };
+        }, [
+            e,
+            t
+        ]), [
+            l,
+            u
+        ];
+    }(t.castSender, v), h = f[0], T = f[1], k = n.useState(), m = k[0], p = k[1], S = !h.isSeekable || !d.showJumpButtons, b = !h.isSeekable || !d.showJumpButtons || h.isAtLiveEdge, E = d.showWallClock && h.utcDuration > -1, _ = E ? le(h.utcCurrentTime, d.timeZone) : re(h.currentTime), C = E ? le(h.utcDuration, d.timeZone) : re(h.duration), g = (null == (i = h.adMarkers) ? void 0 : i.map(function(e) {
+        return e.startTime / h.duration * 100;
+    })) || [], A = !(null == (l = h.contentMarkers) || !l.filter(function(e) {
+        return "CHAPTER" === e.type || "POINT" === e.type;
+    }).length), M = n.useRef(null), y = [
+        r.PlaybackState.IDLE,
+        r.PlaybackState.ENDED
+    ].some(function(e) {
+        return e === h.playbackState;
+    });
+    return e.h("div", {
+        class: Xe.wrapper
+    }, e.h(Be, {
+        title: T.title,
+        image: T.imageUrl
+    }), h.contentType === r.ContentType.AD && (null == (a = h.currentAd) ? void 0 : a.adIndex) && (null == (o = h.currentAd) ? void 0 : o.adsTotal) && e.h(ke, {
+        currentAdIndex: null == (u = h.currentAd) ? void 0 : u.adIndex,
+        currentAdBreakTotal: null == (s = h.currentAd) ? void 0 : s.adsTotal,
+        translations: null == d ? void 0 : d.translations
+    }), e.h(xe, {
+        visible: m === he.CONTENT_MARKERS_MENU,
+        contentMarkers: null != (c = h.contentMarkers) ? c : [],
+        duration: h.duration,
+        fillScreen: !0,
+        setActiveView: function setActiveView(e) {
+            return p(e);
+        },
+        locale: v
+    }), e.h(Je, {
+        visible: m === he.SETTINGS_MENU,
+        fillScreen: !0,
+        audioTrack: h.audioTrack,
+        subtitleTrack: h.subtitleTrack,
+        setActiveView: p,
+        subtitleTracks: h.subtitleTracks,
+        audioTracks: h.audioTracks,
+        qualityLevel: h.qualityLevel,
+        qualityLevels: h.qualityLevels
+    }), !m && e.h("div", {
+        ref: M,
+        class: N.default(Xe.bottomContainer)
+    }, !y && e.h("div", {
+        class: N.default(Xe.topControls)
+    }, !S && e.h(Ae, null), e.h(we, {
+        pausable: h.contentType === r.ContentType.AD || h.isSeekable,
+        state: h.playbackState,
+        className: Xe.playPauseStop
+    }), !b && e.h(Me, null)), e.h("div", {
+        class: Xe.controls
+    }, e.h("div", {
+        class: Xe.buttons
+    }, h.isLive && e.h(ye, {
+        isAtLiveEdge: h.isAtLiveEdge
+    }), !y && !h.isLive && e.h("span", {
+        class: Xe.time
+    }, _, " / ", C), e.h("div", {
+        class: Xe.divider
+    }), A && e.h(pe, {
+        toggleMenu: m === he.CONTENT_MARKERS_MENU ? function() {
+            return p(void 0);
+        } : function() {
+            return p(he.CONTENT_MARKERS_MENU);
+        }
+    }), Qe(te({
+        audioTracks: h.audioTracks,
+        subtitleTracks: h.subtitleTracks
+    }, d.showQualitySelector && {
+        qualityLevels: h.qualityLevels
+    })) && e.h(Ne, {
+        toggleMenu: m === he.SETTINGS_MENU ? function() {
+            return p(void 0);
+        } : function() {
+            return p(he.SETTINGS_MENU);
+        }
+    }), d.showSubtitlesToggleButton && 1 === h.subtitleTracks.length && e.h(Pe, {
+        isEnabled: Boolean(h.subtitleTrack)
+    }), e.h("google-cast-launcher", null), e.h(qe, {
+        muted: h.isMuted,
+        volume: h.volume || 0,
+        disableSlider: !0
+    })), h.isSeekable && e.h(Fe, {
+        isLive: h.isLive,
+        currentTime: h.currentTime,
+        seekable: h.seekable,
+        timelineSpriteCues: [],
+        showWallClock: null != E && E,
+        timeZone: d.timeZone,
+        utcCurrentTime: h.utcCurrentTime,
+        utcSeekable: h.utcSeekable,
+        adMarkerPositions: g
+    }))));
+}
+var $e = {
+    container: "_aDWzl",
+    isMobile: "_G8q3B",
+    hidden: "_wyFaE",
+    clickthroughButton: "_iijT4"
+};
+function et(t) {
+    var i, r = t.isMobile, l = t.onClickThrough, a = t.clickThroughUrl, o = t.translations, u = n.useCallback(function() {
+        null == l || l();
+    }, [
+        l
+    ]), s = !(null == o || !o.AD_CLICK_THROUGH_TEXT);
+    return e.h("div", {
+        class: N.default($e.container, (i = {}, i[$e.hidden] = !a, i[$e.isMobile] = r, i)),
+        onClick: u
+    }, e.h("div", {
+        class: $e.clickthroughButton
+    }, !s && e.h(Q.default, null), s && (null == o ? void 0 : o.AD_CLICK_THROUGH_TEXT)));
+}
+var tt = u.memo(function() {
+    var t = _e();
+    return e.h("div", {
+        class: "_lFcXW",
+        onClick: function onClick() {
+            return null == t ? void 0 : t.toggleAirPlay();
+        }
+    }, e.h(J.default, null));
+}), nt = u.memo(function(t) {
+    var n = t.poster, i = Ce();
+    return e.h("div", {
+        class: "_K0M1i",
+        style: n && {
+            backgroundColor: "#000",
+            backgroundImage: 'url("' + n + '")',
+            backgroundSize: "contain",
+            backgroundPosition: "50% 50%"
+        },
+        onClick: i
+    }, e.h(q.default, null));
+}), it = u.memo(function(t) {
+    var n = t.isFullscreen, i = _e();
+    return e.h("div", {
+        class: "_0kShs",
+        onClick: function onClick() {
+            return null == i ? void 0 : i.toggleFullscreen();
+        }
+    }, e.h(n ? X.default : Y.default, null));
+}), rt = u.memo(function() {
+    var t = _e();
+    return e.h("div", {
+        class: "_zHlM3",
+        onClick: function onClick() {
+            return null == t ? void 0 : t.togglePictureInPicture();
+        }
+    }, e.h($.default, null));
+});
+function lt(e) {
+    var t = e.doubleTap, i = e.singleTap, r = n.useRef();
+    return n.useCallback(function(e) {
+        e.preventDefault(), e.stopPropagation(), r.current ? (window.clearTimeout(r.current), r.current = void 0, null == t || t()) : r.current = window.setTimeout(function() {
+            null == i || i(), r.current = void 0;
+        }, 300);
+    }, [
+        t,
+        i
+    ]);
+}
+var at = u.memo(function(t) {
+    var n = t.onSingleTap, i = t.isSkinHidden, l = t.pointer, a = void 0 !== l && l, o = Ee(), u = lt({
+        doubleTap: function doubleTap() {
+            return null == o ? void 0 : o.scrub(r.QuickSeekTime);
+        },
+        singleTap: n
+    }), s = lt({
+        doubleTap: function doubleTap() {
+            return null == o ? void 0 : o.scrub(-r.QuickSeekTime);
+        },
+        singleTap: n
+    }), c = te({}, a && {
+        cursor: "pointer"
+    }, i && {
+        zIndex: 99
+    });
+    return e.h("div", {
+        class: "_B5QPi",
+        onTouchStart: function onTouchStart(e) {
+            return e.preventDefault();
+        },
+        onTouchMove: function onTouchMove(e) {
+            return e.preventDefault();
+        },
+        onClick: function onClick(e) {
+            return e.preventDefault();
+        },
+        style: c
+    }, e.h("div", {
+        class: "_TcFgs",
+        onTouchStart: s,
+        onClick: s
+    }), e.h("div", {
+        class: "_h3orD",
+        onTouchStart: u,
+        onClick: u
+    }));
+}), ot = {
+    metadata: "_beqAR",
+    slideIn: "_Vj12U",
+    hidden: "_DqTtp",
+    container: "_UUg0w",
+    imageWrapper: "_IGFxk",
+    aspectWrapper: "_5CB-B",
+    image: "_tBQ17",
+    contentHolder: "_YI31I",
+    textWrapper: "_BEmf2"
+};
+function ut(t) {
+    var i, r = t.asset, l = t.visible, a = n.useMemo(function() {
+        if (!r || !r.image) return null;
+        var e = new URL(r.image);
+        return e.searchParams.set("w", "307"), e.searchParams.set("h", "171"), e.toString();
+    }, [
+        r
+    ]);
+    return r && r.title ? e.h("div", {
+        class: N.default(ot.metadata, (i = {}, i[ot.hidden] = !l, i))
+    }, e.h("div", {
+        class: ot.container
+    }, a && e.h("div", {
+        class: ot.imageWrapper
+    }, e.h("div", {
+        class: ot.aspectWrapper
+    }, e.h("img", {
+        class: ot.image,
+        src: a
+    }))), e.h("div", {
+        class: ot.contentHolder
+    }, e.h("h4", null, r.title), e.h("span", null, r.duration), e.h("div", {
+        class: ot.textWrapper
+    }, e.h("p", null, r.description))))) : null;
+}
+var st = {
+    container: "_LVsid",
+    time: "_dPZUs"
+};
+function ct(t) {
+    var n = t.seekable, i = t.isLive, r = t.currentTime, l = t.isAtLiveEdge, a = t.timelineSpriteCues, o = t.showWallClock, u = t.timeZone, s = t.utcCurrentTime, c = t.utcSeekable, d = t.adMarkerPositions, v = n.end - n.start, f = l ? "00:00" : "- " + re(n.end - r), h = o ? le(s, u) : i ? f : re(r);
+    return e.h("div", {
+        class: st.container
+    }, e.h("span", {
+        class: st.time
+    }, h), e.h(Fe, {
+        seekable: n,
+        isLive: i,
+        currentTime: r,
+        timelineSpriteCues: a,
+        showWallClock: o,
+        timeZone: u,
+        utcCurrentTime: s,
+        utcSeekable: c,
+        adMarkerPositions: d
+    }), i ? e.h(ye, {
+        isAtLiveEdge: l
+    }) : e.h("span", {
+        class: st.time
+    }, o ? le(c.end, u) : re(v)));
+}
+function dt(e) {
+    var t = e.onSkinHidden, i = e.onSkinVisible, r = e.isSkinHidden;
+    n.useEffect(function() {
+        r ? null == t || t() : null == i || i();
+    }, [
+        r,
+        t,
+        i
+    ]);
+}
+function vt(e) {
+    var t = e.userActiveTimeout, i = n.useState(!1), r = i[0], l = i[1], a = n.useRef();
+    n.useEffect(function() {
+        return function() {
+            return window.clearTimeout(a.current);
+        };
+    }, []);
+    var o = n.useCallback(function() {
+        window.clearTimeout(a.current), l(!0), a.current = window.setTimeout(function() {
+            l(!1);
+        }, t);
+    }, [
+        t
+    ]), u = n.useCallback(function() {
+        window.clearTimeout(a.current), l(!r);
+    }, [
+        r
+    ]);
+    return [
+        r,
+        o,
+        u
+    ];
+}
+var ft = {
+    wrapper: "_0g3Kg",
+    fadeIn: "_hZT-B",
+    bottomContainer: "_OEoO3",
+    hidden: "_-cDzl",
+    controls: "_biwot",
+    buttons: "_HmmRN",
+    menuButtons: "_6YcpD",
+    divider: "_LhZwY"
+};
+function ht(t) {
+    var i, l, a, o, u, s, c, d, v, f, h, T, k, m = t.playerCore, p = t.options, S = t.locale, b = t.isCastAvailable, E = t.onSkinHidden, _ = t.onSkinVisible, C = oe(m, S), g = C[0], A = C[1], M = function(e) {
+        var _$t = n.useState(!0), i = _$t[0], r = _$t[1];
+        return n.useEffect(function() {
+            e.isVolumeReadOnly().then(function(e) {
+                return r(e);
+            });
+        }, [
+            e
+        ]), i;
+    }(m), y = n.useState(), w = y[0], _$I = y[1], L = vt({
+        userActiveTimeout: null != (i = p.hideControlsTimer) ? i : 2500
+    }), P = L[1], R = "ontouchstart" in document.documentElement, D = !L[0] && g.playbackState !== r.PlaybackState.IDLE && g.playbackState !== r.PlaybackState.PAUSED && w !== he.SETTINGS_MENU && w !== he.CONTENT_MARKERS_MENU;
+    dt({
+        onSkinHidden: E,
+        onSkinVisible: _,
+        isSkinHidden: D
+    });
+    var O = !g.isSeekable || !p.showJumpButtons || g.contractRestrictions && !1 === g.contractRestrictions.rwEnabled, U = !g.isSeekable || !p.showJumpButtons || g.contractRestrictions && !1 === g.contractRestrictions.ffEnabled || g.isAtLiveEdge, q = (!g.hasStarted || g.isLive && !g.isSeekable) && g.playbackState === r.PlaybackState.PAUSED, B = p.showWallClock && g.utcDuration > -1, H = (null == (l = g.adMarkers) ? void 0 : l.map(function(e) {
+        return e.startTime / g.duration * 100;
+    })) || [], x = !(null == (a = g.contentMarkers) || !a.filter(function(e) {
+        return "CHAPTER" === e.type || "POINT" === e.type;
+    }).length), G = null == (o = g.currentAd) ? void 0 : o.clickThrough, V = !(!G || w === he.CONTENT_MARKERS_MENU || w === he.SETTINGS_MENU), F = n.useCallback(function() {
+        R ? P() : m.clickThrough();
+    }, [
+        m
+    ]);
+    n.useEffect(function() {
+        p.showMetadata && !w && _$I(he.META_DATA_VIEW);
+    }, [
+        w,
+        p.showMetadata
+    ]);
+    var W = n.useRef(null);
+    return n.useEffect(function() {
+        var e, _$t, n = D ? 0 : null != (e = null == (_$t = W.current) ? void 0 : _$t.clientHeight) ? e : 0;
+        m.getSubtitleContainerElement().style.marginBottom = n + "px";
+    }, [
+        D,
+        m,
+        W,
+        g.isSeekable,
+        w
+    ]), e.h("div", {
+        class: ft.wrapper,
+        onMouseMove: P,
+        onTouchMove: P
+    }, e.h(at, {
+        onSingleTap: F,
+        isSkinHidden: D,
+        pointer: V
+    }), q && e.h(nt, {
+        poster: (null == (u = m.getSession()) || null == (u = u.loadOptions) ? void 0 : u.poster) || (null == A || null == (s = A.asset) ? void 0 : s.image)
+    }), g.contentType === r.ContentType.AD && (null == (c = g.currentAd) ? void 0 : c.adIndex) && (null == (d = g.currentAd) ? void 0 : d.adsTotal) && e.h(ke, {
+        currentAdIndex: null == (v = g.currentAd) ? void 0 : v.adIndex,
+        currentAdBreakTotal: null == (f = g.currentAd) ? void 0 : f.adsTotal,
+        isMobile: !1,
+        translations: null == p ? void 0 : p.translations
+    }), V && e.h(et, {
+        isMobile: !1,
+        onClickThrough: function onClickThrough() {
+            return m.clickThrough();
+        },
+        clickThroughUrl: G,
+        translations: null == p ? void 0 : p.translations
+    }), !q && e.h("div", {
+        class: N.default(ft.bottomContainer, (h = {}, h[ft.hidden] = D, h))
+    }, e.h(Je, {
+        fillScreen: !1,
+        visible: w === he.SETTINGS_MENU,
+        audioTrack: g.audioTrack,
+        audioTracks: g.audioTracks,
+        subtitleTrack: g.subtitleTrack,
+        subtitleTracks: g.subtitleTracks,
+        qualityLevel: g.qualityLevel,
+        qualityLevels: g.qualityLevels,
+        setActiveView: _$I
+    }), e.h("div", {
+        ref: W
+    }, p.showMetadata && e.h(ut, {
+        asset: null == A ? void 0 : A.asset,
+        visible: w === he.META_DATA_VIEW
+    }), e.h(xe, {
+        visible: w === he.CONTENT_MARKERS_MENU,
+        contentMarkers: null != (T = g.contentMarkers) ? T : [],
+        duration: g.duration,
+        fillScreen: !1,
+        locale: S,
+        setActiveView: _$I
+    }), e.h("div", {
+        class: ft.controls
+    }, e.h("div", {
+        class: ft.buttons
+    }, e.h(we, {
+        pausable: g.isSeekable,
+        state: g.playbackState
+    }), !O && e.h(Ae, null), !U && e.h(Me, null), e.h(qe, {
+        muted: g.isMuted,
+        volume: g.volume || 0,
+        disableSlider: M
+    }), g.isLive && !g.isSeekable && e.h(ye, {
+        isAtLiveEdge: g.isAtLiveEdge
+    }), e.h("div", {
+        class: ft.divider
+    }), e.h("div", {
+        class: ft.menuButtons
+    }, x && e.h(pe, {
+        toggleMenu: w === he.CONTENT_MARKERS_MENU ? function() {
+            return _$I(void 0);
+        } : function() {
+            return _$I(he.CONTENT_MARKERS_MENU);
+        }
+    }), Qe(te({
+        subtitleTracks: g.subtitleTracks,
+        audioTracks: g.audioTracks
+    }, p.showQualitySelector && {
+        qualityLevels: g.qualityLevels
+    })) && e.h(Ne, {
+        toggleMenu: w === he.SETTINGS_MENU ? function() {
+            return _$I(void 0);
+        } : function() {
+            return _$I(he.SETTINGS_MENU);
+        }
+    })), p.showSubtitlesToggleButton && 1 === g.subtitleTracks.length && e.h(Pe, {
+        isEnabled: Boolean(g.subtitleTrack)
+    }), g.isAirPlayAvailable && e.h(tt, null), b && e.h("google-cast-launcher", null), m.isPictureInPictureSupported() && p.allowPictureInPicture && e.h(rt, null), e.h(it, {
+        isFullscreen: null != (k = m.isFullscreen()) && k
+    })), g.isSeekable && e.h(ct, {
+        isAtLiveEdge: g.isAtLiveEdge,
+        isLive: g.isLive,
+        currentTime: g.currentTime,
+        seekable: g.seekable,
+        utcCurrentTime: g.utcCurrentTime,
+        utcSeekable: g.utcSeekable,
+        timelineSpriteCues: A.timelineSpriteCues,
+        showWallClock: null != B && B,
+        timeZone: p.timeZone,
+        adMarkerPositions: H
+    })))));
+}
+var Tt = {
+    wrapper: "_M4hxK",
+    fadeIn: "_nP9Ry",
+    touchContainer: "_Ma1i4",
+    touchRight: "_CD8Xd",
+    touchLeft: "_qMVzY",
+    centerContainer: "_mZcwz",
+    playPauseStop: "_l7jwT",
+    bottomContainer: "_tL9H8",
+    hidden: "_D3V4N",
+    controls: "_fvJvi",
+    time: "_LSJK-",
+    buttons: "_m54-2",
+    divider: "_e5AM3"
+};
+function kt(t) {
+    var i, l, a, o, u, s, c, d, v, f, h, T, k = t.playerCore, m = t.options, p = t.locale, S = t.isCastAvailable, b = t.onSkinHidden, E = t.onSkinVisible, _ = oe(k, p), C = _[0], g = _[1], A = n.useState(), M = A[0], y = A[1], w = vt({
+        userActiveTimeout: null != (i = m.hideControlsTimer) ? i : 2500
+    }), _$I = w[0], L = w[1], P = w[2], R = n.useCallback(function() {
+        P();
+    }, [
+        P
+    ]), D = C.hasStarted && !_$I && !M && C.playbackState !== r.PlaybackState.IDLE;
+    dt({
+        onSkinHidden: b,
+        onSkinVisible: E,
+        isSkinHidden: D
+    });
+    var O = !C.isSeekable || !m.showJumpButtons || C.contractRestrictions && !1 === C.contractRestrictions.rwEnabled, U = !C.isSeekable || !m.showJumpButtons || C.contractRestrictions && !1 === C.contractRestrictions.ffEnabled || C.isAtLiveEdge, q = m.showWallClock && C.utcDuration > -1, B = q ? le(C.utcCurrentTime, m.timeZone) : re(C.currentTime), H = q ? le(C.utcDuration, m.timeZone) : re(C.duration), x = (null == (l = C.adMarkers) ? void 0 : l.map(function(e) {
+        return e.startTime / C.duration * 100;
+    })) || [], G = !(null == (a = C.contentMarkers) || !a.filter(function(e) {
+        return "CHAPTER" === e.type || "POINT" === e.type;
+    }).length), V = null == (o = C.currentAd) ? void 0 : o.clickThrough, F = !(!V || M === he.CONTENT_MARKERS_MENU || M === he.SETTINGS_MENU), W = n.useRef(null);
+    return n.useEffect(function() {
+        var e, _$t, n = D ? 0 : null != (e = null == (_$t = W.current) ? void 0 : _$t.clientHeight) ? e : 0;
+        k.getSubtitleContainerElement().style.marginBottom = n + "px";
+    }, [
+        D,
+        k,
+        W,
+        C.isSeekable,
+        M
+    ]), e.h("div", {
+        class: Tt.wrapper,
+        onMouseMove: L
+    }, e.h(at, {
+        onSingleTap: R,
+        isSkinHidden: D
+    }), C.contentType === r.ContentType.AD && (null == (u = C.currentAd) ? void 0 : u.adIndex) && (null == (s = C.currentAd) ? void 0 : s.adsTotal) && e.h(ke, {
+        currentAdIndex: null == (c = C.currentAd) ? void 0 : c.adIndex,
+        currentAdBreakTotal: null == (d = C.currentAd) ? void 0 : d.adsTotal,
+        isMobile: !0,
+        translations: null == m ? void 0 : m.translations
+    }), F && e.h(et, {
+        isMobile: !0,
+        onClickThrough: function onClickThrough() {
+            return k.clickThrough();
+        },
+        clickThroughUrl: V,
+        translations: null == m ? void 0 : m.translations
+    }), e.h("div", {
+        class: N.default(Tt.centerContainer, (v = {}, v[Tt.hidden] = D, v))
+    }, !O && e.h(Ae, null), e.h(we, {
+        pausable: C.isSeekable,
+        state: C.playbackState,
+        className: Tt.playPauseStop
+    }), !U && e.h(Me, null)), e.h(xe, {
+        visible: M === he.CONTENT_MARKERS_MENU,
+        contentMarkers: null != (f = C.contentMarkers) ? f : [],
+        duration: C.duration,
+        fillScreen: !0,
+        setActiveView: function setActiveView(e) {
+            return y(e);
+        },
+        locale: p
+    }), e.h(Je, {
+        visible: M === he.SETTINGS_MENU,
+        fillScreen: !0,
+        audioTrack: C.audioTrack,
+        subtitleTrack: C.subtitleTrack,
+        setActiveView: y,
+        subtitleTracks: C.subtitleTracks,
+        audioTracks: C.audioTracks,
+        qualityLevel: C.qualityLevel,
+        qualityLevels: C.qualityLevels
+    }), !M && e.h("div", {
+        ref: W,
+        class: N.default(Tt.bottomContainer, (h = {}, h[Tt.hidden] = D, h))
+    }, e.h("div", {
+        class: Tt.controls
+    }, e.h("div", {
+        class: Tt.buttons
+    }, C.isLive && e.h(ye, {
+        isAtLiveEdge: C.isAtLiveEdge
+    }), !C.isLive && e.h("span", {
+        class: Tt.time
+    }, B, " / ", H), e.h("div", {
+        class: Tt.divider
+    }), G && e.h(pe, {
+        toggleMenu: M === he.CONTENT_MARKERS_MENU ? function() {
+            return y(void 0);
+        } : function() {
+            return y(he.CONTENT_MARKERS_MENU);
+        }
+    }), Qe(te({
+        audioTracks: C.audioTracks,
+        subtitleTracks: C.subtitleTracks
+    }, m.showQualitySelector && {
+        qualityLevels: C.qualityLevels
+    })) && e.h(Ne, {
+        toggleMenu: M === he.SETTINGS_MENU ? function() {
+            return y(void 0);
+        } : function() {
+            return y(he.SETTINGS_MENU);
+        }
+    }), m.showSubtitlesToggleButton && 1 === C.subtitleTracks.length && e.h(Pe, {
+        isEnabled: Boolean(C.subtitleTrack)
+    }), C.isAirPlayAvailable && e.h(tt, null), S && e.h("google-cast-launcher", null), k.isPictureInPictureSupported() && m.allowPictureInPicture && e.h(rt, null), e.h(qe, {
+        muted: C.isMuted,
+        volume: C.volume || 0,
+        disableSlider: !0
+    }), e.h(it, {
+        isFullscreen: null != (T = k.isFullscreen()) && T
+    })), C.isSeekable && e.h(Fe, {
+        isLive: C.isLive,
+        currentTime: C.currentTime,
+        seekable: C.seekable,
+        timelineSpriteCues: g.timelineSpriteCues,
+        showWallClock: null != q && q,
+        timeZone: m.timeZone,
+        utcCurrentTime: C.utcCurrentTime,
+        utcSeekable: C.utcSeekable,
+        adMarkerPositions: x
+    }))));
+}
+function mt(t) {
+    var i, l = t.playerCore, a = t.castSender, o = t.options, u = t.onSkinHidden, s = t.onSkinVisible, c = o.locale, d = void 0 === c ? "en" : c, v = n.useRef(null), f = !!(v.current && v.current.offsetHeight <= 640 && /iphone|ipod|ipad|android|blackberry|windows phone|iemobile|wpdesktop/.test(window.navigator.userAgent.toLowerCase())), h = f ? kt : ht, T = function(e, t) {
+        var i = n.useState(!1), l = i[0], a = i[1];
+        return n.useEffect(function() {
+            var n = function n(e) {
+                var _$t = e.playbackState;
+                a(_$t === r.PlaybackState.LOADING || _$t === r.PlaybackState.BUFFERING || _$t === r.PlaybackState.SEEKING);
+            };
+            return e ? (e.on(r.PlayerEvents.STATE_CHANGED, n), function() {
+                return e.off(r.PlayerEvents.STATE_CHANGED, n);
+            }) : t ? (t.on(r.CastSenderEvent.STATE_CHANGE, n), function() {
+                t.off(r.CastSenderEvent.STATE_CHANGE, n);
+            }) : void 0;
+        }, [
+            e,
+            t
+        ]), l;
+    }(l, a), k = function(e) {
+        var _$t = n.useState(!1), i = _$t[0], l = _$t[1];
+        return n.useEffect(function() {
+            if (e) {
+                var _$t = function t(e) {
+                    l(e.available);
+                };
+                return e.on(r.CastSenderEvent.AVAILABILITY_CHANGED, _$t), function() {
+                    return e.off(r.CastSenderEvent.AVAILABILITY_CHANGED, _$t);
+                };
+            }
+        }, [
+            e
+        ]), i;
+    }(a), m = function(e, t) {
+        var i = n.useState(!1), l = i[0], a = i[1];
+        return n.useEffect(function() {
+            var n = function n(e) {
+                a(e.playbackState === r.PlaybackState.ERROR);
+            };
+            return e ? (e.on(r.PlayerEvents.STATE_CHANGED, n), function() {
+                return e.off(r.PlayerEvents.STATE_CHANGED, n);
+            }) : t ? (t.on(r.CastSenderEvent.STATE_CHANGE, n), function() {
+                t.off(r.CastSenderEvent.STATE_CHANGE, n);
+            }) : void 0;
+        }, [
+            e,
+            t
+        ]), l;
+    }(l, a), p = vt({
+        userActiveTimeout: 2.5 * (null != (i = o.hideControlsTimer) ? i : 2800)
+    }), S = p[0], b = p[1];
+    return m ? e.h(de, null) : e.h("div", {
+        ref: v,
+        tabIndex: 0,
+        class: N.default("_i1uQ-"),
+        onMouseMove: b
+    }, e.h(se, {
+        playerCore: l,
+        isMobile: f,
+        showSkipOption: S,
+        locale: d
+    }), e.h(be, {
+        value: l || a
+    }, l && e.h(h, {
+        playerCore: l,
+        options: o,
+        locale: d,
+        isCastAvailable: k,
+        onSkinHidden: u,
+        onSkinVisible: s
+    }), !l && a && e.h(Ye, {
+        castSender: a,
+        options: o,
+        locale: d
+    })), e.h("div", {
+        class: "_24bHW"
+    }, T && e.h(fe, null)));
+}
+var pt = {
+    TOGGLE_PLAY: "space",
+    FORWARD: "right",
+    BACKWARD: "left",
+    VOLUME_UP: "up",
+    VOLUME_DOWN: "down",
+    TOGGLE_MUTE: "m",
+    TOGGLE_FULLSCREEN: "f"
+}, St = "@redbeemedia/javascript-player-shortcuts", bt = /*#__PURE__*/ function() {
+    function t(e, t, n) {
+        this.events = void 0, this.skinContainer = void 0, this.cleanupKeyboardShortcuts = void 0, this.options = void 0, this.events = n, this.options = te({}, ne, t), this.skinContainer = document.createElement("div"), this.skinContainer.classList.add("redbee-player-skin-container", "_-xL4b"), e.appendChild(this.skinContainer), Object.assign(e.style, {
+            position: "relative",
+            overflow: "visible"
+        });
+    }
+    var n = t.prototype;
+    return n.render = function(t, n) {
+        var i, l, a = t || n;
+        if (!a) return e.render(null, this.skinContainer);
+        this.options.keyboardShortcuts && (this.cleanupKeyboardShortcuts = function(e, t) {
+            return ee.default(Object.values(pt).join(","), St, function(n, i) {
+                if (t === document.activeElement || t.contains(document.activeElement)) switch(i.key){
+                    case pt.TOGGLE_PLAY:
+                        n.preventDefault(), e.isPlaying() ? e.pause() : e.play();
+                        break;
+                    case pt.BACKWARD:
+                        n.preventDefault(), e.scrub(-r.QuickSeekTime);
+                        break;
+                    case pt.FORWARD:
+                        n.preventDefault(), e.scrub(r.QuickSeekTime);
+                        break;
+                    case pt.TOGGLE_MUTE:
+                        n.preventDefault(), e.toggleMuted();
+                        break;
+                    case pt.TOGGLE_FULLSCREEN:
+                        n.preventDefault(), null == e.toggleFullscreen || e.toggleFullscreen();
+                }
+            }), ee.default.setScope(St), function() {
+                ee.default.deleteScope(St);
+            };
+        }(a, this.skinContainer)), e.render(e.h(mt, {
+            playerCore: t,
+            castSender: n,
+            options: this.options,
+            onSkinHidden: null == (i = this.events) ? void 0 : i.onSkinHidden,
+            onSkinVisible: null == (l = this.events) ? void 0 : l.onSkinVisible
+        }), this.skinContainer);
+    }, n.destroy = function() {
+        var _$t;
+        null == (_$t = this.cleanupKeyboardShortcuts) || _$t.call(this), e.render(null, this.skinContainer), this.skinContainer.remove();
+    }, t;
+}();
+exports.PlayerSkin = mt, exports.RedBeeSkin = bt;
 
 
 /***/ }),
