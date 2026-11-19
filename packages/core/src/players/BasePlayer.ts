@@ -598,11 +598,12 @@ export class BasePlayer extends AbstractPlayer {
 
   onSeeking() {
     if (this.debouncedSeek) {
-      // when debounceSeeking the seeking event has been manually dispatched
+      // Scrub already published the target via onSeekTimeChange; don't overwrite
+      // currentTime with a stale engine clock (Bitmovin lags behind seek()).
       this.debouncedSeek = false;
-    } else {
-      this.emit(PlayerEvents.SEEKING, this.getDefaultPlayerEvent());
+      return;
     }
+    this.emit(PlayerEvents.SEEKING, this.getDefaultPlayerEvent());
     this.setState({
       currentTime: this.getCurrentTime(),
       utcCurrentTime: this.getUTCCurrentTime(),
