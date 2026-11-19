@@ -147021,6 +147021,22 @@ function createSubtitleTrack(track, id) {
         raw: track
     };
 }
+/**
+ * Bitmovin tweaks for the current runtime.
+ * Packaged Tizen loads over file:// and needs file_protocol plus the Tizen app id.
+ * Web and hosted LG stay on http(s), so they get no tweaks.
+ */ function getTweaks() {
+    var _a, _b, _c, _d, _e;
+    var tizenApi = globalThis.tizen;
+    var isPackagedTizen = typeof location !== "undefined" && location.protocol === "file:" && !!((_a = tizenApi === null || tizenApi === void 0 ? void 0 : tizenApi.application) === null || _a === void 0 ? void 0 : _a.getCurrentApplication);
+    if (!isPackagedTizen) return;
+    var appId = (_e = (_d = (_c = (_b = tizenApi === null || tizenApi === void 0 ? void 0 : tizenApi.application) === null || _b === void 0 ? void 0 : _b.getCurrentApplication) === null || _c === void 0 ? void 0 : _c.call(_b)) === null || _d === void 0 ? void 0 : _d.appInfo) === null || _e === void 0 ? void 0 : _e.id;
+    if (!appId) return;
+    return {
+        file_protocol: true,
+        app_id: appId
+    };
+}
 function getSourceType(src) {
     var lower = src.toLowerCase();
     if (lower.includes(".mpd") || lower.includes(".dash")) return "dash";
@@ -147039,14 +147055,18 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
         _this = _super.call(this, videoElement, instanceSettings);
         _this.name = "Bitmovin";
         _this.playertechVersion = "";
-        _this.bitmovinPlayer = instanceSettings.initOptions.mediaContainer && new bitmovin_player_1.Player(instanceSettings.initOptions.mediaContainer, {
+        /** Held until Bitmovin's clock catches up after seek() (UI would otherwise jump back). */ _this.pendingSeekTime = null;
+        var tweaks = getTweaks();
+        _this.bitmovinPlayer = instanceSettings.initOptions.mediaContainer && new bitmovin_player_1.Player(instanceSettings.initOptions.mediaContainer, Object.assign({
             key: instanceSettings.initOptions.bitmovinPlayerKey || undefined || "",
             ui: false,
             // autoplay is handled on our side to guarantee a proper eventflow
             playback: {
                 autoplay: false
             }
-        });
+        }, tweaks ? {
+            tweaks: tweaks
+        } : {}));
         (_a = _this.bitmovinPlayer) === null || _a === void 0 ? void 0 : _a.setVideoElement(videoElement);
         _this.playertechVersion = ((_b = _this.bitmovinPlayer) === null || _b === void 0 ? void 0 : _b.version) || "";
         _this.setupEventListeners();
@@ -147217,7 +147237,7 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
                 });
                 var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
                 return __awaiter(this, void 0, void 0, function() {
-                    var _this, type, _obj, config;
+                    var _this, type, config;
                     return _ts_generator(this, function(_state) {
                         _this = this;
                         if (!this.bitmovinPlayer) return [
@@ -147228,18 +147248,24 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
                             console.error("[BitmovinEngine] Unknown source type for URL: ".concat(src));
                             throw new Error("Unsupported source type");
                         }
-                        config = (_obj = {}, _define_property(_obj, type, startTime ? "".concat(src, "#t=").concat(startTime) : src), _define_property(_obj, "drm", {
-                            widevine: {
-                                LA_URL: (_a = license === null || license === void 0 ? void 0 : license["com.widevine.alpha"]) === null || _a === void 0 ? void 0 : _a.licenseServerUrl
-                            },
-                            fairplay: {
-                                LA_URL: (_b = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _b === void 0 ? void 0 : _b.licenseServerUrl,
-                                certificateURL: (_c = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _c === void 0 ? void 0 : _c.certificateUrl
-                            },
-                            playready: {
-                                LA_URL: (_d = license === null || license === void 0 ? void 0 : license["com.microsoft.playready"]) === null || _d === void 0 ? void 0 : _d.licenseServerUrl
+                        config = Object.assign(Object.assign(_define_property({}, type, src), startTime != null && startTime > 0 ? {
+                            options: {
+                                startOffset: startTime
                             }
-                        }), _obj);
+                        } : {}), {
+                            drm: {
+                                widevine: {
+                                    LA_URL: (_a = license === null || license === void 0 ? void 0 : license["com.widevine.alpha"]) === null || _a === void 0 ? void 0 : _a.licenseServerUrl
+                                },
+                                fairplay: {
+                                    LA_URL: (_b = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _b === void 0 ? void 0 : _b.licenseServerUrl,
+                                    certificateURL: (_c = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _c === void 0 ? void 0 : _c.certificateUrl
+                                },
+                                playready: {
+                                    LA_URL: (_d = license === null || license === void 0 ? void 0 : license["com.microsoft.playready"]) === null || _d === void 0 ? void 0 : _d.licenseServerUrl
+                                }
+                            }
+                        });
                         if (config.drm && config.drm.fairplay && ((_e = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _e === void 0 ? void 0 : _e.licenseServerUrl) && ((_f = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _f === void 0 ? void 0 : _f.licenseServerUrl.includes("drmtoday")) && ((_g = this.instanceSettings.playResponse) === null || _g === void 0 ? void 0 : _g.playToken)) {
                             config.drm.fairplay.headers = {
                                 "x-dt-auth-token": (_h = this.instanceSettings.playResponse) === null || _h === void 0 ? void 0 : _h.playToken
@@ -147312,12 +147338,28 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
             value: function seekTo(pos) {
                 var _a;
                 // bitmovin can't seek to by setting this.videoElement.currentTime property.
+                this.pendingSeekTime = pos;
                 (_a = this.bitmovinPlayer) === null || _a === void 0 ? void 0 : _a.seek(pos);
+            }
+        },
+        {
+            key: "getCurrentTime",
+            value: function getCurrentTime() {
+                var time = this.bitmovinPlayer ? this.bitmovinPlayer.getCurrentTime() : _get(_get_prototype_of(Bitmovin.prototype), "getCurrentTime", this).call(this);
+                if (this.pendingSeekTime == null) {
+                    return time;
+                }
+                if (Math.abs(time - this.pendingSeekTime) <= Bitmovin.SEEK_SYNC_TOLERANCE_S) {
+                    this.pendingSeekTime = null;
+                    return time;
+                }
+                return this.pendingSeekTime;
             }
         },
         {
             key: "load",
             value: function load(parameters) {
+                this.pendingSeekTime = null;
                 this._load(parameters);
             }
         },
@@ -147325,6 +147367,7 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
             key: "destroy",
             value: function destroy() {
                 var _a;
+                this.pendingSeekTime = null;
                 (_a = this.bitmovinPlayer) === null || _a === void 0 ? void 0 : _a.destroy();
                 _get(_get_prototype_of(Bitmovin.prototype), "destroy", this).call(this);
             }
@@ -147332,7 +147375,8 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
     ]);
     return Bitmovin;
 }(AbstractBaseEngine_1.AbstractBaseEngine);
-exports.Bitmovin = Bitmovin; //# sourceMappingURL=Bitmovin.js.map
+exports.Bitmovin = Bitmovin;
+Bitmovin.SEEK_SYNC_TOLERANCE_S = 1.25; //# sourceMappingURL=Bitmovin.js.map
 
 
 /***/ }),
@@ -154122,11 +154166,12 @@ var BasePlayer = /*#__PURE__*/ function(_AbstractPlayer_1_AbstractPlayer) {
             key: "onSeeking",
             value: function onSeeking() {
                 if (this.debouncedSeek) {
-                    // when debounceSeeking the seeking event has been manually dispatched
+                    // Scrub already published the target via onSeekTimeChange; don't overwrite
+                    // currentTime with a stale engine clock (Bitmovin lags behind seek()).
                     this.debouncedSeek = false;
-                } else {
-                    this.emit(js_player_shared_1.PlayerEvents.SEEKING, this.getDefaultPlayerEvent());
+                    return;
                 }
+                this.emit(js_player_shared_1.PlayerEvents.SEEKING, this.getDefaultPlayerEvent());
                 this.setState({
                     currentTime: this.getCurrentTime(),
                     utcCurrentTime: this.getUTCCurrentTime()
@@ -282633,43 +282678,35 @@ function _type_of(obj) {
                     }
                 }
                 function a1(e1, t1, n) {
-                    return t1 in e1 ? Object.defineProperty(e1, t1, {
-                        value: n,
-                        enumerable: !0,
-                        configurable: !0,
-                        writable: !0
-                    }) : e1[t1] = n, e1;
-                }
-                function o(e1, t1, n) {
-                    return o = "undefined" != typeof Reflect && Reflect.get ? Reflect.get : function o(e1, t1, n) {
+                    return a1 = "undefined" != typeof Reflect && Reflect.get ? Reflect.get : function a1(e1, t1, n) {
                         var i = function(e1, t1) {
-                            for(; !Object.prototype.hasOwnProperty.call(e1, t1) && null !== (e1 = s1(e1)););
+                            for(; !Object.prototype.hasOwnProperty.call(e1, t1) && null !== (e1 = o(e1)););
                             return e1;
                         }(e1, t1);
                         if (i) {
                             var r = Object.getOwnPropertyDescriptor(i, t1);
                             return r.get ? r.get.call(n || e1) : r.value;
                         }
-                    }, o(e1, t1, n || e1);
+                    }, a1(e1, t1, n || e1);
                 }
-                function s1(e1) {
-                    return s1 = Object.setPrototypeOf ? Object.getPrototypeOf : function s1(e1) {
+                function o(e1) {
+                    return o = Object.setPrototypeOf ? Object.getPrototypeOf : function o(e1) {
                         return e1.__proto__ || Object.getPrototypeOf(e1);
-                    }, s1(e1);
+                    }, o(e1);
                 }
-                function u(e1, t1) {
+                function s1(e1, t1) {
                     return !t1 || "object" != ((_$n = t1) && "undefined" != typeof Symbol && _$n.constructor === Symbol ? "symbol" : typeof _$n === "undefined" ? "undefined" : _type_of(_$n)) && "function" != typeof t1 ? function(e1) {
                         if (void 0 === e1) throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
                         return e1;
                     }(e1) : t1;
                     var _$n;
                 }
-                function c(e1, t1) {
-                    return c = Object.setPrototypeOf || function(e1, t1) {
+                function u(e1, t1) {
+                    return u = Object.setPrototypeOf || function(e1, t1) {
                         return e1.__proto__ = t1, e1;
-                    }, c(e1, t1);
+                    }, u(e1, t1);
                 }
-                function l(e1) {
+                function c(e1) {
                     return function(e1) {
                         if (Array.isArray(e1)) return i(e1);
                     }(e1) || function(e1) {
@@ -282685,7 +282722,7 @@ function _type_of(obj) {
                         throw new TypeError("Invalid attempt to spread non-iterable instance.\\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
                     }();
                 }
-                function f(e1) {
+                function l(e1) {
                     var _$t = function() {
                         if ("undefined" == typeof Reflect || !Reflect.construct) return !1;
                         if (Reflect.construct.sham) return !1;
@@ -282697,15 +282734,15 @@ function _type_of(obj) {
                         }
                     }();
                     return function() {
-                        var _$n, i = s1(e1);
+                        var _$n, i = o(e1);
                         if (_$t) {
-                            var r = s1(this).constructor;
+                            var r = o(this).constructor;
                             _$n = Reflect.construct(i, arguments, r);
                         } else _$n = i.apply(this, arguments);
-                        return u(this, _$n);
+                        return s1(this, _$n);
                     };
                 }
-                function d(e1, t1) {
+                function f(e1, t1) {
                     var _$n, i, r, a1, o = {
                         label: 0,
                         sent: function sent() {
@@ -282790,7 +282827,7 @@ function _type_of(obj) {
                         };
                     }
                 }
-                var h = this && this.__awaiter || function(e1, t1, n, i) {
+                var d = this && this.__awaiter || function(e1, t1, n, i) {
                     function r(e1) {
                         return _$t = e1, (null != (i = n) && "undefined" != typeof Symbol && i[Symbol.hasInstance] ? i[Symbol.hasInstance](_$t) : _instanceof(_$t, i)) ? e1 : new n(function(t1) {
                             t1(e1);
@@ -282821,8 +282858,8 @@ function _type_of(obj) {
                 Object.defineProperty(t1, "__esModule", {
                     value: !0
                 }), t1.Bitmovin = void 0;
-                var _ = n(5115), p = n(9768), g = n(4977), v = n(4792);
-                var m = function(e1) {
+                var h = n(5115), _ = n(9768), p = n(4977), g = n(4792);
+                var v = function(e1) {
                     !function(e1, t1) {
                         if ("function" != typeof t1 && null !== t1) throw new TypeError("Super expression must either be null or a function");
                         e1.prototype = Object.create(t1 && t1.prototype, {
@@ -282831,35 +282868,48 @@ function _type_of(obj) {
                                 writable: !0,
                                 configurable: !0
                             }
-                        }), t1 && c(e1, t1);
-                    }(m, e1);
-                    var _$t, _$n, i, u = f(m);
-                    function m(e1, t1) {
+                        }), t1 && u(e1, t1);
+                    }(v, e1);
+                    var _$t, _$n, i, s1 = l(v);
+                    function v(e1, t1) {
                         var _$n, i, _$r;
-                        return function(e1, t1) {
+                        !function(e1, t1) {
                             if (!_instanceof(e1, t1)) throw new TypeError("Cannot call a class as a function");
-                        }(this, m), (_$n = u.call(this, e1, t1)).name = "Bitmovin", _$n.playertechVersion = "", _$n.bitmovinPlayer = t1.initOptions.mediaContainer && new _.Player(t1.initOptions.mediaContainer, {
+                        }(this, v), (_$n = s1.call(this, e1, t1)).name = "Bitmovin", _$n.playertechVersion = "", _$n.pendingSeekTime = null;
+                        var a1 = function() {
+                            var _$e, _$t, _$n, i, _$r, a1 = globalThis.tizen;
+                            if ("undefined" != typeof location && "file:" === location.protocol && (null === (_$e = null == a1 ? void 0 : a1.application) || void 0 === _$e ? void 0 : _$e.getCurrentApplication)) {
+                                var o = null === (_$r = null === (i = null === (_$n = null === (_$t = null == a1 ? void 0 : a1.application) || void 0 === _$t ? void 0 : _$t.getCurrentApplication) || void 0 === _$n ? void 0 : _$n.call(_$t)) || void 0 === i ? void 0 : i.appInfo) || void 0 === _$r ? void 0 : _$r.id;
+                                if (o) return {
+                                    file_protocol: !0,
+                                    app_id: o
+                                };
+                            }
+                        }();
+                        return _$n.bitmovinPlayer = t1.initOptions.mediaContainer && new h.Player(t1.initOptions.mediaContainer, Object.assign({
                             key: t1.initOptions.bitmovinPlayerKey || "",
                             ui: !1,
                             playback: {
                                 autoplay: !1
                             }
-                        }), null === (i = _$n.bitmovinPlayer) || void 0 === i || i.setVideoElement(e1), _$n.playertechVersion = (null === (_$r = _$n.bitmovinPlayer) || void 0 === _$r ? void 0 : _$r.version) || "", _$n.setupEventListeners(), _$n;
+                        }, a1 ? {
+                            tweaks: a1
+                        } : {})), null === (i = _$n.bitmovinPlayer) || void 0 === i || i.setVideoElement(e1), _$n.playertechVersion = (null === (_$r = _$n.bitmovinPlayer) || void 0 === _$r ? void 0 : _$r.version) || "", _$n.setupEventListeners(), _$n;
                     }
-                    return _$t = m, _$n = [
+                    return _$t = v, _$n = [
                         {
                             key: "setupEventListeners",
                             value: function value() {
                                 var _$e = this;
-                                this.bitmovinPlayer && (o(s1(m.prototype), "setupEventListeners", this).call(this), this.bitmovinPlayer.on(_.PlayerEvent.CueEnter, function(t1) {
+                                this.bitmovinPlayer && (a1(o(v.prototype), "setupEventListeners", this).call(this), this.bitmovinPlayer.on(h.PlayerEvent.CueEnter, function(t1) {
                                     var _$n = t1.vtt, i = t1.text;
-                                    _$e.emit(v.EngineEvents.SUBTITLE_CUE_CHANGED, [
+                                    _$e.emit(g.EngineEvents.SUBTITLE_CUE_CHANGED, [
                                         Object.assign(Object.assign({}, _$n), {
                                             text: i
                                         })
                                     ]);
-                                }), this.bitmovinPlayer.on(_.PlayerEvent.CueExit, function() {
-                                    _$e.emit(v.EngineEvents.SUBTITLE_CUE_CHANGED, []);
+                                }), this.bitmovinPlayer.on(h.PlayerEvent.CueExit, function() {
+                                    _$e.emit(g.EngineEvents.SUBTITLE_CUE_CHANGED, []);
                                 }));
                             }
                         },
@@ -282867,7 +282917,7 @@ function _type_of(obj) {
                             key: "setQualityLevel",
                             value: function value(e1) {
                                 var _$t, _$n, i, _$r;
-                                if (e1.id === p.AUTO_QUALITY_LEVEL_DEFINITION.id) null === (_$t = this.bitmovinPlayer) || void 0 === _$t || _$t.setVideoQuality("auto");
+                                if (e1.id === _.AUTO_QUALITY_LEVEL_DEFINITION.id) null === (_$t = this.bitmovinPlayer) || void 0 === _$t || _$t.setVideoQuality("auto");
                                 else {
                                     var a1 = (null === (i = null === (_$n = this.bitmovinPlayer) || void 0 === _$n ? void 0 : _$n.getAvailableVideoQualities().find(function(t1) {
                                         return t1.height === e1.height;
@@ -282879,14 +282929,14 @@ function _type_of(obj) {
                         {
                             key: "getQualityLevel",
                             value: function value() {
-                                var _$e, _$t, _$n, i, _$r = null === (_$e = this.bitmovinPlayer) || void 0 === _$e ? void 0 : _$e.getAvailableVideoQualities(), a1 = null === (_$t = this.bitmovinPlayer) || void 0 === _$t ? void 0 : _$t.getVideoQuality(), u = null == _$r ? void 0 : _$r.findIndex(function(e1) {
-                                    return e1.id === (null == a1 ? void 0 : a1.id);
+                                var _$e, _$t, _$n, i, _$r = null === (_$e = this.bitmovinPlayer) || void 0 === _$e ? void 0 : _$e.getAvailableVideoQualities(), s1 = null === (_$t = this.bitmovinPlayer) || void 0 === _$t ? void 0 : _$t.getVideoQuality(), u = null == _$r ? void 0 : _$r.findIndex(function(e1) {
+                                    return e1.id === (null == s1 ? void 0 : s1.id);
                                 });
-                                return !a1 || null == u || u < 0 || "auto" === a1.id ? o(s1(m.prototype), "getQualityLevel", this).call(this) : {
+                                return !s1 || null == u || u < 0 || "auto" === s1.id ? a1(o(v.prototype), "getQualityLevel", this).call(this) : {
                                     id: u,
-                                    bandwidth: a1.bitrate,
-                                    width: null !== (_$n = a1.width) && void 0 !== _$n ? _$n : -1,
-                                    height: null !== (i = a1.height) && void 0 !== i ? i : -1
+                                    bandwidth: s1.bitrate,
+                                    width: null !== (_$n = s1.width) && void 0 !== _$n ? _$n : -1,
+                                    height: null !== (i = s1.height) && void 0 !== i ? i : -1
                                 };
                             }
                         },
@@ -282904,9 +282954,9 @@ function _type_of(obj) {
                                         width: e1.width,
                                         height: e1.height
                                     };
-                                    return _$n.name = (0, g.getQualityLevelName)(_$n), _$n;
+                                    return _$n.name = (0, p.getQualityLevelName)(_$n), _$n;
                                 });
-                                return l(o(s1(m.prototype), "getQualityLevels", this).call(this)).concat(l(i));
+                                return c(a1(o(v.prototype), "getQualityLevels", this).call(this)).concat(c(i));
                             }
                         },
                         {
@@ -282931,11 +282981,11 @@ function _type_of(obj) {
                                             return e1.value;
                                         }).filter(function(e1) {
                                             return void 0 !== e1;
-                                        }), _$r = (0, g.getAudioKind)(null != i ? i : []);
+                                        }), _$r = (0, p.getAudioKind)(null != i ? i : []);
                                         return {
                                             id: t1,
                                             language: e1.lang || "",
-                                            label: e1.label || (0, p.getLabel)(e1.lang),
+                                            label: e1.label || (0, _.getLabel)(e1.lang),
                                             kind: _$r,
                                             raw: e1
                                         };
@@ -282968,11 +283018,11 @@ function _type_of(obj) {
                                             return e1.value;
                                         }).filter(function(e1) {
                                             return void 0 !== e1;
-                                        }), _$r = (0, g.getTextKind)(null != i ? i : []);
+                                        }), _$r = (0, p.getTextKind)(null != i ? i : []);
                                         return {
                                             id: t1,
                                             language: e1.lang || "",
-                                            label: e1.label || (0, p.getLabel)(e1.lang),
+                                            label: e1.label || (0, _.getLabel)(e1.lang),
                                             kind: _$r,
                                             raw: e1
                                         };
@@ -282987,66 +283037,78 @@ function _type_of(obj) {
                         {
                             key: "_load",
                             value: function value(e1) {
-                                var _$t, _$n, i, _$r, u, c, l, _$f, p, g, v, b, y = this, S = e1.src, E = e1.license, T = e1.startTime, A = e1.subtitle, I = e1.audio, $ = Object.create(null, {
+                                var _$t, _$n, i, _$r, s1, u, c, _$l, _, p, g, m, b = this, y = e1.src, S = e1.license, E = e1.startTime, T = e1.subtitle, A = e1.audio, I = Object.create(null, {
                                     load: {
                                         get: function get() {
-                                            return o(s1(m.prototype), "load", y);
+                                            return a1(o(v.prototype), "load", b);
                                         }
                                     }
                                 });
-                                return h(this, void 0, void 0, function() {
-                                    var _$e, o, s1, h;
-                                    return d(this, function(d) {
+                                return d(this, void 0, void 0, function() {
+                                    var _$e, a1, o;
+                                    return f(this, function(f) {
                                         if (_$e = this, !this.bitmovinPlayer) return [
                                             2
                                         ];
-                                        if (o = function(e1) {
+                                        if (a1 = function(e1) {
                                             var _$t = e1.toLowerCase();
                                             return _$t.includes(".mpd") || _$t.includes(".dash") ? "dash" : _$t.includes(".m3u8") ? "hls" : _$t.includes(".ism/manifest") || _$t.includes(".xml") ? "smooth" : _$t.endsWith(".mp4") ? "progressive" : null;
-                                        }(S), !o) throw console.error("[BitmovinEngine] Unknown source type for URL: ".concat(S)), new Error("Unsupported source type");
-                                        return a1(s1 = {}, o, T ? "".concat(S, "#t=").concat(T) : S), a1(s1, "drm", {
-                                            widevine: {
-                                                LA_URL: null === (_$t = null == E ? void 0 : E["com.widevine.alpha"]) || void 0 === _$t ? void 0 : _$t.licenseServerUrl
-                                            },
-                                            fairplay: {
-                                                LA_URL: null === (_$n = null == E ? void 0 : E["com.apple.fps"]) || void 0 === _$n ? void 0 : _$n.licenseServerUrl,
-                                                certificateURL: null === (i = null == E ? void 0 : E["com.apple.fps"]) || void 0 === i ? void 0 : i.certificateUrl
-                                            },
-                                            playready: {
-                                                LA_URL: null === (_$r = null == E ? void 0 : E["com.microsoft.playready"]) || void 0 === _$r ? void 0 : _$r.licenseServerUrl
+                                        }(y), !a1) throw console.error("[BitmovinEngine] Unknown source type for URL: ".concat(y)), new Error("Unsupported source type");
+                                        var d, _$v, b;
+                                        return (o = Object.assign(Object.assign((b = y, (_$v = a1) in (d = {}) ? Object.defineProperty(d, _$v, {
+                                            value: b,
+                                            enumerable: !0,
+                                            configurable: !0,
+                                            writable: !0
+                                        }) : d[_$v] = b, d), null != E && E > 0 ? {
+                                            options: {
+                                                startOffset: E
                                             }
-                                        }), (h = s1).drm && h.drm.fairplay && (null === (u = null == E ? void 0 : E["com.apple.fps"]) || void 0 === u ? void 0 : u.licenseServerUrl) && (null === (c = null == E ? void 0 : E["com.apple.fps"]) || void 0 === c ? void 0 : c.licenseServerUrl.includes("drmtoday")) && (null === (l = this.instanceSettings.playResponse) || void 0 === l ? void 0 : l.playToken) && (h.drm.fairplay.headers = {
-                                            "x-dt-auth-token": null === (_$f = this.instanceSettings.playResponse) || void 0 === _$f ? void 0 : _$f.playToken
-                                        }, h.drm.fairplay.prepareContentId = function(e1) {
+                                        } : {}), {
+                                            drm: {
+                                                widevine: {
+                                                    LA_URL: null === (_$t = null == S ? void 0 : S["com.widevine.alpha"]) || void 0 === _$t ? void 0 : _$t.licenseServerUrl
+                                                },
+                                                fairplay: {
+                                                    LA_URL: null === (_$n = null == S ? void 0 : S["com.apple.fps"]) || void 0 === _$n ? void 0 : _$n.licenseServerUrl,
+                                                    certificateURL: null === (i = null == S ? void 0 : S["com.apple.fps"]) || void 0 === i ? void 0 : i.certificateUrl
+                                                },
+                                                playready: {
+                                                    LA_URL: null === (_$r = null == S ? void 0 : S["com.microsoft.playready"]) || void 0 === _$r ? void 0 : _$r.licenseServerUrl
+                                                }
+                                            }
+                                        })).drm && o.drm.fairplay && (null === (s1 = null == S ? void 0 : S["com.apple.fps"]) || void 0 === s1 ? void 0 : s1.licenseServerUrl) && (null === (u = null == S ? void 0 : S["com.apple.fps"]) || void 0 === u ? void 0 : u.licenseServerUrl.includes("drmtoday")) && (null === (c = this.instanceSettings.playResponse) || void 0 === c ? void 0 : c.playToken) && (o.drm.fairplay.headers = {
+                                            "x-dt-auth-token": null === (_$l = this.instanceSettings.playResponse) || void 0 === _$l ? void 0 : _$l.playToken
+                                        }, o.drm.fairplay.prepareContentId = function(e1) {
                                             return new URL(e1.substring(2)).hostname;
-                                        }, h.drm.fairplay.prepareMessage = function(e1, t1) {
+                                        }, o.drm.fairplay.prepareMessage = function(e1, t1) {
                                             return new URLSearchParams({
                                                 spc: e1.messageBase64Encoded,
                                                 contentId: t1.contentId
                                             });
-                                        }, h.drm.fairplay.prepareLicense = function(e1) {
+                                        }, o.drm.fairplay.prepareLicense = function(e1) {
                                             return new Uint8Array(e1);
-                                        }, h.drm.fairplay.licenseResponseType = _.HttpResponseType.ARRAYBUFFER), h.drm && h.drm.widevine && (null === (p = null == E ? void 0 : E["com.widevine.alpha"]) || void 0 === p ? void 0 : p.licenseServerUrl) && (null === (g = null == E ? void 0 : E["com.widevine.alpha"]) || void 0 === g ? void 0 : g.licenseServerUrl.includes("drmtoday")) && (null === (v = this.instanceSettings.playResponse) || void 0 === v ? void 0 : v.playToken) && (h.drm.widevine.headers = {
-                                            "x-dt-auth-token": null === (b = this.instanceSettings.playResponse) || void 0 === b ? void 0 : b.playToken
-                                        }, h.drm.widevine.prepareLicense = function(e1) {
+                                        }, o.drm.fairplay.licenseResponseType = h.HttpResponseType.ARRAYBUFFER), o.drm && o.drm.widevine && (null === (_ = null == S ? void 0 : S["com.widevine.alpha"]) || void 0 === _ ? void 0 : _.licenseServerUrl) && (null === (p = null == S ? void 0 : S["com.widevine.alpha"]) || void 0 === p ? void 0 : p.licenseServerUrl.includes("drmtoday")) && (null === (g = this.instanceSettings.playResponse) || void 0 === g ? void 0 : g.playToken) && (o.drm.widevine.headers = {
+                                            "x-dt-auth-token": null === (m = this.instanceSettings.playResponse) || void 0 === m ? void 0 : m.playToken
+                                        }, o.drm.widevine.prepareLicense = function(e1) {
                                             var _$t = {
                                                 license: e1.license
                                             };
                                             try {
                                                 var _$n = JSON.parse(String.fromCharCode.apply(null, e1.license));
                                                 if (_$n && _$n.status && _$n.license && "OK" === _$n.status) {
-                                                    for(var i = window.atob(_$n.license), _$r = new Uint8Array(new ArrayBuffer(i.length)), _$a = 0; _$a < i.length; _$a++)_$r[_$a] = i.charCodeAt(_$a);
+                                                    for(var i = window.atob(_$n.license), _$r = new Uint8Array(new ArrayBuffer(i.length)), a1 = 0; a1 < i.length; a1++)_$r[a1] = i.charCodeAt(a1);
                                                     _$t.license = _$r;
                                                 }
                                             } catch (e1) {}
                                             return _$t;
-                                        }), this.bitmovinPlayer.load(h).then(function() {
-                                            return $.load.call(_$e, {
-                                                src: S,
-                                                license: E,
-                                                startTime: T,
-                                                audio: I,
-                                                subtitle: A
+                                        }), this.bitmovinPlayer.load(o).then(function() {
+                                            return I.load.call(_$e, {
+                                                src: y,
+                                                license: S,
+                                                startTime: E,
+                                                audio: A,
+                                                subtitle: T
                                             });
                                         }), [
                                             2
@@ -283059,25 +283121,32 @@ function _type_of(obj) {
                             key: "seekTo",
                             value: function value(e1) {
                                 var _$t;
-                                null === (_$t = this.bitmovinPlayer) || void 0 === _$t || _$t.seek(e1);
+                                this.pendingSeekTime = e1, null === (_$t = this.bitmovinPlayer) || void 0 === _$t || _$t.seek(e1);
+                            }
+                        },
+                        {
+                            key: "getCurrentTime",
+                            value: function value() {
+                                var _$e = this.bitmovinPlayer ? this.bitmovinPlayer.getCurrentTime() : a1(o(v.prototype), "getCurrentTime", this).call(this);
+                                return null == this.pendingSeekTime ? _$e : Math.abs(_$e - this.pendingSeekTime) <= v.SEEK_SYNC_TOLERANCE_S ? (this.pendingSeekTime = null, _$e) : this.pendingSeekTime;
                             }
                         },
                         {
                             key: "load",
                             value: function value(e1) {
-                                this._load(e1);
+                                this.pendingSeekTime = null, this._load(e1);
                             }
                         },
                         {
                             key: "destroy",
                             value: function value() {
                                 var _$e;
-                                null === (_$e = this.bitmovinPlayer) || void 0 === _$e || _$e.destroy(), o(s1(m.prototype), "destroy", this).call(this);
+                                this.pendingSeekTime = null, null === (_$e = this.bitmovinPlayer) || void 0 === _$e || _$e.destroy(), a1(o(v.prototype), "destroy", this).call(this);
                             }
                         }
-                    ], _$n && r(_$t.prototype, _$n), i && r(_$t, i), m;
-                }(g.AbstractBaseEngine);
-                t1.Bitmovin = m;
+                    ], _$n && r(_$t.prototype, _$n), i && r(_$t, i), v;
+                }(p.AbstractBaseEngine);
+                t1.Bitmovin = v, v.SEEK_SYNC_TOLERANCE_S = 1.25;
             },
             6171: function(e1, t1, n) {
                 "use strict";
@@ -287708,10 +287777,10 @@ function _type_of(obj) {
                         {
                             key: "onSeeking",
                             value: function value() {
-                                this.debouncedSeek ? this.debouncedSeek = !1 : this.emit(c.PlayerEvents.SEEKING, this.getDefaultPlayerEvent()), this.setState({
+                                this.debouncedSeek ? this.debouncedSeek = !1 : (this.emit(c.PlayerEvents.SEEKING, this.getDefaultPlayerEvent()), this.setState({
                                     currentTime: this.getCurrentTime(),
                                     utcCurrentTime: this.getUTCCurrentTime()
-                                });
+                                }));
                             }
                         },
                         {
@@ -312443,7 +312512,7 @@ function _type_of(obj) {
                 }, p = u.HL, g = u.xn, v = u.$W;
             }
         }, __webpack_module_cache__ = {};
-        function __nested_webpack_require_12740881__(e1) {
+        function __nested_webpack_require_12743006__(e1) {
             var t1 = __webpack_module_cache__[e1];
             if (void 0 !== t1) return t1.exports;
             var n = __webpack_module_cache__[e1] = {
@@ -312451,35 +312520,35 @@ function _type_of(obj) {
                 loaded: !1,
                 exports: {}
             };
-            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12740881__), n.loaded = !0, n.exports;
+            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12743006__), n.loaded = !0, n.exports;
         }
-        __nested_webpack_require_12740881__.d = function(e1, t1) {
-            for(var n in t1)__nested_webpack_require_12740881__.o(t1, n) && !__nested_webpack_require_12740881__.o(e1, n) && Object.defineProperty(e1, n, {
+        __nested_webpack_require_12743006__.d = function(e1, t1) {
+            for(var n in t1)__nested_webpack_require_12743006__.o(t1, n) && !__nested_webpack_require_12743006__.o(e1, n) && Object.defineProperty(e1, n, {
                 enumerable: !0,
                 get: t1[n]
             });
-        }, __nested_webpack_require_12740881__.g = function() {
+        }, __nested_webpack_require_12743006__.g = function() {
             if ("object" == typeof globalThis) return globalThis;
             try {
                 return this || new Function("return this")();
             } catch (e1) {
                 if ("object" == typeof window) return window;
             }
-        }(), __nested_webpack_require_12740881__.o = function(e1, t1) {
+        }(), __nested_webpack_require_12743006__.o = function(e1, t1) {
             return Object.prototype.hasOwnProperty.call(e1, t1);
-        }, __nested_webpack_require_12740881__.r = function(e1) {
+        }, __nested_webpack_require_12743006__.r = function(e1) {
             "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e1, Symbol.toStringTag, {
                 value: "Module"
             }), Object.defineProperty(e1, "__esModule", {
                 value: !0
             });
-        }, __nested_webpack_require_12740881__.nmd = function(e1) {
+        }, __nested_webpack_require_12743006__.nmd = function(e1) {
             return e1.paths = [], e1.children || (e1.children = []), e1;
         };
         var __nested_webpack_exports__ = {};
         return function() {
             "use strict";
-            __nested_webpack_require_12740881__.r(__nested_webpack_exports__), __nested_webpack_require_12740881__.d(__nested_webpack_exports__, {
+            __nested_webpack_require_12743006__.r(__nested_webpack_exports__), __nested_webpack_require_12743006__.d(__nested_webpack_exports__, {
                 ContentType: function ContentType() {
                     return t1.ContentType;
                 },
@@ -312499,7 +312568,7 @@ function _type_of(obj) {
                     return S;
                 }
             });
-            var e1 = __nested_webpack_require_12740881__(1382), t1 = __nested_webpack_require_12740881__(9768), n = __nested_webpack_require_12740881__(9899), i = __nested_webpack_require_12740881__(3718), r = __nested_webpack_require_12740881__(5072);
+            var e1 = __nested_webpack_require_12743006__(1382), t1 = __nested_webpack_require_12743006__(9768), n = __nested_webpack_require_12743006__(9899), i = __nested_webpack_require_12743006__(3718), r = __nested_webpack_require_12743006__(5072);
             function a1(e1, t1) {
                 (null == t1 || t1 > e1.length) && (t1 = e1.length);
                 for(var n = 0, i = new Array(t1); n < t1; n++)i[n] = e1[n];
