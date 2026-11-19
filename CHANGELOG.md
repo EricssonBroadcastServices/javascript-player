@@ -1,3 +1,12 @@
+## [1.9.2-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.9.1...v1.9.2-internal.0) (2026-11-19)
+
+
+### Bug Fixes
+
+* **EMP-23322:** use startOffset and hold seek time for Bitmovin ([#26](https://github.com/ericssonbroadcastservices/javascript-player/issues/26)) ([f120bf3](https://github.com/ericssonbroadcastservices/javascript-player/commit/f120bf37b69de87367370b381c13696ada8bc027))
+
+
+
 ## [1.9.1](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.9.1-internal.0...v1.9.1) (2026-10-30)
 
 

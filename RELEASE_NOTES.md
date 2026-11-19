@@ -1,3 +1,9 @@
+**v1.9.2-internal.0** (2026-11-19)
+
+Bug Fixes
+
+* Use startOffset and hold seek time for Bitmovin
+
 **v1.9.1** (2026-10-30)
 
 **v1.9.1-internal.0** (2026-10-30)
