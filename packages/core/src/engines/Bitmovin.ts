@@ -63,6 +63,34 @@ function createSubtitleTrack(track: TextTrack, id: number): Track {
   };
 }
 
+/**
+ * Bitmovin tweaks for the current runtime.
+ * Packaged Tizen loads over file:// and needs file_protocol plus the Tizen app id.
+ * Web and hosted LG stay on http(s), so they get no tweaks.
+ */
+function getTweaks(): { file_protocol: true; app_id: string } | undefined {
+  const tizenApi = (
+    globalThis as {
+      tizen?: {
+        application?: {
+          getCurrentApplication?: () => { appInfo?: { id?: string } };
+        };
+      };
+    }
+  ).tizen;
+  const isPackagedTizen =
+    typeof location !== "undefined" &&
+    location.protocol === "file:" &&
+    !!tizenApi?.application?.getCurrentApplication;
+
+  if (!isPackagedTizen) return;
+
+  const appId = tizenApi?.application?.getCurrentApplication?.()?.appInfo?.id;
+  if (!appId) return;
+
+  return { file_protocol: true, app_id: appId };
+}
+
 function getSourceType(
   src: string
 ): "dash" | "hls" | "smooth" | "progressive" | null {
@@ -81,6 +109,9 @@ export class Bitmovin extends AbstractBaseEngine {
   private bitmovinPlayer: PlayerAPI | undefined;
   private activeSubtitlesTrack: Track | undefined;
   private activeAudioTrack: Track | undefined;
+  /** Held until Bitmovin's clock catches up after seek() (UI would otherwise jump back). */
+  private pendingSeekTime: number | null = null;
+  private static readonly SEEK_SYNC_TOLERANCE_S = 1.25;
 
   constructor(
     videoElement: HTMLVideoElement,
@@ -88,6 +119,7 @@ export class Bitmovin extends AbstractBaseEngine {
   ) {
     super(videoElement, instanceSettings);
 
+    const tweaks = getTweaks();
     this.bitmovinPlayer =
       instanceSettings.initOptions.mediaContainer &&
       new Player(instanceSettings.initOptions.mediaContainer, {
@@ -98,6 +130,7 @@ export class Bitmovin extends AbstractBaseEngine {
         ui: false,
         // autoplay is handled on our side to guarantee a proper eventflow
         playback: { autoplay: false },
+        ...(tweaks ? { tweaks } : {}),
       });
     this.bitmovinPlayer?.setVideoElement(videoElement);
     this.playertechVersion = this.bitmovinPlayer?.version || "";
@@ -267,7 +300,12 @@ export class Bitmovin extends AbstractBaseEngine {
     }
 
     const config: SourceConfig = {
-      [type]: startTime ? `${src}#t=${startTime}` : src,
+      [type]: src,
+      // Media-fragment `#t=` is unreliable for DASH/HLS in Bitmovin (breaks Continue watching).
+      // Use SourceConfig options.startOffset instead (seconds from content start for VOD).
+      ...(startTime != null && startTime > 0
+        ? { options: { startOffset: startTime } }
+        : {}),
       drm: {
         widevine: {
           LA_URL: license?.["com.widevine.alpha"]?.licenseServerUrl,
@@ -364,14 +402,33 @@ export class Bitmovin extends AbstractBaseEngine {
 
   seekTo(pos: number) {
     // bitmovin can't seek to by setting this.videoElement.currentTime property.
+    this.pendingSeekTime = pos;
     this.bitmovinPlayer?.seek(pos);
   }
 
+  getCurrentTime() {
+    const time = this.bitmovinPlayer
+      ? this.bitmovinPlayer.getCurrentTime()
+      : super.getCurrentTime();
+    if (this.pendingSeekTime == null) {
+      return time;
+    }
+    if (
+      Math.abs(time - this.pendingSeekTime) <= Bitmovin.SEEK_SYNC_TOLERANCE_S
+    ) {
+      this.pendingSeekTime = null;
+      return time;
+    }
+    return this.pendingSeekTime;
+  }
+
   load(parameters: TLoadParameters) {
+    this.pendingSeekTime = null;
     this._load(parameters);
   }
 
   destroy() {
+    this.pendingSeekTime = null;
     this.bitmovinPlayer?.destroy();
     super.destroy();
   }

@@ -53,7 +53,8 @@ export async function fetchBitmovinPlayerKey(
     if (!response.ok) {
       return undefined;
     }
-    const { bitmovinPlayerKey } = await response.json();
+    const config = await response.json();
+    const bitmovinPlayerKey = config?.parameters?.bitmovinPlayerKey;
     return typeof bitmovinPlayerKey === "string" && bitmovinPlayerKey.trim()
       ? bitmovinPlayerKey
       : undefined;
@@ -74,8 +75,9 @@ export async function fetchAssetPageDetails(assetPage: string): Promise<{
   const baseUrl = isLocalhost ? defaultBaseURL : url.origin;
   const configURL = `${baseUrl}/v2/whitelabel/origin/${url.hostname}/config/sandwich`;
   const response = await fetch(configURL);
-  const { customer, businessUnit, systemConfig, bitmovinPlayerKey } =
-    await response.json();
+  const config = await response.json();
+  const { customer, businessUnit, systemConfig } = config;
+  const bitmovinPlayerKey = config?.parameters?.bitmovinPlayerKey;
   const exposureBaseUrl = systemConfig.playerUrl || defaultBaseURL;
   const path = url.pathname.split("/");
   const assetId = path[path.length - 1];
