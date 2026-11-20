@@ -1,3 +1,9 @@
+**v1.9.2-internal.1** (2026-11-20)
+
+Bug Fixes
+
+* Omit empty Bitmovin drm config for clearstream
+
 **v1.9.2-internal.0** (2026-11-19)
 
 Bug Fixes

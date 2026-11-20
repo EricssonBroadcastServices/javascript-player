@@ -1,3 +1,12 @@
+## [1.9.2-internal.1](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.9.2-internal.0...v1.9.2-internal.1) (2026-11-20)
+
+
+### Bug Fixes
+
+* omit empty Bitmovin drm config for clearstream ([#27](https://github.com/ericssonbroadcastservices/javascript-player/issues/27)) ([087e15c](https://github.com/ericssonbroadcastservices/javascript-player/commit/087e15cd4ab453e5e2578247343e3371b04f566c))
+
+
+
 ## [1.9.2-internal.0](https://github.com/ericssonbroadcastservices/javascript-player/compare/v1.9.1...v1.9.2-internal.0) (2026-11-19)
 
 
