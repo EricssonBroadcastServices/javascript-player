@@ -143683,7 +143683,7 @@ var PlayerCore = /*#__PURE__*/ function(_js_player_shared_1_EmitterBaseClass) {
         _this.mediaContainer = mediaContainer;
         _this.container = container;
         _this.instanceSettings = {
-            playerSDKVersion:  true ? "1.9.2-internal.0" : 0,
+            playerSDKVersion:  true ? "1.9.2-internal.1" : 0,
             initOptions: Object.assign(Object.assign(Object.assign({}, defaults_1.PLAYER_OPTIONS), options), {
                 mediaContainer: mediaContainer
             }),
@@ -280491,7 +280491,7 @@ function _type_of(obj) {
                         o.className = U, o.tabIndex = 0;
                         var s1 = document.createElement("div");
                         if (s1.className = F, o.appendChild(s1), _$t.videoElement = (0, M.setupVideoElement)(), s1.appendChild(_$t.videoElement), _$t.subtitleContainer = document.createElement("div"), _$t.subtitleContainer.className = B, s1.appendChild(_$t.subtitleContainer), _$t.mediaContainer = s1, _$t.container = o, _$t.instanceSettings = {
-                            playerSDKVersion: "1.9.2-internal.0",
+                            playerSDKVersion: "1.9.2-internal.1",
                             initOptions: Object.assign(Object.assign(Object.assign({}, P.PLAYER_OPTIONS), e1), {
                                 mediaContainer: s1
                             }),
