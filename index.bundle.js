@@ -146989,6 +146989,46 @@ var bitmovin_player_1 = __webpack_require__(/*! bitmovin-player */ "../../node_m
 var js_player_shared_1 = __webpack_require__(/*! @ericssonbroadcastservices/js-player-shared */ "../../packages/shared/dist/index.js");
 var AbstractBaseEngine_1 = __webpack_require__(/*! ./AbstractBaseEngine */ "../../packages/core/dist/engines/AbstractBaseEngine.js");
 var interfaces_1 = __webpack_require__(/*! ./interfaces */ "../../packages/core/dist/engines/interfaces.js");
+/**
+ * Only attach DRM when Exposure returned real license URLs.
+ * Empty `drm.playready` / `drm.widevine` objects make newer Chrome on Windows
+ * prefer PlayReady and fail clearstream with DRM_INIT_DATA_MISSING (2015).
+ */ function buildDrmConfig(license) {
+    var _a, _b, _c, _d;
+    var widevineUrl = (_a = license === null || license === void 0 ? void 0 : license["com.widevine.alpha"]) === null || _a === void 0 ? void 0 : _a.licenseServerUrl;
+    var fairplayUrl = (_b = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _b === void 0 ? void 0 : _b.licenseServerUrl;
+    var fairplayCertificateUrl = (_c = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _c === void 0 ? void 0 : _c.certificateUrl;
+    var playreadyUrl = (_d = license === null || license === void 0 ? void 0 : license["com.microsoft.playready"]) === null || _d === void 0 ? void 0 : _d.licenseServerUrl;
+    if (!widevineUrl && !fairplayUrl && !playreadyUrl) {
+        return undefined;
+    }
+    var drm = {
+        // Prefer Widevine on Chrome/Windows where PlayReady may otherwise win.
+        preferredKeySystems: [
+            "widevine",
+            "playready",
+            "fairplay"
+        ]
+    };
+    if (widevineUrl) {
+        drm.widevine = {
+            LA_URL: widevineUrl
+        };
+    }
+    if (fairplayUrl) {
+        drm.fairplay = Object.assign({
+            LA_URL: fairplayUrl
+        }, fairplayCertificateUrl ? {
+            certificateURL: fairplayCertificateUrl
+        } : {});
+    }
+    if (playreadyUrl) {
+        drm.playready = {
+            LA_URL: playreadyUrl
+        };
+    }
+    return drm;
+}
 function createAudioTrack(track, id) {
     var _a;
     var roles = (_a = track.role) === null || _a === void 0 ? void 0 : _a.map(function(el) {
@@ -147235,9 +147275,9 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
                         }
                     }
                 });
-                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+                var _a, _b, _c, _d, _e, _f, _g, _h;
                 return __awaiter(this, void 0, void 0, function() {
-                    var _this, type, config;
+                    var _this, type, drm, config;
                     return _ts_generator(this, function(_state) {
                         _this = this;
                         if (!this.bitmovinPlayer) return [
@@ -147248,27 +147288,17 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
                             console.error("[BitmovinEngine] Unknown source type for URL: ".concat(src));
                             throw new Error("Unsupported source type");
                         }
+                        drm = buildDrmConfig(license);
                         config = Object.assign(Object.assign(_define_property({}, type, src), startTime != null && startTime > 0 ? {
                             options: {
                                 startOffset: startTime
                             }
-                        } : {}), {
-                            drm: {
-                                widevine: {
-                                    LA_URL: (_a = license === null || license === void 0 ? void 0 : license["com.widevine.alpha"]) === null || _a === void 0 ? void 0 : _a.licenseServerUrl
-                                },
-                                fairplay: {
-                                    LA_URL: (_b = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _b === void 0 ? void 0 : _b.licenseServerUrl,
-                                    certificateURL: (_c = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _c === void 0 ? void 0 : _c.certificateUrl
-                                },
-                                playready: {
-                                    LA_URL: (_d = license === null || license === void 0 ? void 0 : license["com.microsoft.playready"]) === null || _d === void 0 ? void 0 : _d.licenseServerUrl
-                                }
-                            }
-                        });
-                        if (config.drm && config.drm.fairplay && ((_e = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _e === void 0 ? void 0 : _e.licenseServerUrl) && ((_f = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _f === void 0 ? void 0 : _f.licenseServerUrl.includes("drmtoday")) && ((_g = this.instanceSettings.playResponse) === null || _g === void 0 ? void 0 : _g.playToken)) {
+                        } : {}), drm ? {
+                            drm: drm
+                        } : {});
+                        if (config.drm && config.drm.fairplay && ((_a = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _a === void 0 ? void 0 : _a.licenseServerUrl) && ((_b = license === null || license === void 0 ? void 0 : license["com.apple.fps"]) === null || _b === void 0 ? void 0 : _b.licenseServerUrl.includes("drmtoday")) && ((_c = this.instanceSettings.playResponse) === null || _c === void 0 ? void 0 : _c.playToken)) {
                             config.drm.fairplay.headers = {
-                                "x-dt-auth-token": (_h = this.instanceSettings.playResponse) === null || _h === void 0 ? void 0 : _h.playToken
+                                "x-dt-auth-token": (_d = this.instanceSettings.playResponse) === null || _d === void 0 ? void 0 : _d.playToken
                             };
                             config.drm.fairplay.prepareContentId = function(contentId) {
                                 // initData contains [4 byte: Length][EXT-X-KEY URI] but since Bitmovin converts it to string and
@@ -147287,9 +147317,9 @@ var Bitmovin = /*#__PURE__*/ function(_AbstractBaseEngine_1_AbstractBaseEngine) 
                             };
                             config.drm.fairplay.licenseResponseType = bitmovin_player_1.HttpResponseType.ARRAYBUFFER;
                         }
-                        if (config.drm && config.drm.widevine && ((_j = license === null || license === void 0 ? void 0 : license["com.widevine.alpha"]) === null || _j === void 0 ? void 0 : _j.licenseServerUrl) && ((_k = license === null || license === void 0 ? void 0 : license["com.widevine.alpha"]) === null || _k === void 0 ? void 0 : _k.licenseServerUrl.includes("drmtoday")) && ((_l = this.instanceSettings.playResponse) === null || _l === void 0 ? void 0 : _l.playToken)) {
+                        if (config.drm && config.drm.widevine && ((_e = license === null || license === void 0 ? void 0 : license["com.widevine.alpha"]) === null || _e === void 0 ? void 0 : _e.licenseServerUrl) && ((_f = license === null || license === void 0 ? void 0 : license["com.widevine.alpha"]) === null || _f === void 0 ? void 0 : _f.licenseServerUrl.includes("drmtoday")) && ((_g = this.instanceSettings.playResponse) === null || _g === void 0 ? void 0 : _g.playToken)) {
                             config.drm.widevine.headers = {
-                                "x-dt-auth-token": (_m = this.instanceSettings.playResponse) === null || _m === void 0 ? void 0 : _m.playToken
+                                "x-dt-auth-token": (_h = this.instanceSettings.playResponse) === null || _h === void 0 ? void 0 : _h.playToken
                             };
                             config.drm.widevine.prepareLicense = function(licenseResponse) {
                                 var license = {
@@ -283037,15 +283067,15 @@ function _type_of(obj) {
                         {
                             key: "_load",
                             value: function value(e1) {
-                                var _$t, _$n, i, _$r, s1, u, c, _$l, _, p, g, m, b = this, y = e1.src, S = e1.license, E = e1.startTime, T = e1.subtitle, A = e1.audio, I = Object.create(null, {
+                                var _$t, _$n, i, _$r, s1, u, c, _$l, _ = this, p = e1.src, g = e1.license, m = e1.startTime, b = e1.subtitle, y = e1.audio, S = Object.create(null, {
                                     load: {
                                         get: function get() {
-                                            return a1(o(v.prototype), "load", b);
+                                            return a1(o(v.prototype), "load", _);
                                         }
                                     }
                                 });
                                 return d(this, void 0, void 0, function() {
-                                    var _$e, a1, o;
+                                    var _$e, a1, o, d;
                                     return f(this, function(f) {
                                         if (_$e = this, !this.bitmovinPlayer) return [
                                             2
@@ -283053,44 +283083,53 @@ function _type_of(obj) {
                                         if (a1 = function(e1) {
                                             var _$t = e1.toLowerCase();
                                             return _$t.includes(".mpd") || _$t.includes(".dash") ? "dash" : _$t.includes(".m3u8") ? "hls" : _$t.includes(".ism/manifest") || _$t.includes(".xml") ? "smooth" : _$t.endsWith(".mp4") ? "progressive" : null;
-                                        }(y), !a1) throw console.error("[BitmovinEngine] Unknown source type for URL: ".concat(y)), new Error("Unsupported source type");
-                                        var d, _$v, b;
-                                        return (o = Object.assign(Object.assign((b = y, (_$v = a1) in (d = {}) ? Object.defineProperty(d, _$v, {
-                                            value: b,
+                                        }(p), !a1) throw console.error("[BitmovinEngine] Unknown source type for URL: ".concat(p)), new Error("Unsupported source type");
+                                        var _, _$v, E;
+                                        return o = function(e1) {
+                                            var _$t, _$n, i, _$r, a1 = null === (_$t = null == e1 ? void 0 : e1["com.widevine.alpha"]) || void 0 === _$t ? void 0 : _$t.licenseServerUrl, o = null === (_$n = null == e1 ? void 0 : e1["com.apple.fps"]) || void 0 === _$n ? void 0 : _$n.licenseServerUrl, s1 = null === (i = null == e1 ? void 0 : e1["com.apple.fps"]) || void 0 === i ? void 0 : i.certificateUrl, u = null === (_$r = null == e1 ? void 0 : e1["com.microsoft.playready"]) || void 0 === _$r ? void 0 : _$r.licenseServerUrl;
+                                            if (a1 || o || u) {
+                                                var c = {
+                                                    preferredKeySystems: [
+                                                        "widevine",
+                                                        "playready",
+                                                        "fairplay"
+                                                    ]
+                                                };
+                                                return a1 && (c.widevine = {
+                                                    LA_URL: a1
+                                                }), o && (c.fairplay = Object.assign({
+                                                    LA_URL: o
+                                                }, s1 ? {
+                                                    certificateURL: s1
+                                                } : {})), u && (c.playready = {
+                                                    LA_URL: u
+                                                }), c;
+                                            }
+                                        }(g), (d = Object.assign(Object.assign((E = p, (_$v = a1) in (_ = {}) ? Object.defineProperty(_, _$v, {
+                                            value: E,
                                             enumerable: !0,
                                             configurable: !0,
                                             writable: !0
-                                        }) : d[_$v] = b, d), null != E && E > 0 ? {
+                                        }) : _[_$v] = E, _), null != m && m > 0 ? {
                                             options: {
-                                                startOffset: E
+                                                startOffset: m
                                             }
-                                        } : {}), {
-                                            drm: {
-                                                widevine: {
-                                                    LA_URL: null === (_$t = null == S ? void 0 : S["com.widevine.alpha"]) || void 0 === _$t ? void 0 : _$t.licenseServerUrl
-                                                },
-                                                fairplay: {
-                                                    LA_URL: null === (_$n = null == S ? void 0 : S["com.apple.fps"]) || void 0 === _$n ? void 0 : _$n.licenseServerUrl,
-                                                    certificateURL: null === (i = null == S ? void 0 : S["com.apple.fps"]) || void 0 === i ? void 0 : i.certificateUrl
-                                                },
-                                                playready: {
-                                                    LA_URL: null === (_$r = null == S ? void 0 : S["com.microsoft.playready"]) || void 0 === _$r ? void 0 : _$r.licenseServerUrl
-                                                }
-                                            }
-                                        })).drm && o.drm.fairplay && (null === (s1 = null == S ? void 0 : S["com.apple.fps"]) || void 0 === s1 ? void 0 : s1.licenseServerUrl) && (null === (u = null == S ? void 0 : S["com.apple.fps"]) || void 0 === u ? void 0 : u.licenseServerUrl.includes("drmtoday")) && (null === (c = this.instanceSettings.playResponse) || void 0 === c ? void 0 : c.playToken) && (o.drm.fairplay.headers = {
-                                            "x-dt-auth-token": null === (_$l = this.instanceSettings.playResponse) || void 0 === _$l ? void 0 : _$l.playToken
-                                        }, o.drm.fairplay.prepareContentId = function(e1) {
+                                        } : {}), o ? {
+                                            drm: o
+                                        } : {})).drm && d.drm.fairplay && (null === (_$t = null == g ? void 0 : g["com.apple.fps"]) || void 0 === _$t ? void 0 : _$t.licenseServerUrl) && (null === (_$n = null == g ? void 0 : g["com.apple.fps"]) || void 0 === _$n ? void 0 : _$n.licenseServerUrl.includes("drmtoday")) && (null === (i = this.instanceSettings.playResponse) || void 0 === i ? void 0 : i.playToken) && (d.drm.fairplay.headers = {
+                                            "x-dt-auth-token": null === (_$r = this.instanceSettings.playResponse) || void 0 === _$r ? void 0 : _$r.playToken
+                                        }, d.drm.fairplay.prepareContentId = function(e1) {
                                             return new URL(e1.substring(2)).hostname;
-                                        }, o.drm.fairplay.prepareMessage = function(e1, t1) {
+                                        }, d.drm.fairplay.prepareMessage = function(e1, t1) {
                                             return new URLSearchParams({
                                                 spc: e1.messageBase64Encoded,
                                                 contentId: t1.contentId
                                             });
-                                        }, o.drm.fairplay.prepareLicense = function(e1) {
+                                        }, d.drm.fairplay.prepareLicense = function(e1) {
                                             return new Uint8Array(e1);
-                                        }, o.drm.fairplay.licenseResponseType = h.HttpResponseType.ARRAYBUFFER), o.drm && o.drm.widevine && (null === (_ = null == S ? void 0 : S["com.widevine.alpha"]) || void 0 === _ ? void 0 : _.licenseServerUrl) && (null === (p = null == S ? void 0 : S["com.widevine.alpha"]) || void 0 === p ? void 0 : p.licenseServerUrl.includes("drmtoday")) && (null === (g = this.instanceSettings.playResponse) || void 0 === g ? void 0 : g.playToken) && (o.drm.widevine.headers = {
-                                            "x-dt-auth-token": null === (m = this.instanceSettings.playResponse) || void 0 === m ? void 0 : m.playToken
-                                        }, o.drm.widevine.prepareLicense = function(e1) {
+                                        }, d.drm.fairplay.licenseResponseType = h.HttpResponseType.ARRAYBUFFER), d.drm && d.drm.widevine && (null === (s1 = null == g ? void 0 : g["com.widevine.alpha"]) || void 0 === s1 ? void 0 : s1.licenseServerUrl) && (null === (u = null == g ? void 0 : g["com.widevine.alpha"]) || void 0 === u ? void 0 : u.licenseServerUrl.includes("drmtoday")) && (null === (c = this.instanceSettings.playResponse) || void 0 === c ? void 0 : c.playToken) && (d.drm.widevine.headers = {
+                                            "x-dt-auth-token": null === (_$l = this.instanceSettings.playResponse) || void 0 === _$l ? void 0 : _$l.playToken
+                                        }, d.drm.widevine.prepareLicense = function(e1) {
                                             var _$t = {
                                                 license: e1.license
                                             };
@@ -283102,13 +283141,13 @@ function _type_of(obj) {
                                                 }
                                             } catch (e1) {}
                                             return _$t;
-                                        }), this.bitmovinPlayer.load(o).then(function() {
-                                            return I.load.call(_$e, {
-                                                src: y,
-                                                license: S,
-                                                startTime: E,
-                                                audio: A,
-                                                subtitle: T
+                                        }), this.bitmovinPlayer.load(d).then(function() {
+                                            return S.load.call(_$e, {
+                                                src: p,
+                                                license: g,
+                                                startTime: m,
+                                                audio: y,
+                                                subtitle: b
                                             });
                                         }), [
                                             2
@@ -312512,7 +312551,7 @@ function _type_of(obj) {
                 }, p = u.HL, g = u.xn, v = u.$W;
             }
         }, __webpack_module_cache__ = {};
-        function __nested_webpack_require_12743017__(e1) {
+        function __nested_webpack_require_12743735__(e1) {
             var t1 = __webpack_module_cache__[e1];
             if (void 0 !== t1) return t1.exports;
             var n = __webpack_module_cache__[e1] = {
@@ -312520,35 +312559,35 @@ function _type_of(obj) {
                 loaded: !1,
                 exports: {}
             };
-            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12743017__), n.loaded = !0, n.exports;
+            return __webpack_modules__[e1].call(n.exports, n, n.exports, __nested_webpack_require_12743735__), n.loaded = !0, n.exports;
         }
-        __nested_webpack_require_12743017__.d = function(e1, t1) {
-            for(var n in t1)__nested_webpack_require_12743017__.o(t1, n) && !__nested_webpack_require_12743017__.o(e1, n) && Object.defineProperty(e1, n, {
+        __nested_webpack_require_12743735__.d = function(e1, t1) {
+            for(var n in t1)__nested_webpack_require_12743735__.o(t1, n) && !__nested_webpack_require_12743735__.o(e1, n) && Object.defineProperty(e1, n, {
                 enumerable: !0,
                 get: t1[n]
             });
-        }, __nested_webpack_require_12743017__.g = function() {
+        }, __nested_webpack_require_12743735__.g = function() {
             if ("object" == typeof globalThis) return globalThis;
             try {
                 return this || new Function("return this")();
             } catch (e1) {
                 if ("object" == typeof window) return window;
             }
-        }(), __nested_webpack_require_12743017__.o = function(e1, t1) {
+        }(), __nested_webpack_require_12743735__.o = function(e1, t1) {
             return Object.prototype.hasOwnProperty.call(e1, t1);
-        }, __nested_webpack_require_12743017__.r = function(e1) {
+        }, __nested_webpack_require_12743735__.r = function(e1) {
             "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e1, Symbol.toStringTag, {
                 value: "Module"
             }), Object.defineProperty(e1, "__esModule", {
                 value: !0
             });
-        }, __nested_webpack_require_12743017__.nmd = function(e1) {
+        }, __nested_webpack_require_12743735__.nmd = function(e1) {
             return e1.paths = [], e1.children || (e1.children = []), e1;
         };
         var __nested_webpack_exports__ = {};
         return function() {
             "use strict";
-            __nested_webpack_require_12743017__.r(__nested_webpack_exports__), __nested_webpack_require_12743017__.d(__nested_webpack_exports__, {
+            __nested_webpack_require_12743735__.r(__nested_webpack_exports__), __nested_webpack_require_12743735__.d(__nested_webpack_exports__, {
                 ContentType: function ContentType() {
                     return t1.ContentType;
                 },
@@ -312568,7 +312607,7 @@ function _type_of(obj) {
                     return S;
                 }
             });
-            var e1 = __nested_webpack_require_12743017__(1382), t1 = __nested_webpack_require_12743017__(9768), n = __nested_webpack_require_12743017__(9899), i = __nested_webpack_require_12743017__(3718), r = __nested_webpack_require_12743017__(5072);
+            var e1 = __nested_webpack_require_12743735__(1382), t1 = __nested_webpack_require_12743735__(9768), n = __nested_webpack_require_12743735__(9899), i = __nested_webpack_require_12743735__(3718), r = __nested_webpack_require_12743735__(5072);
             function a1(e1, t1) {
                 (null == t1 || t1 > e1.length) && (t1 = e1.length);
                 for(var n = 0, i = new Array(t1); n < t1; n++)i[n] = e1[n];
