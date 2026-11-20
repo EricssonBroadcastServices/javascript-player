@@ -4,6 +4,7 @@
 
 import {
   AudioTrack,
+  DRMConfig,
   HttpResponseType,
   Player,
   PlayerAPI,
@@ -29,9 +30,48 @@ import {
 } from "./AbstractBaseEngine";
 import {
   EngineEvents,
+  ILicense,
   SubtitleCueChangeEngineEvent,
   TLoadParameters,
 } from "./interfaces";
+
+/**
+ * Only attach DRM when Exposure returned real license URLs.
+ * Empty `drm.playready` / `drm.widevine` objects make newer Chrome on Windows
+ * prefer PlayReady and fail clearstream with DRM_INIT_DATA_MISSING (2015).
+ */
+function buildDrmConfig(license?: ILicense): DRMConfig | undefined {
+  const widevineUrl = license?.["com.widevine.alpha"]?.licenseServerUrl;
+  const fairplayUrl = license?.["com.apple.fps"]?.licenseServerUrl;
+  const fairplayCertificateUrl = license?.["com.apple.fps"]?.certificateUrl;
+  const playreadyUrl = license?.["com.microsoft.playready"]?.licenseServerUrl;
+
+  if (!widevineUrl && !fairplayUrl && !playreadyUrl) {
+    return undefined;
+  }
+
+  const drm: DRMConfig = {
+    // Prefer Widevine on Chrome/Windows where PlayReady may otherwise win.
+    preferredKeySystems: ["widevine", "playready", "fairplay"],
+  };
+
+  if (widevineUrl) {
+    drm.widevine = { LA_URL: widevineUrl };
+  }
+  if (fairplayUrl) {
+    drm.fairplay = {
+      LA_URL: fairplayUrl,
+      ...(fairplayCertificateUrl
+        ? { certificateURL: fairplayCertificateUrl }
+        : {}),
+    };
+  }
+  if (playreadyUrl) {
+    drm.playready = { LA_URL: playreadyUrl };
+  }
+
+  return drm;
+}
 
 function createAudioTrack(track: AudioTrack, id: number): Track {
   const roles = track.role
@@ -299,6 +339,7 @@ export class Bitmovin extends AbstractBaseEngine {
       throw new Error("Unsupported source type");
     }
 
+    const drm = buildDrmConfig(license);
     const config: SourceConfig = {
       [type]: src,
       // Media-fragment `#t=` is unreliable for DASH/HLS in Bitmovin (breaks Continue watching).
@@ -306,18 +347,7 @@ export class Bitmovin extends AbstractBaseEngine {
       ...(startTime != null && startTime > 0
         ? { options: { startOffset: startTime } }
         : {}),
-      drm: {
-        widevine: {
-          LA_URL: license?.["com.widevine.alpha"]?.licenseServerUrl,
-        },
-        fairplay: {
-          LA_URL: license?.["com.apple.fps"]?.licenseServerUrl,
-          certificateURL: license?.["com.apple.fps"]?.certificateUrl,
-        },
-        playready: {
-          LA_URL: license?.["com.microsoft.playready"]?.licenseServerUrl,
-        },
-      },
+      ...(drm ? { drm } : {}),
     };
 
     if (
